@@ -15,6 +15,7 @@ const PORT = process.env.PORT; //in order to get any variable from the .env file
 const usersRouter = require("./routes/users");
 const jobsRouter = require("./routes/jobs");
 const categoriesRouter = require("./routes/categories");
+const rolesRouter = require("./routes/roles");
 
 // express.json() is a built-in middleware that parses incoming requests with JSON payloads (it turn the request to json so we can be able to use it and we use it if we want to get data from the body of postman)
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/users", usersRouter);
 app.use("/jobs", jobsRouter);
 app.use("/categories", categoriesRouter);
+app.use("/roles", rolesRouter);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Handles any other endpoints [unassigned - endpoints]
