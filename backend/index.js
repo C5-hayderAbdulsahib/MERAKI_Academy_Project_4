@@ -4,25 +4,26 @@ const express = require("express");
 //dotenv and this has to be the second line after requiring express because in the third line we will require the db from the model and we have put the mongoLink inside the .env and if we tried to use the process.env before requiring the .env package an error will appear so it has to be after the requiring of the express
 require("dotenv").config(); //we require the dotenv in the index.js because we want to make it available for the all application folder
 
-// //this is to bring the database and if i did not write this line the mongo server will not run on my device even so even if i did not use the variable i still have to require the db from the model server
-// require("./models/db"); //or we can create like this  const db = require("./models/db");
+//this is to bring the database and if i did not write this line the mongo server will not run on my device even so even if i did not use the variable i still have to require the db from the model server
+require("./models/db"); //or we can write like this-->  const db = require("./models/db");
 
 // instantiate express
 const app = express();
 const PORT = process.env.PORT; //in order to get any variable from the .env file we write process.env.NAME_OF_THE_VARIABLE
 
-// // Import Routers
-// const articlesRouter = require("./routes/articles");
-
-// app.use(cors()); //we created an application-level middleware and invoke it the cors function, and the reason for that if we want these api that we created to be used by the frontend code then we have to give it the cors permissions
+// Import Routers
+const usersRouter = require("./routes/users");
+const jobsRouter = require("./routes/jobs");
 
 // express.json() is a built-in middleware that parses incoming requests with JSON payloads (it turn the request to json so we can be able to use it and we use it if we want to get data from the body of postman)
 app.use(express.json());
+// app.use(cors()); //we created an application-level middleware and invoke it the cors function, and the reason for that if we want these api that we created to be used by the frontend code then we have to give it the cors permissions
 
-// // Routes Middleware
-// app.use("/articles", articlesRouter);
+// Routes Middleware
+app.use("/users", usersRouter);
+app.use("/jobs", jobsRouter);
 
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 // Handles any other endpoints [unassigned - endpoints]
 
 // this is an Error-handling middleware and it has to be at the bottom of the page before the app.listen

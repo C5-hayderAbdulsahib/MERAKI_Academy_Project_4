@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
-  company_name: { type: String, required: true },
+  company_name: String, // it is possible to type the field type directly if there are no other options needed
   country: { type: String, required: true },
 
   phone_number: Number, // it is possible to type the field type directly if there are no other options needed
