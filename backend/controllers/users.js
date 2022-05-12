@@ -64,6 +64,14 @@ const login = async (req, res) => {
       .findOne({ email: req.body.email })
       .populate("role"); //we are using populate by deciding the field that we want to show the data for, and we are doing this so we can send the role name and permission and put it inside the token
 
+    if (user.role === null) {
+      return res.status(404).json({
+        //the reason that i add the return in order to stop the execution of the code
+        success: false,
+        message: "Role Is Not Found",
+      });
+    }
+
     if (user !== null) {
       //the first argument refer to the entered password while the second refer to the hashedPassword in the database
       bcrypt.compare(req.body.password, user.password, (err, result) => {

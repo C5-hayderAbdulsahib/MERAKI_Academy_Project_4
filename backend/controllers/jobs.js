@@ -4,14 +4,20 @@ const jobsModel = require("../models/jobs");
 // this function will create a new job post
 const createNewJobPost = async (req, res) => {
   try {
-    const { title, description, company_name, type, country } = req.body;
+    const { title, description, type, salary_min, salary_max, currency } =
+      req.body;
 
+    console.log(req.token.userId);
     const newJobPost = new jobsModel({
       title, //this is the same as title: title
       description,
-      company_name,
+      company_name: req.token.company_name, //we will take it from the token object that we add it to the req inside the authentication middleware
       type,
-      country,
+      country: req.token.country,
+      salary_min, //this is the same as salary_min: salary_min
+      salary_max,
+      currency,
+      user_id: req.token.userId,
     });
 
     await newJobPost.save();

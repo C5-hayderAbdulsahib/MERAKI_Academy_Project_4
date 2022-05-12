@@ -6,6 +6,7 @@ const jobCandidateSchema = new mongoose.Schema({
   name: { type: String, required: true },
   subject: { type: String, required: true },
   body_description: { type: String, required: true },
+  country: { type: String, required: true },
 });
 
 // it is possible to type the field type directly if there are no other options needed

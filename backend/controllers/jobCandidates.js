@@ -17,15 +17,16 @@ const sendNewJobApplicationForm = async (req, res) => {
       name,
       subject,
       body_description,
+      country: req.token.country, //we will take it from the token object that we add it to the req inside the authentication middleware
     });
 
     //then save the new Job Application to the database
-    const newJobApplication = await newJobApplicationForm.save();
+    const newJobApplicationObj = await newJobApplicationForm.save();
 
     //after that use updateOne to bring the wanted job then update the job_candidate_ids field for it
     await jobsModel.updateOne(
       { _id: jobId },
-      { $push: { job_candidate_ids: newJobApplication._id } } //we use $push to push an element to the array
+      { $push: { job_candidate_ids: newJobApplicationObj._id } } //we use $push to push an element to the array
     );
 
     res.status(201).json({
@@ -56,11 +57,18 @@ const getAllJobApplicationsForms = async (req, res) => {
     //getting the job by using the params from the endpoint
     const jobId = req.params.id;
 
-    console.log(jobId);
-
     const allJobApplicationsForms = await jobsModel
       .findById(jobId)
       .populate("job_candidate_ids"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
+
+    //this condition will check if the wanted job has no job applicants
+    if (allJobApplicationsForms.job_candidate_ids.length === 0) {
+      //we add the return to stop the execution of the function
+      return res.status(200).json({
+        success: false,
+        message: "No One Have Send a Job Application Yet",
+      });
+    }
 
     res.status(200).json({
       success: true,

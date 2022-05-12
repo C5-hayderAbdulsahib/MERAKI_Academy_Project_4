@@ -27,7 +27,7 @@ const authentication = (req, res, next) => {
     //we actually can just send the result to the request (because the result will hold the decoded token with the actual data) instead of using jwt-decode package but i only did this to understand how the package works
     // const tokenDecoded = jwtDecode(token); //jwtDecode is a packaged that help us to get the data(payload) from the token and decode it back from a series of character to an object of data
 
-    req.token = result; //we add the token data(payload) to the request so that we can get this data from the token when receiving the request and not by the database
+    req.token = result; //we add the token data(payload after decode) to the request so that we can get this data from the token when receiving the request and not by the database
 
     // by invoking the next we will exit the function and go to the next one, and if we did not use the next then the request will continue and it will not stop
     next();
