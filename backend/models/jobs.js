@@ -6,6 +6,10 @@ const jobSchema = new mongoose.Schema({
   description: { type: String, required: true },
   company_name: { type: String, required: true },
   country: { type: String, required: true },
+
+  job_candidate_ids: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "JobCandidate" }, //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
+  ],
 });
 
 // it is possible to type the field type directly if there are no other options needed
