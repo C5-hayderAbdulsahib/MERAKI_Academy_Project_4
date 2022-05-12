@@ -7,7 +7,7 @@ const createNewJobPost = async (req, res) => {
     const { title, description, company_name, type, country } = req.body;
 
     const newJobPost = new jobsModel({
-      title,
+      title, //this is the same as title: title
       description,
       company_name,
       type,

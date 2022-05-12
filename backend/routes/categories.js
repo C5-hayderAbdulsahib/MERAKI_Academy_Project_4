@@ -6,7 +6,7 @@ const { createNewCategory } = require("../controllers/categories");
 // create router, insatiate router object
 const jobsRouter = express.Router();
 
-// endpoints for this router came from the controller
+// all endpoints for this router that came from the controller
 jobsRouter.post("/", createNewCategory);
 
 module.exports = jobsRouter;

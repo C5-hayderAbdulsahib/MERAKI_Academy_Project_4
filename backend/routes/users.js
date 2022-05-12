@@ -6,7 +6,7 @@ const { signup } = require("../controllers/users");
 // create router, insatiate router object
 const usersRouter = express.Router();
 
-// endpoints for this router came from the controller
+// all endpoints for this router that came from the controller
 usersRouter.post("/signup", signup);
 
 module.exports = usersRouter;

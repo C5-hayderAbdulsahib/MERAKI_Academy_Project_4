@@ -7,7 +7,7 @@ const createNewRole = async (req, res) => {
     const { role, permissions } = req.body;
 
     const newRole = new rolesModel({
-      role,
+      role, //this is the same as role: role
       permissions,
     });
 

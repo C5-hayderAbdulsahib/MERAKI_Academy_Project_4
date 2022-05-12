@@ -7,7 +7,7 @@ const createNewCategory = async (req, res) => {
     const { name } = req.body;
 
     const newCategory = new categoriesModel({
-      name,
+      name, //this is the same as name: name
     });
 
     await newCategory.save();

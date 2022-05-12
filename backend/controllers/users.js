@@ -15,8 +15,8 @@ const signup = async (req, res) => {
       //the hash from the bcrypt package is a built-in method needs time to execute so it is an async function and in order to make it work we need to use async await or promises (then,catch)
       //   password = await bcrypt.hash(password, +process.env.SALT); //the .env will return the salt as a string and that is wrong because the salt parameter must be an number so thats why we added (+)
 
-      const newUser = new userModel({
-        email,
+      const newUser = new usersModel({
+        email, //this is the same as email: email
         password, //we will be sending the new hashed password instead
         first_name,
         last_name,
