@@ -56,18 +56,31 @@ const getAllJobApplicationsForms = async (req, res) => {
     //getting the job by using the params from the endpoint
     const jobId = req.params.id;
 
-    const allJobApplicationsForms = await jobCandidatesModel.find({});
+    console.log(jobId);
+
+    const allJobApplicationsForms = await jobsModel
+      .findById(jobId)
+      .populate("job_candidate_ids"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     res.status(200).json({
       success: true,
       message: "All The Job Applications Forms",
-      //   userId: req.token.userId, //we add the user id for the user who is trying to get the articles
-      jobs: allJobApplicationsForms,
+      jobApplications: allJobApplicationsForms.job_candidate_ids,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error", err: err.message });
+    //if the user enter a wrong job id then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({ success: false, message: "The Job Is Not Found" });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
   }
 };
 
