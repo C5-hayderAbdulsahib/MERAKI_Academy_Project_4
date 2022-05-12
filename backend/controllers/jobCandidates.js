@@ -64,7 +64,7 @@ const getAllJobApplicationsForms = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "All The Job Applications Forms",
+      message: `All The Job Applications Forms For Job With Id ⇾ ${jobId}`,
       jobApplications: allJobApplicationsForms.job_candidate_ids,
     });
   } catch (err) {
