@@ -117,4 +117,35 @@ const getJobById = async (req, res) => {
   }
 };
 
-module.exports = { createNewJobPost, getAllJobs, getJobById };
+// this function return job with the same country name
+const getJobsByCountry = async (req, res) => {
+  try {
+    //getting the country name from the query
+    const country = req.query.country;
+
+    const jobByCountry = await jobsModel.find({ country: country }); //if we want to find something from the model using id we should use findById
+
+    //we are going to make a condition to see if there is countries with the specified country, or if someone entered the wrong path
+    if (jobByCountry.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "There Is No Jobs For This Country" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "The Job For The Specified County",
+      job: jobByCountry,
+    });
+
+    //if we want to check the error part then change the id of the query to something notfound in the article model
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      err: err.message,
+    });
+  }
+};
+
+module.exports = { createNewJobPost, getAllJobs, getJobById, getJobsByCountry };
