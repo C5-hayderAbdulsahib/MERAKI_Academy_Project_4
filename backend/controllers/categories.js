@@ -28,4 +28,27 @@ const createNewCategory = async (req, res) => {
   }
 };
 
-module.exports = { createNewCategory };
+// this function return all the categories
+const getAllCategories = async (req, res) => {
+  try {
+    const allCategories = await categoriesModel.find({});
+
+    if (allCategories.length === 0) {
+      return res
+        .status(200)
+        .json({ success: false, message: "No Categories Yet" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All The Categories",
+      jobs: allCategories,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", err: err.message });
+  }
+};
+
+module.exports = { createNewCategory, getAllCategories };

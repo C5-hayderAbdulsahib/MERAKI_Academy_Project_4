@@ -1,7 +1,10 @@
 const express = require("express");
 
 //require controllers function from the controller folder
-const { createNewCategory } = require("../controllers/categories");
+const {
+  createNewCategory,
+  getAllCategories,
+} = require("../controllers/categories");
 
 //require other controllers function from the other controllers folders
 const { createNewJobPost } = require("../controllers/jobs");
@@ -21,6 +24,8 @@ jobsRouter.post(
   authorization("ADD_CATEGORY"), //if we want we can also add extra permissions as much as we want
   createNewCategory
 );
+
+jobsRouter.get("/", authentication, getAllCategories);
 
 // all endpoints from other controller than the controller of this Schema
 jobsRouter.post(
