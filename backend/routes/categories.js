@@ -4,6 +4,7 @@ const express = require("express");
 const {
   createNewCategory,
   getAllCategories,
+  getCategoryById,
 } = require("../controllers/categories");
 
 //require other controllers function from the other controllers folders
@@ -14,10 +15,10 @@ const { authentication } = require("../middleware/authentication"); //we require
 const { authorization } = require("../middleware/authorization"); //we required the authorization custom function middleware in order to check the if the user have the permissions to do certain things
 
 // create router, insatiate router object
-const jobsRouter = express.Router();
+const categoriesRouter = express.Router();
 
 // all endpoints for this router that came from the controller
-jobsRouter.post(
+categoriesRouter.post(
   "/",
   authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
   authorization("ADD_CATEGORY"), //if we want we can also add extra permissions as much as we want
@@ -25,10 +26,12 @@ jobsRouter.post(
   createNewCategory
 );
 
-jobsRouter.get("/", authentication, getAllCategories);
+categoriesRouter.get("/", authentication, getAllCategories);
+
+categoriesRouter.get("/:id", authentication, getCategoryById);
 
 // all endpoints from other controller than the controller of this Schema
-jobsRouter.post(
+categoriesRouter.post(
   "/:id/jobs",
   authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
   authorization("POST_JOBS"), //if we want we can also add extra permissions as much as we want
@@ -36,4 +39,4 @@ jobsRouter.post(
   createNewJobPost
 );
 
-module.exports = jobsRouter;
+module.exports = categoriesRouter;

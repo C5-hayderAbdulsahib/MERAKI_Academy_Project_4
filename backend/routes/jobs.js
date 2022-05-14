@@ -5,8 +5,8 @@ const {
   getAllJobs,
   getJobById,
   getJobsByCountry,
-  getJobsByCategory,
   updateJobById,
+  deleteJobById,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -27,14 +27,22 @@ jobsRouter.get("/", authentication, getAllJobs);
 
 //we have to put it above the route /:id or express will run that controller before this one
 jobsRouter.get("/search_country", authentication, getJobsByCountry);
-jobsRouter.get("/search_category", authentication, getJobsByCategory);
 
 jobsRouter.get("/:id", authentication, getJobById);
 jobsRouter.put(
   "/:id",
-  authentication,
-  authorization("POST_JOBS"),
+  authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
+  authorization("POST_JOBS"), //if we want we can also add extra permissions as much as we want
+  authorization("DELETE_JOB_POST"), //if we want we can also add extra permissions as much as we want
   updateJobById
+);
+
+jobsRouter.delete(
+  "/:id",
+  authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
+  authorization("POST_JOBS"), //if we want we can also add extra permissions as much as we want
+  authorization("DELETE_JOB_POST"), //if we want we can also add extra permissions as much as we want
+  deleteJobById
 );
 
 // all endpoints from other controller than the controller of this Schema
