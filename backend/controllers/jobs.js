@@ -140,6 +140,7 @@ const getJobsByCountry = async (req, res) => {
 
     //if we want to check the error part then change the id of the query to something notfound in the article model
   } catch (err) {
+    //since were are searching using the country name and not id there will be to error by the found what so ever
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -191,10 +192,100 @@ const getJobsByCategory = async (req, res) => {
   }
 };
 
+// this function will update a specific job
+const updateJobById = async (req, res) => {
+  try {
+    //getting the article by using the params from the endpoint
+    const jobId = req.params.id;
+
+    const jobById = await jobsModel.findById(jobId); //if we want to find something from the model using id we should use findById
+    if (jobById) {
+      //since we are only want to update a single article then we use findByIdAndUpdate or we can also use updateOne, findOneAndUpdate but if we used update then it is still going to work fine
+
+      //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
+      const updatedJob = await jobsModel.findByIdAndUpdate(
+        jobId,
+        req.body,
+        { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
+      );
+
+      res.status(201).json({
+        success: true,
+        message: "Job updated",
+        job: updatedJob,
+      });
+      //if we want to check the else statement then we view an article using its id then we delete that article using the delete methods then we come by and search using the id of the deleted article
+    } else {
+      res.status(404).json({ success: false, message: "The Job Is Not Found" });
+    }
+  } catch (err) {
+    //if the user enter a wrong job id then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({
+        success: false,
+        message: "The Job Is Not Found",
+      });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
+// this function will delete a specific article depending on the id
+const deleteArticleById = async (req, res) => {
+  try {
+    //getting the article by using the params from the endpoint
+    const articleId = req.params.id;
+
+    const articleById = await articleModel.findById(articleId);
+
+    //if there was an article with the same id then do the following
+    if (articleById) {
+      await articleById.deleteOne();
+
+      //or we can solve it by another way
+      // await articleModel.deleteOne({ _id: articleId });
+
+      res.status(200).json({
+        success: true,
+        message: "Article deleted",
+      });
+    }
+
+    //if there was no article with the same id then give a failed message
+    else {
+      res.status(404).json({
+        success: false,
+        message: `The article with id ⇾ ${articleId} is not found`,
+      });
+    }
+  } catch (err) {
+    //to test this part then change the id of the article to something that does not exist
+
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json(err.message); //or we can customize the error message
+    } else {
+      //this part will only be executed if there is a server error
+      res
+        .status(500)
+        .json({ success: false, message: "Server Error", err: err.message });
+    }
+  }
+};
+
 module.exports = {
   createNewJobPost,
   getAllJobs,
   getJobById,
   getJobsByCountry,
   getJobsByCategory,
+  updateJobById,
 };

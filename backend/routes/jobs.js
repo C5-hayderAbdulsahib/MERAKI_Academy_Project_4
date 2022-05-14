@@ -6,6 +6,7 @@ const {
   getJobById,
   getJobsByCountry,
   getJobsByCategory,
+  updateJobById,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -29,10 +30,21 @@ jobsRouter.get("/search_country", authentication, getJobsByCountry);
 jobsRouter.get("/search_category", authentication, getJobsByCategory);
 
 jobsRouter.get("/:id", authentication, getJobById);
+jobsRouter.put(
+  "/:id",
+  authentication,
+  authorization("POST_JOBS"),
+  updateJobById
+);
 
 // all endpoints from other controller than the controller of this Schema
 jobsRouter.post("/:id/candidates", authentication, sendNewJobApplicationForm);
 
-jobsRouter.get("/:id/candidates", authentication, getAllJobApplicationsForms);
+jobsRouter.get(
+  "/:id/candidates",
+  authentication,
+  authorization("POST_JOBS"),
+  getAllJobApplicationsForms
+);
 
 module.exports = jobsRouter;
