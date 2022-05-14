@@ -8,7 +8,7 @@ const sendNewJobApplicationForm = async (req, res) => {
     //the variable names has to be the same as the names in postman or the destructuring will not work
     const { preferred_email, subject, body_description, name } = req.body;
 
-    //getting the job by using the params from the endpoint
+    //getting the params from the endpoint
     const jobId = req.params.id;
 
     const wantedJob = await jobsModel.findById(jobId); //the reason that we made the finding is to see if there is a job in the database and if there is not then stop the execution of the code and do not create a new job application
@@ -30,7 +30,7 @@ const sendNewJobApplicationForm = async (req, res) => {
       job_id: jobId, //we take the category id from the params
     });
 
-    //then save the new Job Application to the database
+    //then save the new Object to the database
     const newJobApplicationObj = await newJobApplicationForm.save();
 
     //after that use updateOne to bring the wanted job then update the job_candidate_ids field for it
@@ -44,10 +44,11 @@ const sendNewJobApplicationForm = async (req, res) => {
       jobApplication: newJobApplicationForm,
     });
   } catch (err) {
-    //if the user enter a wrong job id in the params of the endpoint then execute the if part, and then condition is different from the above and we need both of them
+    //if the user enter a wrong id format then execute the if part
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
       res.status(404).json({ success: false, message: "The Job Is Not Found" });
+
       //only if there is a server error then execute this part
     } else {
       res.status(500).json({
@@ -91,7 +92,7 @@ const getAllJobApplicationsForms = async (req, res) => {
       jobApplications: allJobApplicationsForms.job_candidate_ids,
     });
   } catch (err) {
-    //if the user enter a wrong job id then execute the if part
+    //if the user enter a wrong id format then execute the if part
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
       res.status(404).json({ success: false, message: "The Job Is Not Found" });
@@ -107,4 +108,71 @@ const getAllJobApplicationsForms = async (req, res) => {
   }
 };
 
-module.exports = { getAllJobApplicationsForms, sendNewJobApplicationForm };
+// this function will delete a specific job application form
+const deleteJobApplicationFormById = async (req, res) => {
+  try {
+    //getting the params from the endpoint
+    const jobApplicationFormId = req.params.id;
+    const jobId = req.params.jobId;
+
+    //we used the findByIdAndDelete because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to delete it
+    const foundJobApplicationForm = await jobCandidatesModel.findByIdAndDelete({
+      _id: jobApplicationFormId,
+    });
+    // console.log(foundJobApplicationForm);
+
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
+    if (!foundJobApplicationForm) {
+      return res.status(404).json({
+        success: false,
+        message: "The Job Application Form Is Not Found",
+      });
+    }
+
+    //then we will bring the job that this for was belonging to then we will get the job application form id from the params nd then we will remove that id from the jobs array that hold the candidates array
+    const foundJob = await jobsModel.findByIdAndUpdate(
+      jobId,
+      { $pull: { job_candidate_ids: jobApplicationFormId } } //we use $pull to remove an element from the array,
+    );
+
+    console.log(foundJob);
+
+    res.status(200).json({
+      success: true,
+      message: "Job Application Form deleted",
+    });
+  } catch (err) {
+    //if the user enter a wrong id format then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      //this condition if the id format for the job model was wrong
+      if (err.message.includes('at path "_id" for model "Job"')) {
+        console.log("this is for the job erro");
+        res.status(404).json({
+          success: false,
+          message: "The Job Is Not Found",
+        });
+      }
+
+      //this condition if the id format for the JobCandidate (job application form) model was wrong
+      if (err.message.includes('at path "_id" for model "JobCandidate"')) {
+        console.log("this is for the candidate erro");
+        res.status(404).json({
+          success: false,
+          message: "The Job Application Form Is Not Found",
+        });
+      }
+    } else {
+      //this part will only be executed if there is a server error
+      res
+        .status(500)
+        .json({ success: false, message: "Server Error", err: err.message });
+    }
+  }
+};
+
+module.exports = {
+  getAllJobApplicationsForms,
+  sendNewJobApplicationForm,
+  deleteJobApplicationFormById,
+};

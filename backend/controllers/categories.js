@@ -13,6 +13,7 @@ const createNewCategory = async (req, res) => {
       name, //this is the same as name: name
     });
 
+    //then save the new Object to the database
     await newCategory.save();
 
     res.status(201).json({
@@ -21,7 +22,7 @@ const createNewCategory = async (req, res) => {
       category: newCategory,
     });
   } catch (err) {
-    //we can reach this error for example if we put an id that does not exist in the user model
+    //only if there is a server error then execute this part
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });
@@ -33,7 +34,7 @@ const getAllCategories = async (req, res) => {
   try {
     const allCategories = await categoriesModel.find({});
 
-    //we add this condition to see if there was created categories or not
+    //we add this condition to see if there was any created objects or the Schema is empty
     if (allCategories.length === 0) {
       return res
         .status(200)
@@ -46,6 +47,7 @@ const getAllCategories = async (req, res) => {
       categories: allCategories,
     });
   } catch (err) {
+    //only if there is a server error then execute this part
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });
@@ -70,13 +72,13 @@ const getCategoryById = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "The Job For The Specified Category",
-      job: categoryById,
+      message: "The Category For The Specified Id",
+      category: categoryById,
     });
 
     //if we want to check the error part then change the id of the query to something notfound in the model
   } catch (err) {
-    //if the user enter a wrong job id then execute the if part
+    //if the user enter a wrong id format then execute the if part
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
       res.status(404).json({

@@ -37,6 +37,7 @@ const createNewJobPost = async (req, res) => {
       category_id: categoryId, //we take the category id from the params
     });
 
+    //then save the new Object to the database
     await newJobPost.save();
 
     res.status(201).json({

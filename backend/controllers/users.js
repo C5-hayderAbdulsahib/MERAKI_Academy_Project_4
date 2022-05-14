@@ -41,6 +41,7 @@ const signup = async (req, res) => {
       role_id,
     });
 
+    //then save the new Object to the database
     await newUser.save();
 
     res.status(201).json({
@@ -105,7 +106,7 @@ const login = async (req, res) => {
         }
       });
     } else {
-      //the else part will be executed if the entered email that does exist in the database
+      //the else part will be executed if the entered email does not exist in the database
       res
         .status(404)
         .json({ success: false, message: "The email doesn't exist" });

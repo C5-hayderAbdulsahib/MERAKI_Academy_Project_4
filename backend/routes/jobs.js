@@ -13,6 +13,7 @@ const {
 const {
   sendNewJobApplicationForm,
   getAllJobApplicationsForms,
+  deleteJobApplicationFormById,
 } = require("../controllers/jobCandidates");
 
 //requiring authentication middlewares
@@ -53,6 +54,14 @@ jobsRouter.get(
   authentication,
   authorization("POST_JOBS"),
   getAllJobApplicationsForms
+);
+
+jobsRouter.delete(
+  "/:jobId/candidates/:id",
+  authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
+  authorization("POST_JOBS"), //if we want we can also add extra permissions as much as we want
+  authorization("DELETE_JOB_POST"), //if we want we can also add extra permissions as much as we want
+  deleteJobApplicationFormById
 );
 
 module.exports = jobsRouter;

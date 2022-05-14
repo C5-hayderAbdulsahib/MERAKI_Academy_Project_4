@@ -14,6 +14,7 @@ const createNewRole = async (req, res) => {
       permissions,
     });
 
+    //then save the new Object to the database
     await newRole.save();
 
     res.status(201).json({
@@ -22,7 +23,7 @@ const createNewRole = async (req, res) => {
       role: newRole,
     });
   } catch (err) {
-    //we can reach this error for example if we put an id that does not exist in the user model
+    //only if there is a server error then execute this part
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });
