@@ -85,4 +85,36 @@ const getAllJobs = async (req, res) => {
   }
 };
 
-module.exports = { createNewJobPost, getAllJobs };
+// this function return job with the same id
+const getJobById = async (req, res) => {
+  try {
+    //getting the id from the parameter
+    const id = req.params.id;
+
+    const jobById = await jobsModel.findById(id); //if we want to find something from the model using id we should use findById
+
+    res.status(200).json({
+      success: true,
+      message: "The Job For The Specified Id",
+      job: jobById,
+    });
+
+    //if we want to check the error part then change the id of the query to something notfound in the article model
+  } catch (err) {
+    //if the user enter a wrong job id then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({ success: false, message: "The Job Is Not Found" });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
+module.exports = { createNewJobPost, getAllJobs, getJobById };
