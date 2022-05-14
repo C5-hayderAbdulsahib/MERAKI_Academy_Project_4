@@ -5,6 +5,7 @@ const {
   getAllJobs,
   getJobById,
   getJobsByCountry,
+  getJobsByCategory,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -23,8 +24,9 @@ const jobsRouter = express.Router();
 // all endpoints for this router that came from the controller
 jobsRouter.get("/", authentication, getAllJobs);
 
-//we have to put it above the /:id or express will run that controller before this one
+//we have to put it above the route /:id or express will run that controller before this one
 jobsRouter.get("/search_country", authentication, getJobsByCountry);
+jobsRouter.get("/search_category", authentication, getJobsByCategory);
 
 jobsRouter.get("/:id", authentication, getJobById);
 

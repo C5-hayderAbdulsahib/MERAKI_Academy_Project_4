@@ -128,7 +128,7 @@ const getJobsByCountry = async (req, res) => {
     //we are going to make a condition to see if there is countries with the specified country, or if someone entered the wrong path
     if (jobByCountry.length === 0) {
       return res
-        .status(404)
+        .status(200)
         .json({ success: false, message: "There Is No Jobs For This Country" });
     }
 
@@ -148,4 +148,53 @@ const getJobsByCountry = async (req, res) => {
   }
 };
 
-module.exports = { createNewJobPost, getAllJobs, getJobById, getJobsByCountry };
+// this function return job with the same country name
+const getJobsByCategory = async (req, res) => {
+  try {
+    //getting the country name from the query
+    const category = req.query.category;
+
+    const jobByCategory = await jobsModel.findOne({ category_id: category }); //if we want to find something from the model using id we should use findById
+
+    //we are going to make a condition to see if there is countries with the specified country, or if someone entered the wrong path
+    if (!jobByCategory) {
+      return res.status(200).json({
+        success: false,
+        message: "There Is No Jobs For This Category",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "The Job For The Specified Category",
+      job: jobByCategory,
+    });
+
+    //if we want to check the error part then change the id of the query to something notfound in the article model
+  } catch (err) {
+    //if the user enter a wrong job id then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({
+        success: false,
+        message: "The Category Is Not Found",
+      });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
+module.exports = {
+  createNewJobPost,
+  getAllJobs,
+  getJobById,
+  getJobsByCountry,
+  getJobsByCategory,
+};
