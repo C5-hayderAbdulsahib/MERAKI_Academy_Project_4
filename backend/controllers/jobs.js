@@ -164,7 +164,7 @@ const updateJobById = async (req, res) => {
     //since we are only want to update a single object then we use findByIdAndUpdate or we can also use updateOne, findOneAndUpdate but if we used update then it is still going to work fine
 
     //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
-    //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to delete it
+    //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
     const updatedJob = await jobsModel.findByIdAndUpdate(
       jobId,
       req.body,

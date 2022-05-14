@@ -131,7 +131,7 @@ const deleteJobApplicationFormById = async (req, res) => {
     }
 
     //then we will bring the job that this for was belonging to then we will get the job application form id from the params nd then we will remove that id from the jobs array that hold the candidates array
-    const foundJob = await jobsModel.findByIdAndUpdate(
+    await jobsModel.findByIdAndUpdate(
       jobId,
       { $pull: { job_candidate_ids: jobApplicationFormId } } //we use $pull to remove an element from the array,
     );
@@ -146,7 +146,6 @@ const deleteJobApplicationFormById = async (req, res) => {
     if (err.message.includes("Cast to ObjectId failed for value")) {
       //this condition if the id format for the job model was wrong
       if (err.message.includes('at path "_id" for model "Job"')) {
-        console.log("this is for the job erro");
         res.status(404).json({
           success: false,
           message: "The Job Is Not Found",
@@ -155,7 +154,6 @@ const deleteJobApplicationFormById = async (req, res) => {
 
       //this condition if the id format for the JobCandidate (job application form) model was wrong
       if (err.message.includes('at path "_id" for model "JobCandidate"')) {
-        console.log("this is for the candidate erro");
         res.status(404).json({
           success: false,
           message: "The Job Application Form Is Not Found",
