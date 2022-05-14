@@ -7,18 +7,18 @@ const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   company_name: String, // it is possible to type the field type directly if there are no other options needed
-  phone_number: Number, // it is possible to type the field type directly if there are no other options needed
+  phone_number: String, // it is possible to type the field type directly if there are no other options needed
 
-  role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" }, //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
+  role_id: { type: mongoose.Schema.Types.ObjectId, ref: "Role" }, //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
 });
-
-// it is possible to type the field type directly if there are no other options needed
-// example--> phone_number: Number,
 
 //this is how to add a field to an already exist schema, note: we can just add the new field in the same way above as if we are creating a new schema
 userSchema.add({
   country: { type: String, required: true },
 });
+
+// it is possible to type the field type directly if there are no other options needed
+// example--> phone_number: Number,
 
 //now we are going to use a Mongoose middleware(also known as pre hooks) in order to change the email to lowerCase before saving it to the database
 // pre executers before the save

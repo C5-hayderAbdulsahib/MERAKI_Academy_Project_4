@@ -10,47 +10,51 @@ const bcrypt = require("bcrypt");
 // this function will create a new user
 const signup = async (req, res) => {
   try {
-    const email = await usersModel.findOne({ email: req.body.email });
+    //the variable names has to be the same as the names in postman or the destructuring will not work
+    let {
+      email,
+      password,
+      first_name,
+      last_name,
+      company_name,
+      country,
+      phone_number,
+      role_id,
+    } = req.body; //we used let instead of const because we need to resign the value of password
 
-    if (!email) {
-      //the variable names has to be the same as the names in postman or the destructuring will not work
-      let {
-        email,
-        password,
-        first_name,
-        last_name,
-        company_name,
-        country,
-        role,
-      } = req.body; //we used let instead of const because we need to resign the value of password
+    emailExist = await usersModel.findOne({ email: email }); //and if it does not exist then it will go to the catch statement
 
-      //we have to save the salt in the .env file because if it was found it would make the process of reversing the hash easier
-      //the hash from the bcrypt package is a built-in method needs time to execute so it is an async function and in order to make it work we need to use async await or promises (then,catch)
-      password = await bcrypt.hash(password, +process.env.SALT); //the .env will return the salt as a string and that is wrong because the salt parameter must be an number so thats why we added (+)
+    //we have to save the salt in the .env file because if it was found it would make the process of reversing the hash easier
+    //the hash from the bcrypt package is a built-in method needs time to execute so it is an async function and in order to make it work we need to use async await or promises (then,catch)
+    password = await bcrypt.hash(password, +process.env.SALT); //the .env will return the salt as a string and that is wrong because the salt parameter must be an number so thats why we added (+)
 
-      const newUser = new usersModel({
-        email, //this is the same as email: email
-        password, //we will be sending the new hashed password instead
-        first_name,
-        last_name,
-        company_name,
-        country,
-        role,
-      });
+    //creating the new new user object
+    //the key names inside the object model has to be the same names of the Fields in the DB or an error will occur
+    const newUser = new usersModel({
+      email,
+      password, //we will be sending the new hashed password instead
+      first_name,
+      last_name,
+      company_name, //this is the same as company_name: company_name
+      country,
+      phone_number,
+      role_id,
+    });
 
-      await newUser.save();
+    await newUser.save();
 
-      res.status(201).json({
-        success: true,
-        message: "Account Created Successfully",
-        user: newUser,
-      });
-    } else {
-      res
+    res.status(201).json({
+      success: true,
+      message: "Account Created Successfully",
+      user: newUser,
+    });
+  } catch (err) {
+    //the if statement will be executed if the entered email does not exist in the DB
+    if (err.message.includes("E11000 duplicate key")) {
+      return res //we used return to get out of the function and without it the code will read the response under and that will give us an error because there can't be two response under each other
         .status(409)
         .json({ success: false, message: "The email already exists" });
     }
-  } catch (err) {
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });
@@ -62,8 +66,9 @@ const login = async (req, res) => {
   try {
     const user = await usersModel
       .findOne({ email: req.body.email })
-      .populate("role"); //we are using populate by deciding the field that we want to show the data for, and we are doing this so we can send the role name and permission and put it inside the token
+      .populate("role_id"); //we are using populate by deciding the field that we want to show the data for, and we are doing this so we can send the role name and permission and put it inside the token
 
+    //we add this condition to see if the role_id exists or it doesn't or it was deleted
     if (user.role === null) {
       return res.status(404).json({
         //the reason that i add the return in order to stop the execution of the code
@@ -80,10 +85,10 @@ const login = async (req, res) => {
           //this is to invoke the generateToken function to create a token after the user is verified
           const token = generateToken({
             userId: user._id,
-            role: user.role.role,
+            role: user.role_id.role,
             country: user.country,
             company_name: user.company_name,
-            permissions: user.role.permissions,
+            permissions: user.role_id.permissions,
           });
 
           res.status(200).json({

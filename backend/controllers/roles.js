@@ -4,8 +4,11 @@ const rolesModel = require("../models/roles");
 // this function will create a new role
 const createNewRole = async (req, res) => {
   try {
+    //the variable names has to be the same as the names in postman or the destructuring will not work
     const { role, permissions } = req.body;
 
+    //creating the new Role object
+    //the key names inside the object model has to be the same names of the Fields in the DB or an error will occur
     const newRole = new rolesModel({
       role, //this is the same as role: role
       permissions,

@@ -5,13 +5,14 @@ const jobsModel = require("../models/jobs");
 //this is a function to create or send a job application form
 const sendNewJobApplicationForm = async (req, res) => {
   try {
-    //creating the job application form object
+    //the variable names has to be the same as the names in postman or the destructuring will not work
     const { preferred_email, subject, body_description, name } = req.body;
 
     //getting the job by using the params from the endpoint
     const jobId = req.params.id;
 
     //creating the new Job Application object
+    //the key names inside the object model has to be the same names of the Fields in the DB or an error will occur
     const newJobApplicationForm = new jobCandidatesModel({
       preferred_email, //this is the same as preferred_email: preferred_email
       name,

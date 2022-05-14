@@ -4,8 +4,11 @@ const categoriesModel = require("../models/categories");
 // this function will create a new category job
 const createNewCategory = async (req, res) => {
   try {
+    //the variable names has to be the same as the names in postman or the destructuring will not work
     const { name } = req.body;
 
+    //creating the new category object
+    //the key names inside the object model has to be the same names of the Fields in the DB or an error will occur
     const newCategory = new categoriesModel({
       name, //this is the same as name: name
     });
