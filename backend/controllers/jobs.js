@@ -34,7 +34,7 @@ const createNewJobPost = async (req, res) => {
       salary_max,
       currency,
       user_id: req.token.userId,
-      category_id: categoryId,
+      category_id: categoryId, //we take the category id from the params
     });
 
     await newJobPost.save();

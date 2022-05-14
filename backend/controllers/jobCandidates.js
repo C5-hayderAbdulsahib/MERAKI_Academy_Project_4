@@ -69,6 +69,13 @@ const getAllJobApplicationsForms = async (req, res) => {
       .findById(jobId)
       .populate("job_candidate_ids"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
+    //we add this condition in the case of some one try to get the data for a deleted job
+    if (!allJobApplicationsForms) {
+      return res //we have to use return to stop the execution of the function
+        .status(404)
+        .json({ success: false, message: "The Job Is Not Found" });
+    }
+
     //this condition will check if the wanted job has no job applicants
     if (allJobApplicationsForms.job_candidate_ids.length === 0) {
       //we add the return to stop the execution of the function
@@ -80,7 +87,7 @@ const getAllJobApplicationsForms = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: `All The Job Applications Forms For Job With Id ⇾ ${jobId}`,
+      message: "All The Job Applications Forms For Required Job",
       jobApplications: allJobApplicationsForms.job_candidate_ids,
     });
   } catch (err) {

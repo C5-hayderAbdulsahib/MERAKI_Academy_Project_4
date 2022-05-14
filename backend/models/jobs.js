@@ -15,7 +15,12 @@ const jobSchema = new mongoose.Schema(
 
     inFavorites: [String],
 
-    job_candidate_ids: [String],
+    job_candidate_ids: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "JobCandidate",
+      },
+    ], //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
 
     category_id: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   },
