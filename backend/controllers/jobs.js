@@ -94,6 +94,14 @@ const getJobById = async (req, res) => {
 
     const jobById = await jobsModel.findById(id); //if we want to find something from the model using id we should use findById
 
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
+    if (!jobById) {
+      return res.status(404).json({
+        success: false,
+        message: "The Job Is Not Found",
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "The Job For The Specified Id",
@@ -162,7 +170,7 @@ const updateJobById = async (req, res) => {
       { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
     );
 
-    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted job
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!updatedJob) {
       res.status(404).json({ success: false, message: "The Job Is Not Found" });
     } else {
@@ -201,7 +209,7 @@ const deleteJobById = async (req, res) => {
     //we used the findByIdAndDelete because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to delete it
     const foundJob = await jobsModel.findByIdAndDelete({ _id: jobId });
 
-    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted job
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!foundJob) {
       res.status(404).json({
         success: false,

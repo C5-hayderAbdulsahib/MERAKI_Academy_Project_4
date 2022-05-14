@@ -55,23 +55,23 @@ const getAllCategories = async (req, res) => {
 // this function return the specified category
 const getCategoryById = async (req, res) => {
   try {
-    //getting the category name from the query
-    const category = req.query.category;
+    //getting the params from the endpoint
+    const id = req.params.id;
 
-    const jobByCategory = await jobsModel.findOne({ category_id: category }); //if we want to find something from the model using id we should use findById
+    const categoryById = await categoriesModel.findById(id); //if we want to find something from the model using id we should use findById
 
-    //we add this condition to see if there was any created objects or the Schema is empty
-    if (!jobByCategory) {
-      return res.status(200).json({
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
+    if (!categoryById) {
+      return res.status(404).json({
         success: false,
-        message: "There Is No Jobs For This Category",
+        message: "The Category Is Not Found",
       });
     }
 
     res.status(200).json({
       success: true,
       message: "The Job For The Specified Category",
-      job: jobByCategory,
+      job: categoryById,
     });
 
     //if we want to check the error part then change the id of the query to something notfound in the model
