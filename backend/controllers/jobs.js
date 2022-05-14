@@ -63,4 +63,26 @@ const createNewJobPost = async (req, res) => {
   }
 };
 
-module.exports = { createNewJobPost };
+// this function return all jobs
+const getAllJobs = async (req, res) => {
+  try {
+    const allJobs = await jobsModel.find({});
+
+    //we add this condition to see if there was any created jobs or not
+    if (allJobs.length === 0) {
+      return res.status(200).json({ success: false, message: "No Jobs Yet" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All The Jobs",
+      jobs: allJobs,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", err: err.message });
+  }
+};
+
+module.exports = { createNewJobPost, getAllJobs };

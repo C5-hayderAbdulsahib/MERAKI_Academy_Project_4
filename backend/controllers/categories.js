@@ -33,6 +33,7 @@ const getAllCategories = async (req, res) => {
   try {
     const allCategories = await categoriesModel.find({});
 
+    //we add this condition to see if there was created categories or not
     if (allCategories.length === 0) {
       return res
         .status(200)
@@ -42,7 +43,7 @@ const getAllCategories = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "All The Categories",
-      jobs: allCategories,
+      categories: allCategories,
     });
   } catch (err) {
     res

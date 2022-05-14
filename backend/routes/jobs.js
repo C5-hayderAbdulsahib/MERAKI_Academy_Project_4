@@ -1,7 +1,7 @@
 const express = require("express");
 
 //require controllers function from the controller folder
-// const { createNewJobPost } = require("../controllers/jobs");
+const { getAllJobs } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
 const {
@@ -17,6 +17,7 @@ const { authorization } = require("../middleware/authorization"); //we required 
 const jobsRouter = express.Router();
 
 // all endpoints for this router that came from the controller
+jobsRouter.get("/", authentication, getAllJobs);
 
 // all endpoints from other controller than the controller of this Schema
 jobsRouter.post("/:id/candidates", authentication, sendNewJobApplicationForm);
