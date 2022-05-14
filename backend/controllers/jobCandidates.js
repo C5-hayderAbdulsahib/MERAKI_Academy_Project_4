@@ -11,6 +11,14 @@ const sendNewJobApplicationForm = async (req, res) => {
     //getting the job by using the params from the endpoint
     const jobId = req.params.id;
 
+    const wantedJob = await jobsModel.findById(jobId); //the reason that we made the finding is to see if there is a job in the database and if there is not then stop the execution of the code and do not create a new job application
+
+    if (!wantedJob) {
+      return res
+        .status(404)
+        .json({ success: false, message: "The Job Is Not Found" });
+    }
+
     //creating the new Job Application object
     //the key names inside the object model has to be the same names of the Fields in the DB or an error will occur
     const newJobApplicationForm = new jobCandidatesModel({
@@ -19,14 +27,14 @@ const sendNewJobApplicationForm = async (req, res) => {
       subject,
       body_description,
       country: req.token.country, //we will take it from the token object that we add it to the req inside the authentication middleware
+      job_id: jobId, //we take the category id from the params
     });
 
     //then save the new Job Application to the database
     const newJobApplicationObj = await newJobApplicationForm.save();
 
     //after that use updateOne to bring the wanted job then update the job_candidate_ids field for it
-    await jobsModel.updateOne(
-      { _id: jobId },
+    await wantedJob.updateOne(
       { $push: { job_candidate_ids: newJobApplicationObj._id } } //we use $push to push an element to the array
     );
 
@@ -36,11 +44,10 @@ const sendNewJobApplicationForm = async (req, res) => {
       jobApplication: newJobApplicationForm,
     });
   } catch (err) {
-    //if the user enter a wrong job id then execute the if part
+    //if the user enter a wrong job id in the params of the endpoint then execute the if part, and then condition is different from the above and we need both of them
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
       res.status(404).json({ success: false, message: "The Job Is Not Found" });
-
       //only if there is a server error then execute this part
     } else {
       res.status(500).json({
