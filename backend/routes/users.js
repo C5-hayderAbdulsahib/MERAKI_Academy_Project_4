@@ -6,6 +6,7 @@ const {
   login,
   getUserInfo,
   updateUserInfo,
+  changePassword,
 } = require("../controllers/users");
 
 //requiring authentication middlewares
@@ -20,5 +21,6 @@ usersRouter.post("/login", login);
 
 usersRouter.get("/", authentication, getUserInfo);
 usersRouter.put("/", authentication, updateUserInfo);
+usersRouter.put("/change_password", authentication, changePassword);
 
 module.exports = usersRouter;

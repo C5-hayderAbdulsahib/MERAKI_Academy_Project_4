@@ -69,16 +69,16 @@ const login = async (req, res) => {
       .findOne({ email: req.body.email })
       .populate("role_id"); //we are using populate by deciding the field that we want to show the data for, and we are doing this so we can send the role name and permission and put it inside the token
 
-    //we add this condition to see if the role_id exists or it doesn't or it was deleted
-    if (user.role === null) {
-      return res.status(404).json({
-        //the reason that i add the return in order to stop the execution of the code
-        success: false,
-        message: "Role Is Not Found",
-      });
-    }
-
     if (user !== null) {
+      //we add this condition to see if the role_id was deleted and only for that but if we signing up we forget the role field or we enter a wrong role id formate then this condition will not help us
+      if (user.role_id === null) {
+        return res.status(404).json({
+          //the reason that i add the return in order to stop the execution of the code
+          success: false,
+          message: "Role Is Not Found",
+        });
+      }
+
       //the first argument refer to the entered password while the second refer to the hashedPassword in the database
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         // result will be a boolean depending on whether the hashedPassword is made using the password provided
@@ -98,10 +98,10 @@ const login = async (req, res) => {
             token: token,
           });
         } else {
-          //to test this part change the password in the postman body to something that does not match the real password
+          //to test this part change the password in the postman body to something that does not match the real password that is saved in the database
           res.status(403).json({
             success: false,
-            message: "The password you’ve entered is incorrect",
+            message: "Invalid login Credentials",
           });
         }
       });
@@ -109,7 +109,7 @@ const login = async (req, res) => {
       //the else part will be executed if the entered email does not exist in the database
       res
         .status(404)
-        .json({ success: false, message: "The email doesn't exist" });
+        .json({ success: false, message: "Invalid login Credentials" });
     }
   } catch (err) {
     //this part will only work if there is a server error
@@ -192,7 +192,13 @@ const updateUserInfo = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Account updated",
-      user: updatedUser,
+      user: {
+        first_name: updatedUser.first_name,
+        last_name: updatedUser.last_name,
+        company_name: updatedUser.company_name,
+        country: updatedUser.country,
+        phone_number: updatedUser.phone_number,
+      },
     });
   } catch (err) {
     //if the user enter a wrong id format then execute the if part
@@ -214,4 +220,72 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getUserInfo, updateUserInfo };
+// this function will update a specific user account
+const changePassword = async (req, res) => {
+  try {
+    //getting the user id from the token
+    const userId = req.token.userId;
+
+    const wantedUser = await usersModel.findById(userId); //if we want to find something from the model using id we should use findById
+
+    //the variable names has to be the same as the names in postman or the destructuring will not work
+    let { password, new_password, confirm_password } = req.body; //we used let instead of const because we need to resign the value of password
+
+    //the first argument refer to the entered password while the second refer to the hashedPassword in the database
+    bcrypt.compare(password, wantedUser.password, async (err, result) => {
+      // result will be a boolean depending on whether the hashedPassword is made using the password provided
+      if (result) {
+        if (password === new_password) {
+          return res.status(400).json({
+            success: false,
+            message:
+              "Your New Password Must Not Be the Same As Your Old Password",
+          });
+        }
+
+        if (new_password !== confirm_password) {
+          return res.status(400).json({
+            success: false,
+            message: "The New Password Does Not Match Confirm Password",
+          });
+        }
+
+        //we have to save the salt in the .env file because if it was found it would make the process of reversing the hash easier
+        //the hash from the bcrypt package is a built-in method needs time to execute so it is an async function and in order to make it work we need to use async await or promises (then,catch)
+        password = await bcrypt.hash(new_password, +process.env.SALT); //the .env will return the salt as a string and that is wrong because the salt parameter must be an number so thats why we added (+)
+
+        await wantedUser.updateOne({ password: password });
+
+        res.status(201).json({
+          success: true,
+          message: "Password Changed",
+        });
+      } else {
+        //to test this part change the password in the postman body to something that does not match the real password that is saved in the database
+        res.status(403).json({
+          success: false,
+          message: "The Old Password You Have Entered Is Incorrect",
+        });
+      }
+    });
+  } catch (err) {
+    //if the user enter a wrong id format then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({
+        success: false,
+        message: "The Job Is Not Found",
+      });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
+module.exports = { signup, login, getUserInfo, updateUserInfo, changePassword };
