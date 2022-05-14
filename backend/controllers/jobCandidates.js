@@ -13,6 +13,7 @@ const sendNewJobApplicationForm = async (req, res) => {
 
     const wantedJob = await jobsModel.findById(jobId); //the reason that we made the finding is to see if there is a job in the database and if there is not then stop the execution of the code and do not create a new job application
 
+    //we add this condition to see if there is a job with the specified id and if there is not then stop the execution of the function
     if (!wantedJob) {
       return res
         .status(404)
@@ -134,8 +135,6 @@ const deleteJobApplicationFormById = async (req, res) => {
       jobId,
       { $pull: { job_candidate_ids: jobApplicationFormId } } //we use $pull to remove an element from the array,
     );
-
-    console.log(foundJob);
 
     res.status(200).json({
       success: true,

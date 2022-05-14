@@ -141,4 +141,30 @@ const generateToken = (objectTokenData) => {
   return jwt.sign(payload, SECRET, options); //sign is a built-in method from jwt which it's job is to create a token and it takes three parameter, this 1.first is payload which is the data that we want our token to contain, the 2.second is the secret key, and the 3.third is options which is the expire for the token, and something else the sign method add another data to the token payload which is the date when this token was created
 };
 
-module.exports = { signup, login };
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// this function will return the data of the specified user
+const getUserInfo = async (req, res) => {
+  try {
+    //getting the user id from the token
+    const userId = req.token.userId;
+
+    const userById = await usersModel.findById(userId); //if we want to find something from the model using id we should use findById
+
+    res.status(200).json({
+      success: true,
+      message: "The User Exists",
+      user: userById,
+    });
+  } catch (err) {
+    //only if there is a server error then execute this part
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      err: err.message,
+    });
+  }
+};
+
+module.exports = { signup, login, getUserInfo };
