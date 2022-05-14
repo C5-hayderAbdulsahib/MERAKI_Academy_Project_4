@@ -125,6 +125,38 @@ const getJobById = async (req, res) => {
   }
 };
 
+// this function return all the jobs (that the user created) for the user with the company role
+const getAllJobsForCompany = async (req, res) => {
+  try {
+    //getting the params from the endpoint
+    const userId = req.token.userId;
+    console.log(userId);
+
+    const jobsByCreator = await jobsModel.find({ user_id: userId });
+
+    //if the user company having
+    if (!jobsByCreator) {
+      return res.status(404).json({
+        success: false,
+        message: "You Need To Create a Job Post First",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All The Jobs For This Company",
+      jobs: jobsByCreator,
+    });
+  } catch (err) {
+    //only if there is a server error then execute this part
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      err: err.message,
+    });
+  }
+};
+
 // this function return job with the same country name
 const getJobsByCountry = async (req, res) => {
   try {
@@ -246,4 +278,5 @@ module.exports = {
   getJobsByCountry,
   updateJobById,
   deleteJobById,
+  getAllJobsForCompany,
 };

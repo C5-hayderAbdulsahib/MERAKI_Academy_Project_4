@@ -88,7 +88,8 @@ const login = async (req, res) => {
             userId: user._id,
             role: user.role_id.role,
             country: user.country,
-            company_name: user.company_name,
+            name: user.first_name + " " + user.last_name,
+            companyName: user.company_name,
             permissions: user.role_id.permissions,
           });
 
@@ -126,12 +127,14 @@ const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
 // generating a new token
 const generateToken = (objectTokenData) => {
   // the payload that will be sent to the client-side
-  const { userId, role, country, company_name, permissions } = objectTokenData;
+  const { userId, role, country, name, companyName, permissions } =
+    objectTokenData;
   const payload = {
     userId, //this is the same as userId: userId
     role,
     country,
-    company_name, //this is the same as company_name: company_name
+    companyName, //this is the same as company_name: company_name
+    name,
     permissions,
   };
 

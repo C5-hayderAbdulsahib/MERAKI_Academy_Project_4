@@ -4,6 +4,7 @@ const express = require("express");
 const {
   getAllJobs,
   getJobById,
+  getAllJobsForCompany,
   getJobsByCountry,
   updateJobById,
   deleteJobById,
@@ -29,7 +30,18 @@ jobsRouter.get("/", authentication, getAllJobs);
 //we have to put it above the route /:id or express will run that controller before this one
 jobsRouter.get("/search_country", authentication, getJobsByCountry);
 
+//we have to put it above the route /:id or express will run that controller before this one
+jobsRouter.get(
+  "/creator",
+  authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
+  authorization("POST_JOBS"), //if we want we can also add extra permissions as much as we want
+  authorization("DELETE_JOB_POST"), //if we want we can also add extra permissions as much as we want
+
+  getAllJobsForCompany
+);
+
 jobsRouter.get("/:id", authentication, getJobById);
+
 jobsRouter.put(
   "/:id",
   authentication, //we have to be very careful with the orders of the middleware or things will go wrong (the authentication have to be before the authorization)
