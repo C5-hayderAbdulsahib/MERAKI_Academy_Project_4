@@ -271,7 +271,7 @@ const deleteJobById = async (req, res) => {
   }
 };
 
-// this function return job with the same id
+// this function will add the specified job post to the user Favorites
 const addJobPostToFavorites = async (req, res) => {
   try {
     //getting the params from the endpoint
@@ -319,8 +319,8 @@ const addJobPostToFavorites = async (req, res) => {
   }
 };
 
-// this function return job with the same id
-const addJobPostToFavorites = async (req, res) => {
+// this function will remove the specified job post from the user Favorites
+const removeJobPostFromFavorites = async (req, res) => {
   try {
     //getting the params from the endpoint
     const jobId = req.params.id;
@@ -331,14 +331,14 @@ const addJobPostToFavorites = async (req, res) => {
 
     //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
     //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
-    const addToFavorites = await jobsModel.findByIdAndUpdate(
+    const jobAfterRemovingFavorites = await jobsModel.findByIdAndUpdate(
       jobId,
-      { $push: { inFavorites: userId } }, //we use $push to push an element to the array
+      { $pull: { inFavorites: userId } }, //we use $pull to remove an element from the array,
       { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
     );
 
     //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
-    if (!addToFavorites) {
+    if (!jobAfterRemovingFavorites) {
       return res.status(404).json({
         success: false,
         message: "The Job Is Not Found",
@@ -347,8 +347,8 @@ const addJobPostToFavorites = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Job Was Added To Favorites",
-      job: addToFavorites,
+      message: "Job Was Removed From Favorites",
+      job: jobAfterRemovingFavorites,
     });
   } catch (err) {
     //if the user enter a wrong id format then execute the if part
@@ -376,4 +376,5 @@ module.exports = {
   deleteJobById,
   getAllJobsForCompany,
   addJobPostToFavorites,
+  removeJobPostFromFavorites,
 };

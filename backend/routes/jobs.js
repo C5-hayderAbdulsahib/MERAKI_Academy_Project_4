@@ -9,6 +9,7 @@ const {
   updateJobById,
   deleteJobById,
   addJobPostToFavorites,
+  removeJobPostFromFavorites,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -60,6 +61,12 @@ jobsRouter.delete(
 );
 
 jobsRouter.put("/:id/add_to_favorites", authentication, addJobPostToFavorites);
+
+jobsRouter.put(
+  "/:id/remove-from-favorites",
+  authentication,
+  removeJobPostFromFavorites
+);
 
 // all endpoints from other controller than the controller of this Schema
 jobsRouter.post("/:id/candidates", authentication, sendNewJobApplicationForm);
