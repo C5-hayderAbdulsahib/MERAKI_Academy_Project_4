@@ -10,6 +10,7 @@ const {
   deleteJobById,
   addJobPostToFavorites,
   removeJobPostFromFavorites,
+  getFavoritesJobs,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -41,6 +42,9 @@ jobsRouter.get(
 
   getAllJobsForCompany
 );
+
+//we have to put it above the route /:id or express will run that controller before this one
+jobsRouter.get("/favorites", authentication, getFavoritesJobs);
 
 jobsRouter.get("/:id", authentication, getJobById);
 

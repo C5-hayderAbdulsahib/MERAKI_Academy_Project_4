@@ -367,6 +367,49 @@ const removeJobPostFromFavorites = async (req, res) => {
   }
 };
 
+// this function return all favorites jobs for the current user
+const getFavoritesJobs = async (req, res) => {
+  try {
+    const userId = req.token.userId;
+
+    const favoritesJob = [];
+
+    const allJobs = await jobsModel.find({});
+
+    //we add this condition to see if there was any created objects or the Schema is empty
+    if (allJobs.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "No Jobs Posts Have Been Created Yet",
+      });
+    }
+
+    allJobs.forEach((element) => {
+      if (element.inFavorites.includes(userId)) {
+        favoritesJob.push(element);
+      }
+    });
+
+    if (favoritesJob.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "You Need To Save A Job First",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All The Favorite Jobs For This User",
+      jobs: favoritesJob,
+    });
+  } catch (err) {
+    //only if there is a server error then execute the catch statement
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", err: err.message });
+  }
+};
+
 module.exports = {
   createNewJobPost,
   getAllJobs,
@@ -377,4 +420,5 @@ module.exports = {
   getAllJobsForCompany,
   addJobPostToFavorites,
   removeJobPostFromFavorites,
+  getFavoritesJobs,
 };
