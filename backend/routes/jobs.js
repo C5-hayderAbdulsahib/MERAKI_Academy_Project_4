@@ -8,6 +8,7 @@ const {
   getJobsByCountry,
   updateJobById,
   deleteJobById,
+  addJobPostToFavorites,
 } = require("../controllers/jobs");
 
 //require other controllers function from the other controllers folders
@@ -57,6 +58,8 @@ jobsRouter.delete(
   authorization("DELETE_JOB_POST"), //if we want we can also add extra permissions as much as we want
   deleteJobById
 );
+
+jobsRouter.put("/:id/add_to_favorites", authentication, addJobPostToFavorites);
 
 // all endpoints from other controller than the controller of this Schema
 jobsRouter.post("/:id/candidates", authentication, sendNewJobApplicationForm);

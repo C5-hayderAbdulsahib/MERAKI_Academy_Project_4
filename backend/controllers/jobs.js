@@ -271,6 +271,102 @@ const deleteJobById = async (req, res) => {
   }
 };
 
+// this function return job with the same id
+const addJobPostToFavorites = async (req, res) => {
+  try {
+    //getting the params from the endpoint
+    const jobId = req.params.id;
+
+    const userId = req.token.userId; //we will get the user id from the token
+
+    //since we are only want to update a single object then we use findByIdAndUpdate or we can also use updateOne, findOneAndUpdate but if we used update then it is still going to work fine
+
+    //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
+    //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
+    const addToFavorites = await jobsModel.findByIdAndUpdate(
+      jobId,
+      { $push: { inFavorites: userId } }, //we use $push to push an element to the array
+      { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
+    );
+
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
+    if (!addToFavorites) {
+      return res.status(404).json({
+        success: false,
+        message: "The Job Is Not Found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Job Was Added To Favorites",
+      job: addToFavorites,
+    });
+  } catch (err) {
+    //if the user enter a wrong id format then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({ success: false, message: "The Job Is Not Found" });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
+// this function return job with the same id
+const addJobPostToFavorites = async (req, res) => {
+  try {
+    //getting the params from the endpoint
+    const jobId = req.params.id;
+
+    const userId = req.token.userId; //we will get the user id from the token
+
+    //since we are only want to update a single object then we use findByIdAndUpdate or we can also use updateOne, findOneAndUpdate but if we used update then it is still going to work fine
+
+    //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
+    //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
+    const addToFavorites = await jobsModel.findByIdAndUpdate(
+      jobId,
+      { $push: { inFavorites: userId } }, //we use $push to push an element to the array
+      { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
+    );
+
+    //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
+    if (!addToFavorites) {
+      return res.status(404).json({
+        success: false,
+        message: "The Job Is Not Found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Job Was Added To Favorites",
+      job: addToFavorites,
+    });
+  } catch (err) {
+    //if the user enter a wrong id format then execute the if part
+    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
+    if (err.message.includes("Cast to ObjectId failed for value")) {
+      res.status(404).json({ success: false, message: "The Job Is Not Found" });
+
+      //only if there is a server error then execute this part
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Server Error",
+        err: err.message,
+      });
+    }
+  }
+};
+
 module.exports = {
   createNewJobPost,
   getAllJobs,
@@ -279,4 +375,5 @@ module.exports = {
   updateJobById,
   deleteJobById,
   getAllJobsForCompany,
+  addJobPostToFavorites,
 };
