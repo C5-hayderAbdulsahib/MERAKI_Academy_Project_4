@@ -24,7 +24,7 @@ function App() {
 
         <Route path="/signup" element={<SignupPage />} />
 
-        <Route path="/login" element={<LoginPage />} />
+        {/* <Route path="/login" element={<LoginPage />} /> */}
 
         {/* this is the not found page component in case the user entered a path that is not defined in the routes above it will send him to this route, and that's why we put the "*" so we tell the code that if the entered path is nothing like the above path's then it means that it is something else and "*" means anything so it will choose this route and render the not found component */}
         <Route path="*" element={<h1>Not Found Page</h1>} />
