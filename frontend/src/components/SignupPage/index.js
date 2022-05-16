@@ -71,6 +71,7 @@ const SignupPage = () => {
       });
   };
 
+  // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
   useEffect(() => {
     const getCountriesFun = async () => {
       const countriesName = await axios.get(
@@ -83,6 +84,18 @@ const SignupPage = () => {
     };
     getCountriesFun();
   }, []);
+
+  const testing = [];
+
+  if (countries) {
+    console.log("i am inside useeefct");
+    countries.map((element) => {
+      testing.push({
+        value: element.name.common,
+        label: element.name.common,
+      });
+    });
+  }
 
   const chooseRole = (eValue) => {
     setAccountType(eValue); //this is to change the value of the state to the selected role
@@ -98,16 +111,6 @@ const SignupPage = () => {
       setRequiredMessage("");
     }
   };
-
-  console.log(countries);
-
-  const testing = [];
-
-  if (countries) {
-    countries.map((element) => {
-      testing.push({ value: element.name.common, label: element.name.common });
-    });
-  }
 
   const options = [
     { value: "chocolate", view: "Chocolate" },
