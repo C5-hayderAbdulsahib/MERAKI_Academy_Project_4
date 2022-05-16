@@ -1,5 +1,48 @@
+.login .login__success {
+  background-color: green;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+}
+
 .login .login__err {
   background-color: red;
   width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
   padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+}
+
+/* .login .css-1s2u09g-control {
+  border-color: yellow !important;
+  height: 20px;
+  background-color: white;
+  color: green;
+} */
+
+/* .css-1pahdxg-control {
+  border-color: #2684ff !important;
+  height: 100px;
+  box-shadow: 0 0 0 1px #2684ff !important;
+} */
+
+/* .css-tlfecz-indicatorContainer {
+  color: green !important;
+}
+.css-1gtu0rj-indicatorContainer {
+  color: green !important;
+} */
+
+/* .css-1okebmr-indicatorSeparator {
+  background-color: blue !important;
+} */
+
+/* .css-4ljt47-MenuList {
+  background-color: red !important;
+} */
+
+/* .css-6j8wv5-Input {
+  color: red !important;
+} */
+
+.login .react-select {
+  width: 600px;
+  margin-bottom: 25px;
 }

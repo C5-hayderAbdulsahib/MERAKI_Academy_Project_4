@@ -5,6 +5,8 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 //importing components
+import Navbar from "./components/Navbar"; //since the file inside the folder component has the name of index.js then there is no need to specify it in the import path like this "./components/Register/index" because if you specify a folder then it look inside it files and if it saw a file with the name index then it will import that one, but if we want to import a file with another name then we need so specify it in the import path or it will not be imported
+
 import HomePage from "./components/HomePage"; //since the file inside the folder component has the name of index.js then there is no need to specify it in the import path like this "./components/Register/index" because if you specify a folder then it look inside it files and if it saw a file with the name index then it will import that one, but if we want to import a file with another name then we need so specify it in the import path or it will not be imported
 
 import LoginPage from "./components/LoginPage"; //since the file inside the folder component has the name of index.js then there is no need to specify it in the import path like this "./components/Register/index" because if you specify a folder then it look inside it files and if it saw a file with the name index then it will import that one, but if we want to import a file with another name then we need so specify it in the import path or it will not be imported
@@ -14,6 +16,9 @@ import SignupPage from "./components/SignupPage"; //since the file inside the fo
 function App() {
   return (
     <div className="App">
+      {/* since the Navbar component is outside the Routes tag then it will be executed whatever the path was   */}
+      <Navbar />
+
       {/* Routes are used to wrap the Route components, it is not possible to define a Route without it being wrapped by Routes */}
       <Routes>
         {/* Route: will render whatever JSX in the element prop if the path matches.
