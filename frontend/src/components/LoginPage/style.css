@@ -1,0 +1,5 @@
+.login .login-err {
+  background-color: red;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+}

@@ -116,7 +116,7 @@ const SignupPage = () => {
   ];
 
   return (
-    <div className="login">
+    <div className="signup">
       <h3>Signup Form:</h3>
       <br />
 
@@ -224,7 +224,9 @@ const SignupPage = () => {
       {/* this part is for showing an error message depending on the message from the backend */}
       {message ? (
         <p
-          className={errorStyle !== "success" ? "login__err" : "login__success"}
+          className={
+            errorStyle !== "success" ? "signup__err" : "signup__success"
+          }
         >
           {message}
         </p>
@@ -234,7 +236,9 @@ const SignupPage = () => {
 
       {/* this part is for showing an error message for the validation */}
       {requiredMessage ? (
-        <p className={requiredMessage ? "login__err" : ""}>{requiredMessage}</p>
+        <p className={requiredMessage ? "signup__err" : ""}>
+          {requiredMessage}
+        </p>
       ) : (
         ""
       )}

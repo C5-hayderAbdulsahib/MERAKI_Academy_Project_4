@@ -157,7 +157,13 @@ const getUserInfo = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "The User Exists",
-      user: userById,
+      user: {
+        first_name: userById.first_name,
+        last_name: userById.last_name,
+        company_name: userById.company_name,
+        country: userById.country,
+        phone_number: userById.phone_number,
+      },
     });
   } catch (err) {
     //only if there is a server error then execute this part
@@ -204,22 +210,12 @@ const updateUserInfo = async (req, res) => {
       },
     });
   } catch (err) {
-    //if the user enter a wrong id format then execute the if part
-    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
-    if (err.message.includes("Cast to ObjectId failed for value")) {
-      res.status(404).json({
-        success: false,
-        message: "The Job Is Not Found",
-      });
-
-      //only if there is a server error then execute this part
-    } else {
-      res.status(500).json({
-        success: false,
-        message: "Server Error",
-        err: err.message,
-      });
-    }
+    //only if there is a server error then execute this part
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      err: err.message,
+    });
   }
 };
 
@@ -272,22 +268,12 @@ const changePassword = async (req, res) => {
       }
     });
   } catch (err) {
-    //if the user enter a wrong id format then execute the if part
-    //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
-    if (err.message.includes("Cast to ObjectId failed for value")) {
-      res.status(404).json({
-        success: false,
-        message: "The Job Is Not Found",
-      });
-
-      //only if there is a server error then execute this part
-    } else {
-      res.status(500).json({
-        success: false,
-        message: "Server Error",
-        err: err.message,
-      });
-    }
+    //only if there is a server error then execute this part
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      err: err.message,
+    });
   }
 };
 
