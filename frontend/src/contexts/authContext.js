@@ -50,7 +50,7 @@ const AuthProvider = (props) => {
 
   // =================================================================
 
-  // console.log(token);
+  console.log("hello we are in the auth context", token);
   if (token && token !== "there is no token") {
     // console.log(new Date().getTime());
     console.log("the token", token);
@@ -62,6 +62,19 @@ const AuthProvider = (props) => {
     }
   }
 
+  const checkToken = () => {
+    if (token && token !== "there is no token") {
+      // console.log(new Date().getTime());
+      console.log("the token", token);
+      console.log("the hashed token is", tokenDecoded.expireAt);
+
+      if (tokenDecoded.expireAt < new Date().getTime()) {
+        console.log("it is bigger");
+        logout();
+      }
+    }
+  };
+
   // =================================================================
 
   const state = {
@@ -71,6 +84,7 @@ const AuthProvider = (props) => {
     decodeTokenFun,
     tokenDecoded,
     setTokenDecoded,
+    checkToken,
   };
   // =================================================================
 

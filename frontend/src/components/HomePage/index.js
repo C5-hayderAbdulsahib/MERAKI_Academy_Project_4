@@ -16,7 +16,7 @@ const HomePage = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { token } = useContext(AuthContext);
+  const { token, logout } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -44,7 +44,11 @@ const HomePage = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data.message);
+        //we add this condition to check if the user login or not
+        if (err.response.data.message === "The token is invalid or expired") {
+          logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+        }
       });
   };
 

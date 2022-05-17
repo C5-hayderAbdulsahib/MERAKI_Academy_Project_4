@@ -15,7 +15,8 @@ const Navbar = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { isLoggedIn, logout, token } = useContext(AuthContext);
+  const { logout, token } = useContext(AuthContext);
+  console.log("naaaaaaaaaaaaaaaaaaaaaaaaaaavbbbbbbbbbbbbbar");
 
   return (
     <div className="navbar">

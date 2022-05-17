@@ -16,6 +16,7 @@ import HomePage from "./components/HomePage"; //since the file inside the folder
 import { SingleJobPage } from "./components/SingleJobPage"; //since we used export directly then we have to use the {} when importing
 
 function App() {
+  console.log("this is the app page");
   return (
     <div className="App">
       {/* since the Navbar component is outside the Routes tag then it will be executed whatever the path was   */}
