@@ -67,11 +67,16 @@ const createNewJobPost = async (req, res) => {
 // this function return all jobs
 const getAllJobs = async (req, res) => {
   try {
-    const allJobs = await jobsModel.find({});
+    const allJobs = await jobsModel.find({}).populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
+
+    //other way to use populate
+    // .populate({ path: "author", select: "firstName -_id" });
 
     //we add this condition to see if there was any created objects or the Schema is empty
     if (allJobs.length === 0) {
-      return res.status(200).json({ success: false, message: "No Jobs Yet" });
+      return res
+        .status(200)
+        .json({ success: false, message: "No Jobs Have Been Created Yet" });
     }
 
     res.status(200).json({
@@ -93,7 +98,13 @@ const getJobById = async (req, res) => {
     //getting the params from the endpoint
     const id = req.params.id;
 
-    const jobById = await jobsModel.findById(id); //if we want to find something from the model using id we should use findById
+    const jobById = await jobsModel
+      .findById(id) //if we want to find something from the model using id we should use findById
+
+      .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
+
+    //other way to use populate
+    // .populate({ path: "author", select: "firstName -_id" });
 
     //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!jobById) {

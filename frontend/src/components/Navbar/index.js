@@ -24,7 +24,9 @@ const Navbar = () => {
           <Link to="/">Home </Link>
           <Link to="/newArticle">New article</Link>
           {/* //we imported the logout function from the context hook in the authContext.js file */}
-          <button onClick={logout}>Logout</button>
+          <Link to="/login">
+            <button onClick={logout}>Logout</button>
+          </Link>
         </>
       ) : (
         <>
