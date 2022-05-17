@@ -15,31 +15,7 @@ import HomePage from "./components/HomePage"; //since the file inside the folder
 
 import React, { useContext } from "react";
 
-// import the context which we created in the authContext.js using the Context hook
-import { AuthContext } from "./contexts/authContext";
-
-import { useNavigate } from "react-router-dom";
-
 function App() {
-  const navigate = useNavigate();
-
-  const { token, decodeToken, logout, setToken, test } =
-    useContext(AuthContext);
-
-  const logoutApp = () => {
-    // setToken("");
-    // setIsLoggedIn(false);
-    // localStorage.removeItem("token");
-    navigate("/login"); //we add this part if the logout was a button so when the user click on the it he will be redirect to the login page but if in the navbar it was a link then there is no need for this part because all what we need to do is giving it the path to the login page
-  };
-
-  if (test) {
-    // decodeToken(token);
-    console.log("hello");
-    // navigate("/login");
-  }
-  // console.log(token);
-
   return (
     <div className="App">
       {/* since the Navbar component is outside the Routes tag then it will be executed whatever the path was   */}

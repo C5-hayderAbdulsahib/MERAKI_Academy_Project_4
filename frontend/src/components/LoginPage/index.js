@@ -17,7 +17,13 @@ export const LoginPage = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { setIsLoggedIn, setToken, decodeToken } = useContext(AuthContext);
+  const {
+    setIsLoggedIn,
+    setToken,
+    decodeToken,
+    setTokenDecoded,
+    decodeTokenFun,
+  } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,9 +46,11 @@ export const LoginPage = () => {
 
         localStorage.setItem("token", result.data.token); //we add the token to local storage so that even if the user refresh the page the token will not be lost
 
-        const tokenDecoded = decodeToken(result.data.token);
+        const tokenDecoded = decodeTokenFun(result.data.token);
         console.log(tokenDecoded);
-        setToken(tokenDecoded); //we change the state of the token because i need to decode it and get the data that is stored inside its payload
+
+        setToken(result.data.token); //the reason that we changed the state of token because in our project we are depending on it to make an axios request and to make the condition if the user is logged in or not
+        setTokenDecoded(tokenDecoded); //we change the state of the token because i need to decode it and get the data that is stored inside its payload
         setIsLoggedIn(true); //the reason that we changed the state of isLoggedIn because in our project we are depending on it to make the condition if the user iss logged in or not
 
         navigate("/"); //we used the navigate in order to change the path to /dashboard automatically without the user need to enter it in the browser url field

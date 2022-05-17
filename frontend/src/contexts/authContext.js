@@ -15,7 +15,7 @@ const AuthProvider = (props) => {
 
   //i can make my app authentication work without the need for isLoggedIn state using only the token state to make the condition but it write in order to understand how to send multiple props using context hook
 
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState("there is no token");
   const [tokenDecoded, setTokenDecoded] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -32,7 +32,7 @@ const AuthProvider = (props) => {
 
   // =================================================================
 
-  const decodeToken = (token) => {
+  const decodeTokenFun = (token) => {
     const tokenDecoded = jwt_decode(token);
     return tokenDecoded;
   };
@@ -49,7 +49,7 @@ const AuthProvider = (props) => {
     const savedTokenInLocalStorage = localStorage.getItem("token");
     // decodeToken(savedTokenInLocalStorage);
 
-    if (!token && savedTokenInLocalStorage) {
+    if (token === "there is no token" && savedTokenInLocalStorage) {
       setToken(savedTokenInLocalStorage);
       const tokenDecoded = jwt_decode(savedTokenInLocalStorage);
 
@@ -72,9 +72,10 @@ const AuthProvider = (props) => {
   // console.log(token);
   if (token) {
     // console.log(new Date().getTime());
-    console.log("the token", token.expireAt);
+    console.log("the token", tokenDecoded.expireAt);
+    console.log("the hashed token is", token);
 
-    if (token.expireAt < new Date().getTime()) {
+    if (tokenDecoded.expireAt < new Date().getTime()) {
       console.log("it is bigger");
       logout();
       // setTest(true);
@@ -90,7 +91,9 @@ const AuthProvider = (props) => {
     setIsLoggedIn,
     setToken,
     logout,
-    decodeToken,
+    decodeTokenFun,
+    tokenDecoded,
+    setTokenDecoded,
     testFun,
     test,
   };

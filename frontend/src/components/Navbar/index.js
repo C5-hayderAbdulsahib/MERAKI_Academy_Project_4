@@ -15,11 +15,11 @@ const Navbar = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, token } = useContext(AuthContext);
 
   return (
     <div className="navbar">
-      {isLoggedIn ? (
+      {token && token !== "there is no token" ? (
         <>
           <Link to="/">Home </Link>
           <Link to="/newArticle">New article</Link>
