@@ -1,6 +1,6 @@
 //import packages
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 // import the context which we created in the authContext.js using the Context hook
@@ -16,7 +16,7 @@ export const SingleJobPage = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { token } = useContext(AuthContext);
+  const { token, logout, tokenDecoded } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ export const SingleJobPage = () => {
   // `useParams` returns an object that contains the URL parameters
   const { id } = useParams();
   console.log("the id from the params is", id);
+  console.log(tokenDecoded.userId);
 
   const getSingleJob = async () => {
     try {
@@ -41,20 +42,22 @@ export const SingleJobPage = () => {
           },
         }
       );
-      // .then((result) => {
-      //   console.log(result);
-      //   setJobs(result.data.jobs);
-      //   // setShow(true);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
 
       console.log("the single job is", job.data.job);
       setSingleJob(job.data.job);
     } catch (err) {
-      console.log(err.response.data.message);
-      errMessage(err.response.data.message);
+      console.log(err);
+      //we add this condition to check if the user login or not
+      if (err.response.data.message === "The token is invalid or expired") {
+        return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+      }
+
+      //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+      if (err.response.data) {
+        return setErrMessage(err.response.data.message);
+      }
+
+      setErrMessage("Error happened while Get Data, please try again");
     }
   };
 
@@ -64,24 +67,79 @@ export const SingleJobPage = () => {
       navigate("/login");
     }
 
+    //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will be empty string so thats why we first add the condition and make sure that the token exist then
       getSingleJob();
     }
-  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be empty string and then it will change to it's value that why we add it in the dependency array so when it get change it make the real request
-
-  // return (
-  //     {
-  //   <h1 key={element._id} todo={element.todo} id={element.id}>
-  //     {element._id}
-  //   </h1>
-  // ) //the key has to be named that way and if we tried to change it and give it a name of id an error will appear on the console, and also it has to be unique or an error will also occur so that why we usually  give it the value of the index, so if there is an array of element in jsx and they all have the same name for example <p> we have to give each one of them a key attribute or an error will appear
+  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   console.log("the token in the single job page", token);
 
+  const saveJob = async () => {
+    try {
+      const job = await axios.put(
+        `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/add_to_favorites`,
+        {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
+        //this is how to send a token using axios
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
+          },
+        }
+      );
+
+      console.log("the single job is", job.data.job);
+      setSingleJob(job.data.job);
+    } catch (err) {
+      console.log(err);
+      //we add this condition to check if the user login or not
+      if (err.response.data.message === "The token is invalid or expired") {
+        return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+      }
+
+      //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+      if (err.response.data) {
+        return setErrMessage(err.response.data.message);
+      }
+
+      setErrMessage("Error happened while Get Data, please try again");
+    }
+  };
+
+  const unSaveJob = async () => {
+    try {
+      const job = await axios.put(
+        `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/remove-from-favorites`,
+        {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
+        //this is how to send a token using axios
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
+          },
+        }
+      );
+
+      console.log("the single job is", job.data.job);
+      setSingleJob(job.data.job);
+    } catch (err) {
+      console.log(err);
+      //we add this condition to check if the user login or not
+      if (err.response.data.message === "The token is invalid or expired") {
+        return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+      }
+
+      //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+      if (err.response.data) {
+        return setErrMessage(err.response.data.message);
+      }
+
+      setErrMessage("Error happened while Get Data, please try again");
+    }
+  };
+
   return (
     <>
-      {singleJob.title ? (
+      {singleJob.title && (
         <>
           <h1>title {singleJob.title}</h1>
           <p>{singleJob.category_id.name}</p>
@@ -94,14 +152,18 @@ export const SingleJobPage = () => {
           <h3>{singleJob.company_name}</h3>
           <p>{singleJob.description}</p>
 
-          <button>Save Job</button>
-          <button>Apply For Job</button>
+          {singleJob.inFavorites.includes(tokenDecoded.userId) ? (
+            <button onClick={unSaveJob}>Unsave Job</button>
+          ) : (
+            <button onClick={saveJob}>Save Job</button>
+          )}
+
+          <Link to={`job/${id}/application_Form`}>
+            <button>Apply For Job</button>
+          </Link>
         </>
-      ) : errMessage ? (
-        "hello"
-      ) : (
-        ""
       )}
+      {errMessage ? errMessage : ""}
     </>
   );
 };

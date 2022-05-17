@@ -50,11 +50,14 @@ export const LoginPage = () => {
       })
       .catch((err) => {
         console.log(err);
-        setMessage(err.response.data.message);
-        if (err.response.data.message.includes("Invalid login Credentials")) {
-          navigate("/551");
-          //then call the logout function from provider
+
+        //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+        if (err.response.data) {
+          console.log(err);
+          return setMessage(err.response.data.message);
         }
+
+        setMessage("Error happened while Get Data, please try again");
       });
   };
 

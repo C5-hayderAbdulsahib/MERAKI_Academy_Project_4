@@ -22,6 +22,8 @@ const HomePage = () => {
 
   const [jobs, setJobs] = useState([]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [renderPage, setRenderPage] = useState(false); //we add this state for the useEffect to put it inside the array dependency in order to make it run again when this state change it value, and we give it an initial value of boolean to make it easy to change by just give it a not logical operator
 
   const getAllJobs = () => {
@@ -44,11 +46,18 @@ const HomePage = () => {
         }
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.log(err);
         //we add this condition to check if the user login or not
         if (err.response.data.message === "The token is invalid or expired") {
-          logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+          return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
         }
+
+        //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+        if (err.response.data) {
+          return setErrorMessage(err.response.data.message);
+        }
+
+        setErrorMessage("Error happened while Get Data, please try again");
       });
   };
 
@@ -58,8 +67,8 @@ const HomePage = () => {
       navigate("/login");
     }
 
+    //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
       getAllJobs();
     }
   }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
@@ -80,11 +89,9 @@ const HomePage = () => {
 
   return (
     <>
-      {typeof jobs === "string" ? (
-        jobs
-      ) : (
-        <ul className="unordered-list">{jobList}</ul>
-      )}
+      {typeof jobs === "string" ? jobs : <div>{jobList}</div>}
+
+      {errorMessage && <div>{errorMessage}</div>}
     </>
   );
 };

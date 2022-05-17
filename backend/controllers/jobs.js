@@ -294,11 +294,13 @@ const addJobPostToFavorites = async (req, res) => {
 
     //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
     //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
-    const addToFavorites = await jobsModel.findByIdAndUpdate(
-      jobId,
-      { $push: { inFavorites: userId } }, //we use $push to push an element to the array
-      { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
-    );
+    const addToFavorites = await jobsModel
+      .findByIdAndUpdate(
+        jobId,
+        { $push: { inFavorites: userId } }, //we use $push to push an element to the array
+        { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
+      )
+      .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!addToFavorites) {
@@ -342,11 +344,13 @@ const removeJobPostFromFavorites = async (req, res) => {
 
     //findByIdAndUpdate or findOneAndUpdate are special because they update the wanted data and also return the wanted data, unlike update or updateOne were they don't return the wanted data but they return a status of the updated
     //we used the findByIdAndUpdate because this way we only need only one helper mongoose function instead of having two one to check if the object exist and another to update it
-    const jobAfterRemovingFavorites = await jobsModel.findByIdAndUpdate(
-      jobId,
-      { $pull: { inFavorites: userId } }, //we use $pull to remove an element from the array,
-      { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
-    );
+    const jobAfterRemovingFavorites = await jobsModel
+      .findByIdAndUpdate(
+        jobId,
+        { $pull: { inFavorites: userId } }, //we use $pull to remove an element from the array,
+        { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
+      )
+      .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!jobAfterRemovingFavorites) {
