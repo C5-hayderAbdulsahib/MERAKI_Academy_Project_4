@@ -1,11 +1,10 @@
 //import packages
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Select from "react-select";
 
 //import styling
 import "./style.css";
-
-import Select from "react-select";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -88,7 +87,7 @@ const SignupPage = () => {
   const testing = [];
 
   if (countries) {
-    console.log("i am inside useeefct");
+    // console.log("i am inside useeefct");
     countries.map((element) => {
       testing.push({
         value: element.name.common,

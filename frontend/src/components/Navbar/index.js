@@ -1,4 +1,4 @@
-// import React from "react";
+//importing packages
 import { Link } from "react-router-dom";
 import React, { useContext } from "react";
 
@@ -17,18 +17,13 @@ const Navbar = () => {
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
   const { isLoggedIn, logout } = useContext(AuthContext);
 
-  // const logout = () => {
-  //   localStorage.removeItem("token");
-  //   setIsLoggedIn(false);
-  //   setToken(null);
-  // };
-
   return (
     <div className="navbar">
       {isLoggedIn ? (
         <>
           <Link to="/">Home </Link>
           <Link to="/newArticle">New article</Link>
+          {/* //we imported the logout function from the context hook in the authContext.js file */}
           <button onClick={logout}>Logout</button>
         </>
       ) : (

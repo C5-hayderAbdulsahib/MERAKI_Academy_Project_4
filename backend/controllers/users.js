@@ -136,6 +136,7 @@ const generateToken = (objectTokenData) => {
     companyName, //this is the same as company_name: company_name
     name,
     permissions,
+    expireAt: Date.now() + Number(TOKEN_EXP_Time),
   };
 
   const options = {
