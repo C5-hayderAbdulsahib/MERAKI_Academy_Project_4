@@ -158,7 +158,7 @@ export const SingleJobPage = () => {
             <button onClick={saveJob}>Save Job</button>
           )}
 
-          <Link to={`job/${id}/application_Form`}>
+          <Link to={`/job/${id}/application_Form`}>
             <button>Apply For Job</button>
           </Link>
         </>

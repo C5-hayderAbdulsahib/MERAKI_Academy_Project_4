@@ -15,6 +15,8 @@ import HomePage from "./components/HomePage"; //since the file inside the folder
 
 import { SingleJobPage } from "./components/SingleJobPage"; //since we used export directly then we have to use the {} when importing
 
+import SendApplicationForm from "./components/SendApplicationForm"; //since the file inside the folder component has the name of index.js then there is no need to specify it in the import path like this "./components/Register/index" because if you specify a folder then it look inside it files and if it saw a file with the name index then it will import that one, but if we want to import a file with another name then we need so specify it in the import path or it will not be imported
+
 function App() {
   console.log("this is the app page");
   return (
@@ -27,6 +29,11 @@ function App() {
         {/* Route: will render whatever JSX in the element prop if the path matches.
           path: is used to define the path that will be used to render the element, if the path is `/` then it should render `Home` when the path matches.
           Having the path set to `/` means that it is the root path, in other words it means that there is no path provided. */}
+
+        <Route
+          path="job/:id/application_Form"
+          element={<SendApplicationForm />}
+        />
 
         <Route path="/" element={<HomePage />} />
 
