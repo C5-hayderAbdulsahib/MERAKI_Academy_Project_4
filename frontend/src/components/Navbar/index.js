@@ -37,6 +37,8 @@ const Navbar = () => {
           <Link to="/user/account">
             {tokenDecoded.name ? tokenDecoded.name.split(" ")[0] : ""}
           </Link>
+
+          <Link to="job/company_jobs">Your Job Posts</Link>
         </>
       ) : (
         <>

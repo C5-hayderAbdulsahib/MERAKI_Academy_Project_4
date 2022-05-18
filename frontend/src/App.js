@@ -21,6 +21,8 @@ import { AccountPage } from "./components/AccountPage"; //since we used export d
 
 import CreateNewJobPage from "./components/CreateNewJobPage";
 
+import { CompanyJobsPage } from "./components/CompanyJobsPage"; //since we used export directly then we have to use the {} when importing
+
 function App() {
   console.log("this is the app page");
 
@@ -43,6 +45,8 @@ function App() {
         <Route path="user/account" element={<AccountPage />} />
 
         <Route path="job/new_job_post" element={<CreateNewJobPage />} />
+
+        <Route path="job/company_jobs" element={<CompanyJobsPage />} />
 
         <Route path="job/:id" element={<SingleJobPage />} />
 

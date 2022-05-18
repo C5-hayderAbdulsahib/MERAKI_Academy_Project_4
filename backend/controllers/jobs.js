@@ -151,7 +151,7 @@ const getAllJobsForCompany = async (req, res) => {
       .sort({ createdAt: "desc" }); //this how to sort in mongoose
 
     //if the user company having
-    if (!jobsByCreator) {
+    if (jobsByCreator.length === 0) {
       return res.status(404).json({
         success: false,
         message: "You Need To Create a Job Post First",

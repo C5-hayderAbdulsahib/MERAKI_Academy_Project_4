@@ -22,6 +22,8 @@ export const SingleJobPage = () => {
 
   const [singleJob, setSingleJob] = useState({});
 
+  const [jobDate, setJobDate] = useState(null);
+
   const [errMessage, setErrMessage] = useState("");
 
   const [renderPage, setRenderPage] = useState(false); //we add this state for the useEffect to put it inside the array dependency in order to make it run again when this state change it value, and we give it an initial value of boolean to make it easy to change by just give it a not logical operator
@@ -45,6 +47,13 @@ export const SingleJobPage = () => {
 
       console.log("the single job is", response.data.job);
       setSingleJob(response.data.job);
+
+      //we created this part in order to view the date as a string and not a number
+      const convertDate = new Date(response.data.job.createdAt)
+        .toString()
+        .substring(4, 10);
+
+      setJobDate(convertDate);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -78,7 +87,7 @@ export const SingleJobPage = () => {
   const saveJob = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/add_to_favorites`,
+        `http://localhost:5000/jobs/${id}/add_to_favorites`,
         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
         //this is how to send a token using axios
         {
@@ -109,7 +118,7 @@ export const SingleJobPage = () => {
   const unSaveJob = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/remove-from-favorites`,
+        `http://localhost:5000/jobs/${id}/remove-from-favorites`,
         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
         //this is how to send a token using axios
         {
@@ -137,6 +146,8 @@ export const SingleJobPage = () => {
     }
   };
 
+  console.log("the time date is", jobDate);
+
   return (
     <>
       {singleJob.title && (
@@ -145,6 +156,7 @@ export const SingleJobPage = () => {
           <p>{singleJob.category_id.name}</p>
           <h3>{singleJob.company_name}</h3>
           <h3>{singleJob.country}</h3>
+          <h3>published at {jobDate}</h3>
           <h3>{singleJob.type}</h3>
           <h3>
             {`${singleJob.salary_min}-${singleJob.salary_max} ${singleJob.currency}`}
