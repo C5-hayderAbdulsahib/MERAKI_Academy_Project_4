@@ -19,8 +19,11 @@ import SendApplicationForm from "./components/SendApplicationForm"; //since the 
 
 import { AccountPage } from "./components/AccountPage"; //since we used export directly then we have to use the {} when importing
 
+import CreateNewJobPage from "./components/CreateNewJobPage";
+
 function App() {
   console.log("this is the app page");
+
   return (
     <div className="App">
       {/* since the Navbar component is outside the Routes tag then it will be executed whatever the path was   */}
@@ -38,6 +41,8 @@ function App() {
         />
 
         <Route path="user/account" element={<AccountPage />} />
+
+        <Route path="job/new_job_post" element={<CreateNewJobPage />} />
 
         <Route path="job/:id" element={<SingleJobPage />} />
 

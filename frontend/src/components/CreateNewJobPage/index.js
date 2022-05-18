@@ -11,8 +11,7 @@ import { AuthContext } from "../../contexts/authContext";
 //import styling
 import "./style.css";
 
-//since we used export directly then when we import we have to add the {} or an error will occur
-export const AccountPage = () => {
+const CreateNewJobPage = () => {
   //   we can use the states that are send using the useContext by either calling it property from the object or by using destructuring
   //   const setIsLoggedIn = useContext(TokenContext).setIsLoggedIn;
   //   const setToken = useContext(TokenContext).setToken;
@@ -21,32 +20,35 @@ export const AccountPage = () => {
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
   const { token, logout, tokenDecoded } = useContext(AuthContext);
 
-  const [userInfo, setUserInfo] = useState("");
+  const [categories, setCategories] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [salaryMin, setSalaryMin] = useState("");
+  const [salaryMax, setSalaryMax] = useState("");
+  const [currency, setCurrency] = useState("");
 
-  const [companyName, setCompanyName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [countries, setCountries] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
+  const [allCurrencies, setAllCurrencies] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+
+  const [companyName, setCompanyName] = useState(tokenDecoded.companyName);
 
   const [successMessage, setSuccessMessage] = useState("");
 
   const [errMessage, setErrMessage] = useState("");
-
-  //   const [hide, setHide] = useState(false); //we add this state to either hide the form or show it depending on the case
 
   const [requiredMessage, setRequiredMessage] = useState("");
 
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
-  console.log(tokenDecoded.userId);
+  console.log("the company name is", tokenDecoded.companyName);
 
-  const getUserInfo = async () => {
+  const getCategoriesWithCurrencies = async () => {
     try {
-      const userInfo = await axios.get(
-        "http://localhost:5000/users",
+      //getting all the categories from the backend
+      const getCategories = await axios.get(
+        "http://localhost:5000/categories",
         //this is how to send a token using axios
         {
           headers: {
@@ -55,26 +57,44 @@ export const AccountPage = () => {
         }
       );
 
-      console.log("the User Info", userInfo.data.user);
-      setUserInfo(userInfo.data.user);
+      const categoriesSelect = [];
+      getCategories.data.categories.map((element) => {
+        categoriesSelect.push({
+          value: element._id,
+          label: element.name,
+        });
+      });
 
-      setCompanyName(userInfo.data.user.company_name);
+      console.log("this is all the categories", getCategories.data);
 
-      setFirstName(userInfo.data.user.first_name);
-      setLastName(userInfo.data.user.last_name);
-      //   setCountries(userInfo.data.user.country);
-      setPhoneNum(userInfo.data.user.phone_number);
+      // setCategories(getCategories.data.categories);
 
-      const countriesName = await axios.get(
+      setAllCategories(categoriesSelect);
+
+      //getting all the currencies from a third party api
+
+      const getCurrencies = await axios.get(
         "https://restcountries.com/v3.1/all"
       );
 
-      //   console.log(countriesName.data[0].name.common);
-      setCountries({
-        myCountry: userInfo.data.user.country,
-        allCountries: countriesName.data,
+      const currenciesSelect = [];
+      let currentValue;
+      getCurrencies.data.map((element) => {
+        currentValue = element.currencies
+          ? Object.keys(element.currencies)[0] //the reason that we added this condition is to check if the element exist or it still not and without it an error will appear
+          : "";
+
+        currenciesSelect.push({
+          value: currentValue,
+          label: currentValue,
+        });
       });
-      console.log(countriesName.data);
+      // console.log("this is our currencies", currenciesSelect);
+
+      setAllCurrencies(currenciesSelect);
+
+      //getting the company name from the token
+      setCompanyName(tokenDecoded.companyName);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -91,15 +111,17 @@ export const AccountPage = () => {
     }
   };
 
-  const updateAccount = async () => {
+  const createJobPost = async () => {
     try {
       if (
         !(
-          companyName &&
-          firstName &&
-          lastName &&
-          countries.myCountry &&
-          phoneNum
+          categories &&
+          title &&
+          description &&
+          salaryMin &&
+          salaryMax &&
+          currency &&
+          companyName
         )
       ) {
         setRequiredMessage("you have to fill all the input field");
@@ -108,16 +130,19 @@ export const AccountPage = () => {
 
       setRequiredMessage(""); //the reason for adding this line is that if the user does not have a validation error he might get a server error form the backend so and the problem is the both messages will appear at the same time and that is very confusion
 
-      const response = await axios.put(
-        `http://localhost:5000/users`,
+      const response = await axios.post(
+        `http://localhost:5000/categories/${categories}/jobs`,
         {
           // the data that is entered in the object that is sent using axios must have the same key name as the name in postman(the same field name in the DB) or an error will occur
 
-          first_name: firstName, //the key has to be the same key in the backend
-          last_name: lastName,
           company_name: companyName,
-          country: countries.myCountry,
-          phone_number: phoneNum,
+
+          title, //the key has to be the same key in the backend
+          description,
+          type, //this is the same as type: type
+          salary_min: salaryMin,
+          salary_max: salaryMax,
+          currency: currency,
         },
 
         //this is how to send a token using axios
@@ -150,18 +175,6 @@ export const AccountPage = () => {
     }
   };
 
-  const countriesSelect = [];
-
-  if (countries.allCountries) {
-    console.log("i am in the country loop", countries);
-    countries.allCountries.map((element) => {
-      countriesSelect.push({
-        value: element.name.common,
-        label: element.name.common,
-      });
-    });
-  }
-
   // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
   useEffect(() => {
     if (!token) {
@@ -170,39 +183,15 @@ export const AccountPage = () => {
 
     //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      getUserInfo();
+      getCategoriesWithCurrencies();
     }
   }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   return (
     <>
-      {countries.myCountry ? (
+      {companyName ? (
         <div>
-          <h3>Account Info:</h3>
-          <br />
-
-          <input
-            type={"text"}
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
-
-          <input
-            type={"text"}
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
+          <h3>Create Job Form:</h3>
           <br />
 
           <input
@@ -217,24 +206,20 @@ export const AccountPage = () => {
           />
           <br />
 
-          <label htmlFor="country">Choose an Country:</label>
-
           <Select
-            name="country"
-            id="country"
-            options={countriesSelect}
+            name="categories"
+            id="categories"
+            options={allCategories}
             defaultValue={{
-              value: countries.myCountry,
-              label: countries.myCountry,
+              value: "",
+              label: "Select A Category",
             }}
             onChange={(e) => {
-              setCountries({
-                myCountry: e.value,
-                allCountries: countries.allCountries,
-              });
+              setCategories(e.value);
               setSuccessMessage("");
               setRequiredMessage("");
             }}
+            onClick={() => setSuccessMessage("")}
           />
 
           <br />
@@ -242,17 +227,87 @@ export const AccountPage = () => {
 
           <input
             type={"text"}
-            placeholder="Phone Number"
-            value={phoneNum}
+            placeholder="Title"
             onChange={(e) => {
-              setPhoneNum(e.target.value);
+              setTitle(e.target.value);
               setSuccessMessage("");
               setRequiredMessage("");
             }}
           />
           <br />
 
-          <button onClick={updateAccount}>Update Account</button>
+          <input
+            type={"text"}
+            placeholder="Description Of The Job"
+            onChange={(e) => {
+              setDescription(e.target.value);
+              setSuccessMessage("");
+              setRequiredMessage("");
+            }}
+          />
+          <br />
+
+          <label htmlFor="type">Choose A Job Type:</label>
+          <select
+            name="type"
+            id="type"
+            onChange={(e) => {
+              setType(e.target.value);
+              setSuccessMessage("");
+              setRequiredMessage("");
+            }}
+          >
+            <option value="">Choose A Type</option>
+
+            <option value="On-Site">On-Site</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+          </select>
+          <br />
+
+          <input
+            type={"number"}
+            placeholder="Minimum Salary Expected"
+            onChange={(e) => {
+              setSalaryMin(e.target.value);
+              setSuccessMessage("");
+              setRequiredMessage("");
+            }}
+          />
+          <br />
+
+          <input
+            type={"number"}
+            placeholder="Maximum Salary Expected"
+            onChange={(e) => {
+              setSalaryMax(e.target.value);
+              setSuccessMessage("");
+              setRequiredMessage("");
+            }}
+          />
+          <br />
+
+          <label htmlFor="currency">Choose A Currency:</label>
+
+          <Select
+            name="currency"
+            id="currency"
+            options={allCurrencies}
+            defaultValue={{
+              value: "",
+              label: "Select A Currency",
+            }}
+            onChange={(e) => {
+              setCurrency(e.value);
+              setSuccessMessage("");
+              setRequiredMessage("");
+            }}
+          />
+
+          <br />
+          <br />
+
+          <button onClick={createJobPost}>Create A New Job Post</button>
 
           {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
           {successMessage ? <p className="login-err">{successMessage}</p> : ""}
@@ -276,3 +331,5 @@ export const AccountPage = () => {
     </>
   );
 };
+
+export default CreateNewJobPage;
