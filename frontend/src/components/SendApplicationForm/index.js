@@ -23,7 +23,11 @@ const SendApplicationForm = () => {
   const [subject, setSubject] = useState("");
   const [bodyDescription, setBodyDescription] = useState("");
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [errMessage, setErrMessage] = useState("");
+
+  const [hide, setHide] = useState(false); //we add this state to either hide the form or show it depending on the case
 
   const [requiredMessage, setRequiredMessage] = useState("");
 
@@ -44,7 +48,7 @@ const SendApplicationForm = () => {
 
       setRequiredMessage(""); //the reason for adding this line is that if the user does not have a validation error he might get a server error form the backend so and the problem is the both messages will appear at the same time and that is very confusion
 
-      const applicationForm = await axios.post(
+      const response = await axios.post(
         `http://localhost:5000/jobs/${id}/candidates`,
         {
           // the data that is entered in the object that is sent using axios must have the same key name as the name in postman(the same field name in the DB) or an error will occur
@@ -63,9 +67,16 @@ const SendApplicationForm = () => {
         }
       );
 
-      console.log(applicationForm);
+      console.log(response);
+
+      if (response.data.success) {
+        setSuccessMessage(response.data.message);
+      }
     } catch (err) {
       console.log(err);
+
+      setHide(true);
+
       //we add this condition to check if the user login or not
       if (err.response.data.message === "The token is invalid or expired") {
         return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
@@ -81,45 +92,53 @@ const SendApplicationForm = () => {
   };
 
   return (
-    <div>
-      <h3>Job Application Form:</h3>
-      <br />
+    <>
+      {!hide && (
+        <div>
+          <h3>Job Application Form:</h3>
+          <br />
 
-      <input
-        type={"email"}
-        placeholder="Email"
-        onChange={(e) => setPreferredEmail(e.target.value)}
-      />
-      <br />
+          <input
+            type={"email"}
+            placeholder="Email"
+            onChange={(e) => setPreferredEmail(e.target.value)}
+          />
+          <br />
 
-      <input
-        type={"text"}
-        placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <br />
+          <input
+            type={"text"}
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <br />
 
-      <input
-        type={"text"}
-        placeholder="Subject"
-        onChange={(e) => setSubject(e.target.value)}
-      />
-      <br />
+          <input
+            type={"text"}
+            placeholder="Subject"
+            onChange={(e) => setSubject(e.target.value)}
+          />
+          <br />
 
-      <input
-        type={"text"}
-        placeholder="Description"
-        onChange={(e) => setBodyDescription(e.target.value)}
-      />
-      <br />
+          <input
+            type={"text"}
+            placeholder="Description"
+            onChange={(e) => setBodyDescription(e.target.value)}
+          />
+          <br />
 
-      <button onClick={sendFormApplication}>Send Form</button>
+          <button onClick={sendFormApplication}>Send Form</button>
 
-      {errMessage ? <p className="login-err">{errMessage}</p> : ""}
+          {/* this part is for showing showing the user a success message for the user from the backend if his form was sent successfully */}
+          {successMessage ? <p className="login-err">{successMessage}</p> : ""}
 
-      {/* this part is for showing an error message for the validation */}
-      {requiredMessage && <p>{requiredMessage}</p>}
-    </div>
+          {/* this part is for showing an error message for the validation */}
+          {requiredMessage && <p>{requiredMessage}</p>}
+        </div>
+      )}
+
+      {/* this part is for showing an error message from the backend */}
+      {errMessage && <p>{errMessage}</p>}
+    </>
   );
 };
 

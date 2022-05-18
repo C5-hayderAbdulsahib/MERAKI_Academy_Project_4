@@ -33,7 +33,7 @@ export const SingleJobPage = () => {
 
   const getSingleJob = async () => {
     try {
-      const job = await axios.get(
+      const response = await axios.get(
         `http://localhost:5000/jobs/${id}`,
         //this is how to send a token using axios
         {
@@ -43,8 +43,8 @@ export const SingleJobPage = () => {
         }
       );
 
-      console.log("the single job is", job.data.job);
-      setSingleJob(job.data.job);
+      console.log("the single job is", response.data.job);
+      setSingleJob(response.data.job);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -77,7 +77,7 @@ export const SingleJobPage = () => {
 
   const saveJob = async () => {
     try {
-      const job = await axios.put(
+      const response = await axios.put(
         `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/add_to_favorites`,
         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
         //this is how to send a token using axios
@@ -88,8 +88,8 @@ export const SingleJobPage = () => {
         }
       );
 
-      console.log("the single job is", job.data.job);
-      setSingleJob(job.data.job);
+      console.log("the single job is", response.data.job);
+      setSingleJob(response.data.job);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -108,7 +108,7 @@ export const SingleJobPage = () => {
 
   const unSaveJob = async () => {
     try {
-      const job = await axios.put(
+      const response = await axios.put(
         `http://localhost:5000/jobs/6283a7c437ca55da22b08fd4/remove-from-favorites`,
         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
         //this is how to send a token using axios
@@ -119,8 +119,8 @@ export const SingleJobPage = () => {
         }
       );
 
-      console.log("the single job is", job.data.job);
-      setSingleJob(job.data.job);
+      console.log("the single job is", response.data.job);
+      setSingleJob(response.data.job);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not

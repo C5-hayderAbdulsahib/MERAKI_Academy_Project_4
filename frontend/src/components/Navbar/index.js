@@ -15,8 +15,14 @@ const Navbar = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { logout, token } = useContext(AuthContext);
-  console.log("naaaaaaaaaaaaaaaaaaaaaaaaaaavbbbbbbbbbbbbbar");
+  const { logout, token, tokenDecoded } = useContext(AuthContext);
+  // const a = tokenDecoded.split(" ");
+  if (tokenDecoded) {
+    console.log(
+      "the token after it gets decoded in navbar",
+      tokenDecoded.name.split(" ")[0]
+    );
+  }
 
   return (
     <div className="navbar">
@@ -27,6 +33,9 @@ const Navbar = () => {
           {/* //we imported the logout function from the context hook in the authContext.js file */}
           <Link to="/login">
             <button onClick={logout}>Logout</button>
+          </Link>
+          <Link to="/user/account">
+            {tokenDecoded.name ? tokenDecoded.name.split(" ")[0] : ""}
           </Link>
         </>
       ) : (

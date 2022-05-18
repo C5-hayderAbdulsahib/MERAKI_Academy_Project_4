@@ -41,7 +41,7 @@ const sendNewJobApplicationForm = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Job Application Form Created",
+      message: "Job Application Form Has Been Sent",
       jobApplication: newJobApplicationForm,
     });
   } catch (err) {
