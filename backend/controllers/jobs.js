@@ -67,7 +67,10 @@ const createNewJobPost = async (req, res) => {
 // this function return all jobs
 const getAllJobs = async (req, res) => {
   try {
-    const allJobs = await jobsModel.find({}).populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
+    const allJobs = await jobsModel
+      .find({})
+      .sort({ createdAt: "desc" }) //this how to sort in mongoose
+      .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     //other way to use populate
     // .populate({ path: "author", select: "firstName -_id" });
@@ -100,7 +103,7 @@ const getJobById = async (req, res) => {
 
     const jobById = await jobsModel
       .findById(id) //if we want to find something from the model using id we should use findById
-
+      .sort({ createdAt: "desc" }) //this how to sort in mongoose
       .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     //other way to use populate
@@ -143,7 +146,9 @@ const getAllJobsForCompany = async (req, res) => {
     const userId = req.token.userId;
     console.log(userId);
 
-    const jobsByCreator = await jobsModel.find({ user_id: userId });
+    const jobsByCreator = await jobsModel
+      .find({ user_id: userId })
+      .sort({ createdAt: "desc" }); //this how to sort in mongoose
 
     //if the user company having
     if (!jobsByCreator) {
@@ -174,7 +179,9 @@ const getJobsByCountry = async (req, res) => {
     //getting the country name from the query
     const country = req.query.country;
 
-    const jobByCountry = await jobsModel.find({ country: country }); //if we want to find something from the model using id we should use findById
+    const jobByCountry = await jobsModel
+      .find({ country: country }) //if we want to find something from the model using id we should use findById
+      .sort({ createdAt: "desc" }); //this how to sort in mongoose
 
     //we are going to make a condition to see if there is countries with the specified country, or if someone entered the wrong path
     if (jobByCountry.length === 0) {
@@ -389,7 +396,7 @@ const getFavoritesJobs = async (req, res) => {
 
     const favoritesJob = [];
 
-    const allJobs = await jobsModel.find({});
+    const allJobs = await jobsModel.find({}).sort({ createdAt: "desc" }); //this how to sort in mongoose
 
     //we add this condition to see if there was any created objects or the Schema is empty
     if (allJobs.length === 0) {

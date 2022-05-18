@@ -7,7 +7,6 @@ import "./style.css";
 //or we can use destructuring directly in the parameters like this {item, id} and use it directly without the need to use the word props
 const SingleJob = (props) => {
   const { job, jobDate } = props; //we used destructuring to make it easier to use them
-  console.log("the single job data is", jobDate);
 
   return (
     <>
@@ -15,7 +14,6 @@ const SingleJob = (props) => {
       <p>{job.category_id.name}</p>
       <h3>{job.company_name}</h3>
       <h3>{job.country}</h3>
-      <h3>{job.type}</h3>
       <h3>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h3>
       <h3>{job.company_name}</h3>
       <h3>published At {jobDate}</h3>
