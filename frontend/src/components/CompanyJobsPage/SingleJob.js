@@ -57,8 +57,8 @@ const SingleJob = (props) => {
       <p>{job.category_id.name}</p>
       <h3>{job.company_name}</h3>
       <h3>{job.country}</h3>
+      <h3>{job.type}</h3>
       <h3>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h3>
-      <h3>{job.company_name}</h3>
       <h3>published At {jobDate}</h3>
 
       <Link to={`/job/company_jobs/${job._id}/applicants`}>

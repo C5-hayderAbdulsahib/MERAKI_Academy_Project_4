@@ -24,7 +24,7 @@ const SingleJob = (props) => {
     try {
       await axios.put(
         `http://localhost:5000/jobs/${FavJob._id}/remove-from-favorites`,
-        {},
+        {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear so we just add an empty object in this case
         {
           headers: {
             Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine

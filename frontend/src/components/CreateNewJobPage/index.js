@@ -237,8 +237,10 @@ const CreateNewJobPage = () => {
           />
           <br />
 
-          <input
-            type={"text"}
+          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
+          <textarea
+            rows="4"
+            cols="50"
             placeholder="Description Of The Job"
             onChange={(e) => {
               setDescription(e.target.value);

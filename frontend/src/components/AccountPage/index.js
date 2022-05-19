@@ -41,7 +41,7 @@ export const AccountPage = () => {
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
-  console.log(tokenDecoded.userId);
+  console.log("the role of the user", tokenDecoded.role);
 
   const getUserInfo = async () => {
     try {
@@ -205,17 +205,21 @@ export const AccountPage = () => {
           />
           <br />
 
-          <input
-            type={"text"}
-            placeholder="Company Name"
-            value={companyName}
-            onChange={(e) => {
-              setCompanyName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+          {tokenDecoded.role === "COMPANY" && (
+            <>
+              <input
+                type={"text"}
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => {
+                  setCompanyName(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+              <br />
+            </>
+          )}
 
           <label htmlFor="country">Choose an Country:</label>
 

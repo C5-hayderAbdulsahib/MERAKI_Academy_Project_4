@@ -1,5 +1,5 @@
 //import packages
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const SendApplicationForm = () => {
 
   // `useParams` returns an object that contains the URL parameters
   const { id } = useParams();
-  console.log("the id from the params is", id);
+  console.log("the decoded token is", tokenDecoded.email);
   console.log(tokenDecoded.userId);
 
   const sendFormApplication = async () => {
@@ -91,6 +91,17 @@ const SendApplicationForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+
+    //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
+    if (token && token !== "there is no token") {
+      setPreferredEmail(tokenDecoded.email);
+    }
+  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
+
   return (
     <>
       {!hide && (
@@ -101,6 +112,7 @@ const SendApplicationForm = () => {
           <input
             type={"email"}
             placeholder="Email"
+            value={preferredEmail}
             onChange={(e) => setPreferredEmail(e.target.value)}
           />
           <br />
@@ -119,8 +131,10 @@ const SendApplicationForm = () => {
           />
           <br />
 
-          <input
-            type={"text"}
+          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
+          <textarea
+            rows="4"
+            cols="50"
             placeholder="Description"
             onChange={(e) => setBodyDescription(e.target.value)}
           />

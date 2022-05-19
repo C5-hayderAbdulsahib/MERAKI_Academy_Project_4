@@ -90,6 +90,7 @@ const login = async (req, res) => {
             country: user.country,
             name: user.first_name + " " + user.last_name,
             companyName: user.company_name,
+            email: user.email,
             permissions: user.role_id.permissions,
           });
 
@@ -127,7 +128,7 @@ const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
 // generating a new token
 const generateToken = (objectTokenData) => {
   // the payload that will be sent to the client-side
-  const { userId, role, country, name, companyName, permissions } =
+  const { userId, role, country, name, companyName, email, permissions } =
     objectTokenData;
   const payload = {
     userId, //this is the same as userId: userId
@@ -135,6 +136,7 @@ const generateToken = (objectTokenData) => {
     country,
     companyName, //this is the same as company_name: company_name
     name,
+    email,
     permissions,
     expireAt: Date.now() + Number(TOKEN_EXP_Time),
   };

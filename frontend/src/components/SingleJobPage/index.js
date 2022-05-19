@@ -161,7 +161,6 @@ export const SingleJobPage = () => {
           <h3>
             {`${singleJob.salary_min}-${singleJob.salary_max} ${singleJob.currency}`}
           </h3>
-          <h3>{singleJob.company_name}</h3>
           <p>{singleJob.description}</p>
 
           {singleJob.inFavorites.includes(tokenDecoded.userId) ? (
