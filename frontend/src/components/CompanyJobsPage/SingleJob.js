@@ -61,7 +61,7 @@ const SingleJob = (props) => {
       <h3>{job.company_name}</h3>
       <h3>published At {jobDate}</h3>
 
-      <Link to={`job/${job._id}`}>
+      <Link to={`/job/${job._id}/update`}>
         <button>Update Job</button>
       </Link>
 

@@ -23,6 +23,8 @@ import CreateNewJobPage from "./components/CreateNewJobPage";
 
 import { CompanyJobsPage } from "./components/CompanyJobsPage"; //since we used export directly then we have to use the {} when importing
 
+import UpdateCompanyPost from "./components/UpdateCompanyPost/index.js";
+
 function App() {
   console.log("this is the app page");
 
@@ -41,6 +43,8 @@ function App() {
           path="job/:id/application_Form"
           element={<SendApplicationForm />}
         />
+
+        <Route path="job/:id/update" element={<UpdateCompanyPost />} />
 
         <Route path="user/account" element={<AccountPage />} />
 

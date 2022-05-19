@@ -1,17 +1,14 @@
 //import packages
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import FadeLoader from "react-spinners/FadeLoader";
 
-// import the context which we created in the authContext.js using the useContext hook
+// import the context which we created in the authContext.js using the Context hook
 import { AuthContext } from "../../contexts/authContext";
 
-//import styling
-import "./style.css";
-
-const CreateNewJobPage = () => {
+const UpdateCompanyPost = () => {
   //   we can use the states that are send using the useContext by either calling it property from the object or by using destructuring
   //   const setIsLoggedIn = useContext(TokenContext).setIsLoggedIn;
   //   const setToken = useContext(TokenContext).setToken;
@@ -20,18 +17,20 @@ const CreateNewJobPage = () => {
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
   const { token, logout, tokenDecoded } = useContext(AuthContext);
 
+  // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
+  const navigate = useNavigate();
+
   const [categories, setCategories] = useState("");
+  const [allCategories, setAllCategories] = useState([]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [salaryMin, setSalaryMin] = useState("");
   const [salaryMax, setSalaryMax] = useState("");
+
   const [currency, setCurrency] = useState("");
-
   const [allCurrencies, setAllCurrencies] = useState([]);
-  const [allCategories, setAllCategories] = useState([]);
-
-  const [companyName, setCompanyName] = useState(tokenDecoded.companyName);
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -39,13 +38,39 @@ const CreateNewJobPage = () => {
 
   const [requiredMessage, setRequiredMessage] = useState("");
 
-  // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
-  const navigate = useNavigate();
+  // `useParams` returns an object that contains the URL parameters
+  const { id } = useParams();
+  console.log("the id from the params is", id);
+  console.log(tokenDecoded.userId);
 
-  console.log("the company name is", tokenDecoded.companyName);
-
-  const getCategoriesWithCurrencies = async () => {
+  const getWantedJob = async () => {
     try {
+      const response = await axios.get(
+        `http://localhost:5000/jobs/${id}`,
+        //this is how to send a token using axios
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
+          },
+        }
+      );
+
+      console.log("the single job is", response.data.job.currency);
+      // setSingleJob(response.data.job);
+      setCategories({
+        value: response.data.job.category_id._id,
+        label: response.data.job.category_id.name,
+      });
+      setTitle(response.data.job.title);
+      setDescription(response.data.job.description);
+      setType(response.data.job.type);
+      setSalaryMin(response.data.job.salary_min);
+      setSalaryMax(response.data.job.salary_max);
+      setCurrency({
+        value: response.data.job.currency,
+        label: response.data.job.currency,
+      });
+
       //getting all the categories from the backend
       const getCategories = await axios.get(
         "http://localhost:5000/categories",
@@ -92,9 +117,6 @@ const CreateNewJobPage = () => {
       // console.log("this is our currencies", currenciesSelect);
 
       setAllCurrencies(currenciesSelect);
-
-      //getting the company name from the token
-      setCompanyName(tokenDecoded.companyName);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -111,7 +133,7 @@ const CreateNewJobPage = () => {
     }
   };
 
-  const createJobPost = async () => {
+  const updateJob = async () => {
     try {
       if (
         !(
@@ -120,9 +142,8 @@ const CreateNewJobPage = () => {
           description &&
           salaryMin &&
           salaryMax &&
-          currency &&
           type &&
-          companyName
+          currency
         )
       ) {
         setRequiredMessage("you have to fill all the input field");
@@ -131,22 +152,17 @@ const CreateNewJobPage = () => {
 
       setRequiredMessage(""); //the reason for adding this line is that if the user does not have a validation error he might get a server error form the backend so and the problem is the both messages will appear at the same time and that is very confusion
 
-      const response = await axios.post(
-        `http://localhost:5000/categories/${categories}/jobs`,
+      const response = await axios.put(
+        `http://localhost:5000/jobs/${id}`,
         {
-          // the data that is entered in the object that is sent using axios must have the same key name as the name in postman(the same field name in the DB) or an error will occur
-
-          company_name: companyName,
-
-          title, //the key has to be the same key in the backend
-          description,
-          type, //this is the same as type: type
+          title,
+          description, //this is the same as description: description
+          type,
           salary_min: salaryMin,
-          salary_max: salaryMax,
-          currency: currency,
+          salary_max: salaryMax, //the key has to be the same key in the backend
+          // currency: currency,
+          category_id: categories,
         },
-
-        //this is how to send a token using axios
         {
           headers: {
             Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
@@ -154,14 +170,9 @@ const CreateNewJobPage = () => {
         }
       );
 
-      console.log(response);
-
-      if (response.data.success) {
-        setSuccessMessage(response.data.message);
-      }
+      console.log("the single job is", response.data.job);
     } catch (err) {
       console.log(err);
-
       //we add this condition to check if the user login or not
       if (err.response.data.message === "The token is invalid or expired") {
         return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
@@ -184,27 +195,48 @@ const CreateNewJobPage = () => {
 
     //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      getCategoriesWithCurrencies();
+      getWantedJob();
     }
   }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
+  console.log("the token in the single job page", token);
+
+  //   const unSaveJob = async () => {
+  //     try {
+  //       const response = await axios.put(
+  //         `http://localhost:5000/jobs/${id}/remove-from-favorites`,
+  //         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
+  //         //this is how to send a token using axios
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
+  //           },
+  //         }
+  //       );
+
+  //       console.log("the single job is", response.data.job);
+  //       setSingleJob(response.data.job);
+  //     } catch (err) {
+  //       console.log(err);
+  //       //we add this condition to check if the user login or not
+  //       if (err.response.data.message === "The token is invalid or expired") {
+  //         return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
+  //       }
+
+  //       //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+  //       if (err.response.data) {
+  //         return setErrMessage(err.response.data.message);
+  //       }
+
+  //       setErrMessage("Error happened while Get Data, please try again");
+  //     }
+  //   };
+
   return (
     <>
-      {companyName ? (
+      {currency ? (
         <div>
-          <h3>Create Job Form:</h3>
-          <br />
-
-          <input
-            type={"text"}
-            placeholder="Company Name"
-            value={companyName}
-            onChange={(e) => {
-              setCompanyName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
+          <h3>Update Job Form:</h3>
           <br />
 
           <Select
@@ -212,15 +244,14 @@ const CreateNewJobPage = () => {
             id="categories"
             options={allCategories}
             defaultValue={{
-              value: "",
-              label: "Select A Category",
+              value: categories.value,
+              label: categories.label,
             }}
             onChange={(e) => {
               setCategories(e.value);
               setSuccessMessage("");
               setRequiredMessage("");
             }}
-            onClick={() => setSuccessMessage("")}
           />
 
           <br />
@@ -229,6 +260,7 @@ const CreateNewJobPage = () => {
           <input
             type={"text"}
             placeholder="Title"
+            value={title}
             onChange={(e) => {
               setTitle(e.target.value);
               setSuccessMessage("");
@@ -240,6 +272,7 @@ const CreateNewJobPage = () => {
           <input
             type={"text"}
             placeholder="Description Of The Job"
+            value={description}
             onChange={(e) => {
               setDescription(e.target.value);
               setSuccessMessage("");
@@ -258,7 +291,7 @@ const CreateNewJobPage = () => {
               setRequiredMessage("");
             }}
           >
-            <option value="">Choose A Type</option>
+            <option value={type}>{type}</option>
 
             <option value="On-Site">On-Site</option>
             <option value="Remote">Remote</option>
@@ -269,6 +302,7 @@ const CreateNewJobPage = () => {
           <input
             type={"number"}
             placeholder="Minimum Salary Expected"
+            value={salaryMin}
             onChange={(e) => {
               setSalaryMin(e.target.value);
               setSuccessMessage("");
@@ -280,6 +314,7 @@ const CreateNewJobPage = () => {
           <input
             type={"number"}
             placeholder="Maximum Salary Expected"
+            value={salaryMax}
             onChange={(e) => {
               setSalaryMax(e.target.value);
               setSuccessMessage("");
@@ -290,25 +325,25 @@ const CreateNewJobPage = () => {
 
           <label htmlFor="currency">Choose A Currency:</label>
 
-          <Select
+          {/* <Select
             name="currency"
             id="currency"
             options={allCurrencies}
             defaultValue={{
-              value: "",
-              label: "Select A Currency",
+              value: currency.value,
+              label: currency.label,
             }}
             onChange={(e) => {
               setCurrency(e.value);
               setSuccessMessage("");
               setRequiredMessage("");
             }}
-          />
+          /> */}
 
           <br />
           <br />
 
-          <button onClick={createJobPost}>Create A New Job Post</button>
+          <button onClick={updateJob}>Update Job Post</button>
 
           {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
           {successMessage ? <p className="login-err">{successMessage}</p> : ""}
@@ -333,4 +368,4 @@ const CreateNewJobPage = () => {
   );
 };
 
-export default CreateNewJobPage;
+export default UpdateCompanyPost; //if we use export default then when we import we dont use {} or an error will appear
