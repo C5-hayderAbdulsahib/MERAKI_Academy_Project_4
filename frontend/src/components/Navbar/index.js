@@ -29,11 +29,12 @@ const Navbar = () => {
       {token && token !== "there is no token" ? (
         <>
           <Link to="/">Home </Link>
-          <Link to="/job/new_job_post">Create New Job Post</Link>
-          {/* //we imported the logout function from the context hook in the authContext.js file */}
           <Link to="/login">
             <button onClick={logout}>Logout</button>
           </Link>
+          <Link to="/job/new_job_post">Create New Job Post</Link>
+          {/* //we imported the logout function from the context hook in the authContext.js file */}
+
           <Link to="/user/account">
             {tokenDecoded.name ? tokenDecoded.name.split(" ")[0] : ""}
           </Link>

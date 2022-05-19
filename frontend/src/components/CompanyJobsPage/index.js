@@ -27,8 +27,6 @@ export const CompanyJobsPage = () => {
 
   const [renderPage, setRenderPage] = useState(false);
 
-  const [deleteLastItem, setDeleteLastItem] = useState(false);
-
   const [successMessage, setSuccessMessage] = useState("");
 
   const [errMessage, setErrMessage] = useState("");
@@ -104,7 +102,6 @@ export const CompanyJobsPage = () => {
           setRenderPage={setRenderPage}
           token={token}
           logout={logout}
-          setDeleteLastItem={setDeleteLastItem}
           setJobs={setJobs}
           length={jobs.length}
           setErrMessage={setErrMessage}

@@ -20,7 +20,7 @@ const UpdateCompanyPost = () => {
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState("");
+  const [categories, setCategories] = useState({});
   const [allCategories, setAllCategories] = useState([]);
 
   const [title, setTitle] = useState("");
@@ -30,6 +30,7 @@ const UpdateCompanyPost = () => {
   const [salaryMax, setSalaryMax] = useState("");
 
   const [currency, setCurrency] = useState("");
+  const [currencyDefault, setCurrencyDefault] = useState({});
   const [allCurrencies, setAllCurrencies] = useState([]);
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -57,18 +58,21 @@ const UpdateCompanyPost = () => {
 
       console.log("the single job is", response.data.job.currency);
       // setSingleJob(response.data.job);
+
       setCategories({
         value: response.data.job.category_id._id,
         label: response.data.job.category_id.name,
       });
+
       setTitle(response.data.job.title);
       setDescription(response.data.job.description);
       setType(response.data.job.type);
       setSalaryMin(response.data.job.salary_min);
       setSalaryMax(response.data.job.salary_max);
-      setCurrency({
-        value: response.data.job.currency,
-        label: response.data.job.currency,
+      setCurrency(response.data.job.currency);
+      setCurrencyDefault({
+        value: response.data.job.currency.toUpperCase(),
+        label: response.data.job.currency.toUpperCase(),
       });
 
       //getting all the categories from the backend
@@ -142,8 +146,8 @@ const UpdateCompanyPost = () => {
           description &&
           salaryMin &&
           salaryMax &&
-          type &&
-          currency
+          // currency &&
+          type
         )
       ) {
         setRequiredMessage("you have to fill all the input field");
@@ -152,6 +156,7 @@ const UpdateCompanyPost = () => {
 
       setRequiredMessage(""); //the reason for adding this line is that if the user does not have a validation error he might get a server error form the backend so and the problem is the both messages will appear at the same time and that is very confusion
 
+      console.log("testing of the category id is", categories.value);
       const response = await axios.put(
         `http://localhost:5000/jobs/${id}`,
         {
@@ -160,8 +165,8 @@ const UpdateCompanyPost = () => {
           type,
           salary_min: salaryMin,
           salary_max: salaryMax, //the key has to be the same key in the backend
-          // currency: currency,
-          category_id: categories,
+          currency: currency,
+          category_id: categories.value,
         },
         {
           headers: {
@@ -170,7 +175,7 @@ const UpdateCompanyPost = () => {
         }
       );
 
-      console.log("the single job is", response.data.job);
+      console.log("the single job is", response);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -201,37 +206,6 @@ const UpdateCompanyPost = () => {
 
   console.log("the token in the single job page", token);
 
-  //   const unSaveJob = async () => {
-  //     try {
-  //       const response = await axios.put(
-  //         `http://localhost:5000/jobs/${id}/remove-from-favorites`,
-  //         {}, //we add an empty object because in axios you have to make the order of the request is write and since we dont have a body in controller function we can't just remove it or an error will appear  so we just add an empty object in this case
-  //         //this is how to send a token using axios
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
-  //           },
-  //         }
-  //       );
-
-  //       console.log("the single job is", response.data.job);
-  //       setSingleJob(response.data.job);
-  //     } catch (err) {
-  //       console.log(err);
-  //       //we add this condition to check if the user login or not
-  //       if (err.response.data.message === "The token is invalid or expired") {
-  //         return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
-  //       }
-
-  //       //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
-  //       if (err.response.data) {
-  //         return setErrMessage(err.response.data.message);
-  //       }
-
-  //       setErrMessage("Error happened while Get Data, please try again");
-  //     }
-  //   };
-
   return (
     <>
       {currency ? (
@@ -248,7 +222,8 @@ const UpdateCompanyPost = () => {
               label: categories.label,
             }}
             onChange={(e) => {
-              setCategories(e.value);
+              console.log("the value of the id category", e.value);
+              setCategories({ value: e.value });
               setSuccessMessage("");
               setRequiredMessage("");
             }}
@@ -325,20 +300,21 @@ const UpdateCompanyPost = () => {
 
           <label htmlFor="currency">Choose A Currency:</label>
 
-          {/* <Select
+          <Select
             name="currency"
             id="currency"
             options={allCurrencies}
             defaultValue={{
-              value: currency.value,
-              label: currency.label,
+              value: currencyDefault.value,
+              label: currencyDefault.label,
             }}
             onChange={(e) => {
+              console.log(e.value);
               setCurrency(e.value);
               setSuccessMessage("");
               setRequiredMessage("");
             }}
-          /> */}
+          />
 
           <br />
           <br />

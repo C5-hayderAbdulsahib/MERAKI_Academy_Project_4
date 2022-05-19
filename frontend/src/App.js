@@ -27,6 +27,8 @@ import UpdateCompanyPost from "./components/UpdateCompanyPost/index.js";
 
 import { MessagesFromApplicants } from "./components/MessagesFromApplicants"; //since we used export directly then we have to use the {} when importing
 
+import { SavedJobsPage } from "./components/SavedJobsPage";
+
 function App() {
   console.log("this is the app page");
 
@@ -54,6 +56,8 @@ function App() {
         <Route path="job/:id/update" element={<UpdateCompanyPost />} />
 
         <Route path="user/account" element={<AccountPage />} />
+
+        <Route path="job/saved_jobs" element={<SavedJobsPage />} />
 
         <Route path="job/new_job_post" element={<CreateNewJobPage />} />
 

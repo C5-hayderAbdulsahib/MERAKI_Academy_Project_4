@@ -1,20 +1,20 @@
 //import packages
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FadeLoader from "react-spinners/FadeLoader";
 
 // import the context which we created in the authContext.js using the useContext hook
 import { AuthContext } from "../../contexts/authContext";
 
 //import Components
-import SingleApplicantForm from "./SingleApplicantForm";
+import SingleJob from "./SingleJob";
 
 //import styling
 import "./style.css";
 
 //since we used export directly then when we import we have to add the {} or an error will occur
-export const MessagesFromApplicants = () => {
+export const SavedJobsPage = () => {
   //   we can use the states that are send using the useContext by either calling it property from the object or by using destructuring
   //   const setIsLoggedIn = useContext(TokenContext).setIsLoggedIn;
   //   const setToken = useContext(TokenContext).setToken;
@@ -23,7 +23,7 @@ export const MessagesFromApplicants = () => {
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
   const { token, logout } = useContext(AuthContext);
 
-  const [applicants, setApplicants] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   const [renderPage, setRenderPage] = useState(false);
 
@@ -31,16 +31,13 @@ export const MessagesFromApplicants = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  // `useParams` returns an object that contains the URL parameters
-  const { jobId } = useParams();
-
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
-  const getCompanyApplicantsForms = async () => {
+  const getCompanyJobsPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/jobs/${jobId}/candidates`,
+        "http://localhost:5000/jobs/favorites",
         //this is how to send a token using axios
         {
           headers: {
@@ -49,12 +46,12 @@ export const MessagesFromApplicants = () => {
         }
       );
 
-      console.log("the Applicants List is", response.data.jobApplications);
+      console.log("the User Info", response.data.user);
 
-      if (response.data.message === "No One Have Send a Job Application Yet") {
+      if (response.data.message === "You Need To Create a Job Post First") {
         setSuccessMessage(response.data.message);
       } else {
-        setApplicants(response.data.jobApplications);
+        setFavorites(response.data.jobs);
       }
     } catch (err) {
       console.log(err);
@@ -80,35 +77,34 @@ export const MessagesFromApplicants = () => {
 
     //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      getCompanyApplicantsForms();
+      getCompanyJobsPosts();
     }
   }, [token, renderPage]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   //we used map to iterate over the array and send data as a prop to the single item component
-  let applicantsList;
-  if (typeof applicants !== "string") {
-    applicantsList = applicants.map((element) => {
+  let favoriteList;
+  if (typeof favorites !== "string") {
+    favoriteList = favorites.map((element) => {
       console.log("the unique index is", element._id);
       console.log(element);
 
       //we created this part in order to view the date as a string and not a number
-      const createdApplicationDate = new Date(element.createdAt)
+      const createdJobDate = new Date(element.createdAt)
         .toString()
         .substring(4, 10);
 
       return (
-        <SingleApplicantForm
+        <SingleJob
           key={element._id}
-          applicant={element}
-          applicantDate={createdApplicationDate}
+          job={element}
+          jobDate={createdJobDate}
           renderPage={renderPage}
           setRenderPage={setRenderPage}
           token={token}
           logout={logout}
-          setApplicants={setApplicants}
-          length={applicants.length}
+          setFavorites={setFavorites}
+          length={favorites.length}
           setErrMessage={setErrMessage}
-          jobId={jobId}
         />
       ); //the key has to be named that way and if we tried to change it and give it a name of id an error will appear on the console, and also it value has to be unique or an error will also occur so that why we usually  give it the value of the id, so if there is an array of element in jsx and they all have the same name for example <p> we have to give each one of them a key attribute or an error will appear
     });
@@ -116,13 +112,8 @@ export const MessagesFromApplicants = () => {
 
   return (
     <>
-      {applicants || successMessage ? (
-        <>
-          <div>{applicantsList}</div>
-
-          {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
-          {successMessage && successMessage}
-        </>
+      {favorites || !successMessage ? (
+        <div>{favoriteList}</div>
       ) : (
         <FadeLoader
           color={"blue"}
@@ -133,6 +124,9 @@ export const MessagesFromApplicants = () => {
           css={"display: block; margin: 0 auto; margin-top: 200px;"}
         />
       )}
+
+      {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
+      {successMessage && successMessage}
 
       {errMessage && <div>{errMessage}</div>}
     </>
