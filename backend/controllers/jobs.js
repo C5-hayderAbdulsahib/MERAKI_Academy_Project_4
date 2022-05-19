@@ -232,7 +232,7 @@ const updateJobById = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     //if the user enter a wrong id format then execute the if part
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
@@ -397,7 +397,10 @@ const getFavoritesJobs = async (req, res) => {
 
     const favoritesJob = [];
 
-    const allJobs = await jobsModel.find({}).sort({ createdAt: "desc" }); //this how to sort in mongoose
+    const allJobs = await jobsModel
+      .find({})
+      .sort({ createdAt: "desc" }) //this how to sort in mongoose
+      .populate("category_id"); //when using populate first we need to specify the column or the property that we want to change the id and populate the data for, and the second parameter is for the columns or properties that we want to only show if we put the firstName alone then the firstName and id will also appear and if we want to remove the _id then we put (-) before it if we put (-) before any column it will make an exclude for it and if we put -_id alone then it will bring all the properties except the -_id property
 
     //we add this condition to see if there was any created objects or the Schema is empty
     if (allJobs.length === 0) {
@@ -427,6 +430,9 @@ const getFavoritesJobs = async (req, res) => {
     });
   } catch (err) {
     //only if there is a server error then execute the catch statement
+
+    console.log(err);
+
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });

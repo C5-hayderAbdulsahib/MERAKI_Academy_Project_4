@@ -8,7 +8,7 @@ import "./style.css";
 //or we can use destructuring directly in the parameters like this {item, id} and use it directly without the need to use the word props
 const SingleJob = (props) => {
   const {
-    job,
+    FavJob,
     jobDate,
     renderPage,
     setRenderPage,
@@ -19,18 +19,22 @@ const SingleJob = (props) => {
     length,
   } = props; //we used destructuring to make it easier to use them
 
-  const deleteJob = async () => {
-    console.log("the id is for the deleted ", job._id);
+  const UnsaveJob = async () => {
+    console.log("the id is for the deleted ", FavJob._id);
     try {
-      await axios.delete(`http://localhost:5000/jobs/${job._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
-        },
-      });
+      await axios.put(
+        `http://localhost:5000/jobs/${FavJob._id}/remove-from-favorites`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
+          },
+        }
+      );
 
       //we add this condition to make the state transform to empty only with their is on single item left
       if (length <= 1) {
-        setJobs("");
+        setFavorites("");
       }
 
       //we add this state so that the changes will be shown on the screen without the need of refresh
@@ -53,28 +57,24 @@ const SingleJob = (props) => {
 
   return (
     <>
-      <h1>title {job.title}</h1>
-      <p>{job.category_id.name}</p>
-      <h3>{job.company_name}</h3>
-      <h3>{job.country}</h3>
-      <h3>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h3>
-      <h3>{job.company_name}</h3>
+      <h1>title {FavJob.title}</h1>
+      <p>{FavJob.category_id.name}</p>
+      <h3>{FavJob.company_name}</h3>
+      <h3>{FavJob.country}</h3>
+      <h3>{`${FavJob.salary_min}-${FavJob.salary_max} ${FavJob.currency}`}</h3>
       <h3>published At {jobDate}</h3>
+      <h3>{FavJob.type}</h3>
 
-      <Link to={`/job/company_jobs/${job._id}/applicants`}>
-        <button>View Applicants</button>
-      </Link>
-
-      <Link to={`/job/${job._id}/update`}>
-        <button>Update Job</button>
+      <Link to={`/job/${FavJob._id}`}>
+        <button>View Job</button>
       </Link>
 
       <button
         onClick={() => {
-          deleteJob();
+          UnsaveJob();
         }}
       >
-        Delete Job
+        UnSave Job
       </button>
     </>
   );

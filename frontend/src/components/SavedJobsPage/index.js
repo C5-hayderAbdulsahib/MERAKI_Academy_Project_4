@@ -46,9 +46,9 @@ export const SavedJobsPage = () => {
         }
       );
 
-      console.log("the User Info", response.data.user);
+      console.log("the Saved Jobs Are", response.data);
 
-      if (response.data.message === "You Need To Create a Job Post First") {
+      if (response.data.message === "You Need To Save A Job First") {
         setSuccessMessage(response.data.message);
       } else {
         setFavorites(response.data.jobs);
@@ -83,7 +83,7 @@ export const SavedJobsPage = () => {
 
   //we used map to iterate over the array and send data as a prop to the single item component
   let favoriteList;
-  if (typeof favorites !== "string") {
+  if (favorites) {
     favoriteList = favorites.map((element) => {
       console.log("the unique index is", element._id);
       console.log(element);
@@ -96,7 +96,7 @@ export const SavedJobsPage = () => {
       return (
         <SingleJob
           key={element._id}
-          job={element}
+          FavJob={element}
           jobDate={createdJobDate}
           renderPage={renderPage}
           setRenderPage={setRenderPage}
@@ -112,8 +112,13 @@ export const SavedJobsPage = () => {
 
   return (
     <>
-      {favorites || !successMessage ? (
-        <div>{favoriteList}</div>
+      {favorites || successMessage ? (
+        <>
+          <div>{favoriteList}</div>
+
+          {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
+          {successMessage && successMessage}
+        </>
       ) : (
         <FadeLoader
           color={"blue"}
@@ -124,9 +129,6 @@ export const SavedJobsPage = () => {
           css={"display: block; margin: 0 auto; margin-top: 200px;"}
         />
       )}
-
-      {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
-      {successMessage && successMessage}
 
       {errMessage && <div>{errMessage}</div>}
     </>

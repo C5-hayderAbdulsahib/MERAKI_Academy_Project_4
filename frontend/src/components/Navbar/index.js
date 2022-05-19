@@ -18,10 +18,7 @@ const Navbar = () => {
   const { logout, token, tokenDecoded } = useContext(AuthContext);
   // const a = tokenDecoded.split(" ");
   if (tokenDecoded) {
-    console.log(
-      "the token after it gets decoded in navbar",
-      tokenDecoded.name.split(" ")[0]
-    );
+    console.log("the token after it gets decoded in navbar", tokenDecoded.role);
   }
 
   return (
@@ -29,17 +26,24 @@ const Navbar = () => {
       {token && token !== "there is no token" ? (
         <>
           <Link to="/">Home </Link>
-          <Link to="/login">
-            <button onClick={logout}>Logout</button>
-          </Link>
-          <Link to="/job/new_job_post">Create New Job Post</Link>
-          {/* //we imported the logout function from the context hook in the authContext.js file */}
 
           <Link to="/user/account">
             {tokenDecoded.name ? tokenDecoded.name.split(" ")[0] : ""}
           </Link>
 
-          <Link to="job/company_jobs">Your Job Posts</Link>
+          <Link to="job/saved_jobs">Saved Job Posts</Link>
+
+          {tokenDecoded.role === "COMPANY" && (
+            <>
+              <Link to="/job/new_job_post">Create New Job Post</Link>
+
+              <Link to="job/company_jobs">Your Job Posts</Link>
+            </>
+          )}
+
+          <Link to="/login">
+            <button onClick={logout}>Logout</button>
+          </Link>
         </>
       ) : (
         <>
