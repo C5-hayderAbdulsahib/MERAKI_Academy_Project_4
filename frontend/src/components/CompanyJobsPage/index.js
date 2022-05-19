@@ -25,8 +25,6 @@ export const CompanyJobsPage = () => {
 
   const [jobs, setJobs] = useState([]);
 
-  const [id, setId] = useState("");
-
   const [renderPage, setRenderPage] = useState(false);
 
   const [deleteLastItem, setDeleteLastItem] = useState(false);
@@ -52,12 +50,7 @@ export const CompanyJobsPage = () => {
 
       console.log("the User Info", response.data.user);
 
-      // setJobs("");
-      if (
-        response.data.message === "You Need To Create a Job Post First" &&
-        !deleteLastItem
-      ) {
-        // setJobs("");
+      if (response.data.message === "You Need To Create a Job Post First") {
         setSuccessMessage(response.data.message);
       } else {
         setJobs(response.data.jobs);
@@ -77,34 +70,6 @@ export const CompanyJobsPage = () => {
       setErrMessage("Error happened while Get Data, please try again");
     }
   };
-
-  // useEffect(() => {
-  //   getCompanyJobsPosts();
-  // }, [renderPage]);
-
-  // const deleteJob = async () => {
-  //   console.log("the id is for the deleted ", id);
-  //   try {
-  //     await axios.delete(`http://localhost:5000/jobs/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`, //if we write Authorization or authorization(with small a) both will work fine
-  //       },
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //     //we add this condition to check if the user login or not
-  //     if (err.response.data.message === "The token is invalid or expired") {
-  //       return logout(); //i dont need to use navigate since i already did in the useEffect under and this function will change the value of the state so it will make the useEffect run again and it will see the condition so it will apply the navigate
-  //     }
-
-  //     //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
-  //     if (err.response.data) {
-  //       return setErrMessage(err.response.data.message);
-  //     }
-
-  //     setErrMessage("Error happened while Get Data, please try again");
-  //   }
-  // };
 
   // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
   useEffect(() => {
@@ -135,7 +100,6 @@ export const CompanyJobsPage = () => {
           key={element._id}
           job={element}
           jobDate={createdJobDate}
-          setId={setId}
           renderPage={renderPage}
           setRenderPage={setRenderPage}
           token={token}
@@ -151,7 +115,7 @@ export const CompanyJobsPage = () => {
 
   return (
     <>
-      {jobs ? (
+      {jobs || !successMessage ? (
         <div>{jobList}</div>
       ) : (
         <FadeLoader

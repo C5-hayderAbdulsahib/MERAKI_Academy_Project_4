@@ -25,6 +25,8 @@ import { CompanyJobsPage } from "./components/CompanyJobsPage"; //since we used 
 
 import UpdateCompanyPost from "./components/UpdateCompanyPost/index.js";
 
+import { MessagesFromApplicants } from "./components/MessagesFromApplicants"; //since we used export directly then we have to use the {} when importing
+
 function App() {
   console.log("this is the app page");
 
@@ -38,6 +40,11 @@ function App() {
         {/* Route: will render whatever JSX in the element prop if the path matches.
           path: is used to define the path that will be used to render the element, if the path is `/` then it should render `Home` when the path matches.
           Having the path set to `/` means that it is the root path, in other words it means that there is no path provided. */}
+
+        <Route
+          path="job/company_jobs/:jobId/applicants"
+          element={<MessagesFromApplicants />}
+        />
 
         <Route
           path="job/:id/application_Form"
