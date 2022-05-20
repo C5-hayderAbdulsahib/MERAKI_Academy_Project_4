@@ -7,7 +7,7 @@ import FadeLoader from "react-spinners/FadeLoader";
 
 import fileDownload from "js-file-download";
 
-import testingCloudenary from "./testingCloudenary";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 // import the context which we created in the authContext.js using the useContext hook
 import { AuthContext } from "../../contexts/authContext";
@@ -33,6 +33,14 @@ export const AccountPage = () => {
   const [countries, setCountries] = useState({});
   const [selectedCountry, setSelectedCountry] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
+
+  //states for the change password models
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isOpen, setIsOpen] = useState(false); //the reason that we created this state is for showing or hiding the model
+  const [passwordErrMessage, setPasswordErrMessage] = useState("");
+  const [passwordSuccessMsg, setPasswordSuccessMsg] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -250,6 +258,29 @@ export const AccountPage = () => {
 
           {/* //////////////////////////////////////////////// */}
 
+          {/* the model component */}
+          {/* we make a condition if the state is false then dont show the model else show it */}
+          {isOpen && (
+            <ChangePasswordModal
+              oldPassword={oldPassword}
+              setOldPassword={setOldPassword}
+              newPassword={newPassword}
+              setNewPassword={setNewPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              passwordErrMessage={passwordErrMessage}
+              setPasswordErrMessage={setPasswordErrMessage}
+              passwordSuccessMsg={passwordSuccessMsg}
+              setPasswordSuccessMsg={setPasswordSuccessMsg}
+              logout={logout}
+              setIsOpen={setIsOpen} //the reason that we send this state is to be able to close the model in the model component
+              token={token}
+            />
+          )}
+
+          {/* the reason that we set the state to true is to show the model */}
+          <button onClick={() => setIsOpen(true)}>change password</button>
+
           <input
             type={"text"}
             placeholder="First Name"
@@ -291,6 +322,7 @@ export const AccountPage = () => {
           <Select
             name="country"
             id="country"
+            className="react-select"
             options={countriesSelect}
             defaultValue={{
               value: countries.myCountry,

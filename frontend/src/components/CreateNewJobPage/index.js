@@ -191,7 +191,7 @@ const CreateNewJobPage = () => {
   return (
     <>
       {companyName ? (
-        <div>
+        <div className="account-page">
           <h3>Create Job Form:</h3>
           <br />
 
@@ -220,7 +220,6 @@ const CreateNewJobPage = () => {
               setSuccessMessage("");
               setRequiredMessage("");
             }}
-            onClick={() => setSuccessMessage("")}
           />
 
           <br />
