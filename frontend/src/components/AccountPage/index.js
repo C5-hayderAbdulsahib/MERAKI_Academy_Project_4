@@ -1,9 +1,13 @@
 //import packages
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Select from "react-select";
 import FadeLoader from "react-spinners/FadeLoader";
+
+import fileDownload from "js-file-download";
+
+import testingCloudenary from "./testingCloudenary";
 
 // import the context which we created in the authContext.js using the useContext hook
 import { AuthContext } from "../../contexts/authContext";
@@ -174,12 +178,77 @@ export const AccountPage = () => {
     }
   }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
+  const downloadFile = () => {
+    console.log("enterd");
+    let filePath =
+      "https://res.cloudinary.com/dkqqtkt3b/image/upload/v1652973859/q7zdpdazy9silluse1jb.pdf";
+    axios
+      .get(`${filePath}`, {
+        responseType: "blob",
+      })
+      .then((res) => {
+        let filename = filePath.replace(/^.*[\\\/]/, "");
+        let fileExtension;
+        fileExtension = filePath.split(".");
+        fileExtension = fileExtension[fileExtension.length - 1];
+        fileDownload(res.data, `${filename}.${fileExtension}`);
+      });
+  };
+
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
+
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "merakie");
+    data.append("cloud_name", "dkqqtkt3b");
+    fetch("https://api.cloudinary.com/v1_1/dkqqtkt3b/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       {countries.myCountry ? (
         <div>
           <h3>Account Info:</h3>
           <br />
+          <button onClick={downloadFile}>download</button>
+          <br></br>
+
+          {/* ////////////////////////////////////////// */}
+
+          <div>
+            <div>
+              <input
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+              ></input>
+              <button onClick={uploadImage}>Upload</button>
+            </div>
+            <div>
+              <h1>Uploaded image will be displayed here</h1>
+              <img src={url} />
+            </div>
+          </div>
+
+          <a
+            href={
+              "https://res.cloudinary.com/dkqqtkt3b/image/upload/v1652973859/q7zdpdazy9silluse1jb.pdf"
+            }
+            target="_blank"
+          >
+            LinkedIn handle
+          </a>
+
+          {/* //////////////////////////////////////////////// */}
 
           <input
             type={"text"}
@@ -192,7 +261,6 @@ export const AccountPage = () => {
             }}
           />
           <br />
-
           <input
             type={"text"}
             placeholder="Last Name"
@@ -204,7 +272,6 @@ export const AccountPage = () => {
             }}
           />
           <br />
-
           {tokenDecoded.role === "COMPANY" && (
             <>
               <input
@@ -220,9 +287,7 @@ export const AccountPage = () => {
               <br />
             </>
           )}
-
           <label htmlFor="country">Choose an Country:</label>
-
           <Select
             name="country"
             id="country"
@@ -240,10 +305,8 @@ export const AccountPage = () => {
               setRequiredMessage("");
             }}
           />
-
           <br />
           <br />
-
           <input
             type={"text"}
             placeholder="Phone Number"
@@ -255,12 +318,9 @@ export const AccountPage = () => {
             }}
           />
           <br />
-
           <button onClick={updateAccount}>Update Account</button>
-
           {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
           {successMessage ? <p className="login-err">{successMessage}</p> : ""}
-
           {/* this part is for showing an error message for the validation */}
           {requiredMessage && <p>{requiredMessage}</p>}
         </div>

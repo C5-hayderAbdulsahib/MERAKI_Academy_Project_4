@@ -244,8 +244,10 @@ const UpdateCompanyPost = () => {
           />
           <br />
 
-          <input
-            type={"text"}
+          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
+          <textarea
+            rows="4"
+            cols="50"
             placeholder="Description Of The Job"
             value={description}
             onChange={(e) => {

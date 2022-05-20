@@ -33,6 +33,8 @@ const Navbar = () => {
 
           <Link to="job/saved_jobs">Saved Job Posts</Link>
 
+          <Link to="job/search">Search</Link>
+
           {tokenDecoded.role === "COMPANY" && (
             <>
               <Link to="/job/new_job_post">Create New Job Post</Link>

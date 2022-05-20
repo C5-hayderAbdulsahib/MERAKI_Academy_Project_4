@@ -9,7 +9,7 @@ import "./style.css";
 const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [companyName, setCompanyName] = useState("something"); //we add a default value instead of keeping it to empty array in order to make the validation work
+  const [companyName, setCompanyName] = useState("none"); //we add a default value instead of keeping it to empty array in order to make the validation work
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [countries, setCountries] = useState("");
@@ -73,23 +73,34 @@ const SignupPage = () => {
   // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
   useEffect(() => {
     const getCountriesFun = async () => {
-      const countriesName = await axios.get(
-        "https://restcountries.com/v3.1/all"
-      );
+      try {
+        const countriesName = await axios.get(
+          "https://restcountries.com/v3.1/all"
+        );
 
-      //   console.log(countriesName.data[0].name.common);
-      setCountries(countriesName.data);
-      console.log(countriesName.data);
+        //   console.log(countriesName.data[0].name.common);
+        setCountries(countriesName.data);
+        console.log(countriesName.data);
+      } catch (err) {
+        console.log(err);
+
+        //we add this condition in the case something went wrong and we were unable to get the error message from the backed then there will be a default error message to view it to the user
+        if (err.response.data) {
+          return setMessage(err.response.data.message);
+        }
+
+        setMessage("Error happened while Get Data, please try again");
+      }
     };
     getCountriesFun();
   }, []);
 
-  const testing = [];
+  const countriesSelect = [];
 
   if (countries) {
     // console.log("i am inside useeefct");
     countries.map((element) => {
-      testing.push({
+      countriesSelect.push({
         value: element.name.common,
         label: element.name.common,
       });
@@ -106,16 +117,10 @@ const SignupPage = () => {
       setRequiredMessage(""); //we add this state for the validation
     } else {
       setShowCompanyNameField(false);
-      setCompanyName("something");
+      setCompanyName("none");
       setRequiredMessage("");
     }
   };
-
-  const options = [
-    { value: "chocolate", view: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
 
   return (
     <div className="signup">
@@ -166,28 +171,12 @@ const SignupPage = () => {
 
       <label htmlFor="country">Choose an Country:</label>
 
-      <select
+      <Select
         name="country"
         id="country"
-        onChange={(e) => setSelectedCountry(e.target.value)}
-      >
-        <option value="">Select A Country</option>
-        {countries
-          ? countries.map((element, index) => {
-              return (
-                <option value={element.name.common} key={index}>
-                  {element.name.common}
-                </option>
-              );
-            })
-          : ""}
-      </select>
-      <br />
-      <br />
-
-      <Select
-        options={testing}
-        defaultValue={{ value: "vanilla", label: "Vanilla" }}
+        options={countriesSelect}
+        defaultValue={{ value: "", label: "Select A Country" }}
+        onChange={(e) => setSelectedCountry(e.value)}
         className="react-select"
       />
 

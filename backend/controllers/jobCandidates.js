@@ -121,7 +121,6 @@ const deleteJobApplicationFormById = async (req, res) => {
     const foundJobApplicationForm = await jobCandidatesModel.findByIdAndDelete({
       _id: jobApplicationFormId,
     });
-    // console.log(foundJobApplicationForm);
 
     //if we want to check the if statement then we view an object using its id then we delete that object then we come by and search using that id of the deleted object
     if (!foundJobApplicationForm) {

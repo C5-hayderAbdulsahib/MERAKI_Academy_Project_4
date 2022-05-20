@@ -32,17 +32,12 @@ const AuthProvider = (props) => {
   useEffect(() => {
     //we add this condition because when we refresh the browser all the States will return to their default value thats why we add this condition so we give them the right data depending if there is a token saved in the localStorage or not
     const savedTokenInLocalStorage = localStorage.getItem("token");
-    // decodeToken(savedTokenInLocalStorage);
 
     if (savedTokenInLocalStorage) {
       setToken(savedTokenInLocalStorage);
       const tokenDecoded = jwt_decode(savedTokenInLocalStorage);
 
-      // const tt = decodeToken(savedTokenInLocalStorage);
-      // console.log("the decode token it", tt);
-
       setTokenDecoded(tokenDecoded);
-      // console.log("the stored token", savedTokenInLocalStorage);
     } else {
       setToken("");
     }
@@ -50,26 +45,15 @@ const AuthProvider = (props) => {
 
   // =================================================================
 
-  console.log("hello we are in the auth context", token);
   if (token && token !== "there is no token") {
-    // console.log(new Date().getTime());
-    console.log("the token", token);
-    console.log("the hashed token is", tokenDecoded.expireAt);
-
     if (tokenDecoded.expireAt < new Date().getTime()) {
-      console.log("it is bigger");
       logout();
     }
   }
 
   const checkToken = () => {
     if (token && token !== "there is no token") {
-      // console.log(new Date().getTime());
-      console.log("the token", token);
-      console.log("the hashed token is", tokenDecoded.expireAt);
-
       if (tokenDecoded.expireAt < new Date().getTime()) {
-        console.log("it is bigger");
         logout();
       }
     }

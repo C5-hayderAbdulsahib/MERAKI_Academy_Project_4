@@ -29,9 +29,9 @@ import { MessagesFromApplicants } from "./components/MessagesFromApplicants"; //
 
 import { SavedJobsPage } from "./components/SavedJobsPage";
 
-function App() {
-  console.log("this is the app page");
+import SearchJob from "./components/SearchJob";
 
+function App() {
   return (
     <div className="App">
       {/* since the Navbar component is outside the Routes tag then it will be executed whatever the path was   */}
@@ -54,6 +54,8 @@ function App() {
         />
 
         <Route path="job/:id/update" element={<UpdateCompanyPost />} />
+
+        <Route path="job/search" element={<SearchJob />} />
 
         <Route path="user/account" element={<AccountPage />} />
 

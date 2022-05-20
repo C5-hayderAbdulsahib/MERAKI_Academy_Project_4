@@ -24,8 +24,6 @@ const HomePage = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [renderPage, setRenderPage] = useState(false); //we add this state for the useEffect to put it inside the array dependency in order to make it run again when this state change it value, and we give it an initial value of boolean to make it easy to change by just give it a not logical operator
-
   const getAllJobs = () => {
     axios
       .get(

@@ -144,7 +144,6 @@ const getAllJobsForCompany = async (req, res) => {
   try {
     //getting the params from the endpoint
     const userId = req.token.userId;
-    console.log(userId);
 
     const jobsByCreator = await jobsModel
       .find({ user_id: userId })
@@ -232,7 +231,6 @@ const updateJobById = async (req, res) => {
       });
     }
   } catch (err) {
-    // console.log(err);
     //if the user enter a wrong id format then execute the if part
     //we actually don't need this part because in a real application the user will not enter an id it will be handled by the frontend developer and he will get the id from the backed so there is no way to enter a wrong id but i added this part to problem i might face in the future
     if (err.message.includes("Cast to ObjectId failed for value")) {
@@ -430,9 +428,6 @@ const getFavoritesJobs = async (req, res) => {
     });
   } catch (err) {
     //only if there is a server error then execute the catch statement
-
-    console.log(err);
-
     res
       .status(500)
       .json({ success: false, message: "Server Error", err: err.message });
