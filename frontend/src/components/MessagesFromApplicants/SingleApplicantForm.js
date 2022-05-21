@@ -65,6 +65,21 @@ const SingleJob = (props) => {
 
       <h3>published At {applicantDate}</h3>
 
+      <div>
+        <p>Candidate Cv</p>
+        {applicant.candidate_cv ? (
+          <>
+            <a href={applicant.candidate_cv} target="candidate_cv">
+              View Candidate Cv
+            </a>
+          </>
+        ) : (
+          <p>Please Upload A Cv</p>
+        )}
+      </div>
+
+      <br></br>
+
       <button
         onClick={() => {
           deleteJobApplication();

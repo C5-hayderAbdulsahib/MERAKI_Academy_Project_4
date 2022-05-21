@@ -6,7 +6,8 @@ const jobsModel = require("../models/jobs");
 const sendNewJobApplicationForm = async (req, res) => {
   try {
     //the variable names has to be the same as the names in postman or the destructuring will not work
-    const { preferred_email, subject, body_description, name } = req.body;
+    const { preferred_email, subject, body_description, name, candidate_cv } =
+      req.body;
 
     //getting the params from the endpoint
     const jobId = req.params.id;
@@ -27,6 +28,7 @@ const sendNewJobApplicationForm = async (req, res) => {
       name,
       subject,
       body_description,
+      candidate_cv,
       country: req.token.country, //we will take it from the token object that we add it to the req inside the authentication middleware
       job_id: jobId, //we take the category id from the params
     });

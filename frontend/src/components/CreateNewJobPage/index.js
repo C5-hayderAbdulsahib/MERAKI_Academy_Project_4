@@ -18,7 +18,7 @@ const CreateNewJobPage = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { token, logout, tokenDecoded } = useContext(AuthContext);
+  const { token, logout, userAccountData } = useContext(AuthContext);
 
   const [categories, setCategories] = useState("");
   const [title, setTitle] = useState("");
@@ -31,7 +31,7 @@ const CreateNewJobPage = () => {
   const [allCurrencies, setAllCurrencies] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
 
-  const [companyName, setCompanyName] = useState(tokenDecoded.companyName);
+  const [companyName, setCompanyName] = useState(userAccountData.company_name);
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -42,7 +42,7 @@ const CreateNewJobPage = () => {
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
-  console.log("the company name is", tokenDecoded.companyName);
+  console.log("the company name is", userAccountData.company_name);
 
   const getCategoriesWithCurrencies = async () => {
     try {
@@ -67,12 +67,9 @@ const CreateNewJobPage = () => {
 
       console.log("this is all the categories", getCategories.data);
 
-      // setCategories(getCategories.data.categories);
-
       setAllCategories(categoriesSelect);
 
       //getting all the currencies from a third party api
-
       const getCurrencies = await axios.get(
         "https://restcountries.com/v3.1/all"
       );
@@ -89,12 +86,11 @@ const CreateNewJobPage = () => {
           label: currentValue,
         });
       });
-      // console.log("this is our currencies", currenciesSelect);
 
       setAllCurrencies(currenciesSelect);
 
       //getting the company name from the token
-      setCompanyName(tokenDecoded.companyName);
+      setCompanyName(userAccountData.company_name);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not
@@ -178,6 +174,7 @@ const CreateNewJobPage = () => {
 
   // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
   useEffect(() => {
+    "hello i am first";
     if (!token) {
       navigate("/login");
     }
@@ -186,7 +183,7 @@ const CreateNewJobPage = () => {
     if (token && token !== "there is no token") {
       getCategoriesWithCurrencies();
     }
-  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
+  }, [token, userAccountData.company_name]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   return (
     <>
@@ -197,6 +194,7 @@ const CreateNewJobPage = () => {
 
           <input
             type={"text"}
+            disabled
             placeholder="Company Name"
             value={companyName}
             onChange={(e) => {

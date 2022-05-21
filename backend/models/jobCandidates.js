@@ -8,6 +8,7 @@ const jobCandidateSchema = new mongoose.Schema(
     subject: { type: String, required: true },
     body_description: { type: String, required: true },
     country: { type: String, required: true },
+    candidate_cv: String,
 
     job_id: { type: mongoose.Schema.Types.ObjectId, ref: "Job" }, //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
   },

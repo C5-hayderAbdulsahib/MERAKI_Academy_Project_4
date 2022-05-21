@@ -5,6 +5,9 @@ import React, { useContext } from "react";
 // import the context which we created in the authContext.js using the Context hook
 import { AuthContext } from "../../contexts/authContext";
 
+//import the image in the component to use it
+import profileImage from "../../assest/profile image.png";
+
 //import styling
 import "./style.css";
 
@@ -15,10 +18,10 @@ const Navbar = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { logout, token, tokenDecoded } = useContext(AuthContext);
-  // const a = tokenDecoded.split(" ");
-  if (tokenDecoded) {
-    console.log("the token after it gets decoded in navbar", tokenDecoded.role);
+  const { logout, token, tokenDecoded, userAccountData } =
+    useContext(AuthContext);
+  if (token) {
+    console.log("the token is", token);
   }
 
   return (
@@ -28,7 +31,23 @@ const Navbar = () => {
           <Link to="/">Home </Link>
 
           <Link to="/user/account">
-            {tokenDecoded.name ? tokenDecoded.name.split(" ")[0] : ""}
+            {userAccountData.first_name ? userAccountData.first_name : ""}
+          </Link>
+
+          <Link to="/user/account">
+            {userAccountData.image_profile ? (
+              <img
+                src={userAccountData.image_profile}
+                alt="profile image"
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              />
+            ) : (
+              <img
+                src={profileImage}
+                alt="profile image"
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              />
+            )}
           </Link>
 
           <Link to="job/saved_jobs">Saved Job Posts</Link>

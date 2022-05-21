@@ -1,6 +1,6 @@
 //import packages
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
 import FadeLoader from "react-spinners/FadeLoader";
@@ -94,10 +94,6 @@ const UpdateCompanyPost = () => {
         });
       });
 
-      console.log("this is all the categories", getCategories.data);
-
-      // setCategories(getCategories.data.categories);
-
       setAllCategories(categoriesSelect);
 
       //getting all the currencies from a third party api
@@ -118,8 +114,6 @@ const UpdateCompanyPost = () => {
           label: currentValue,
         });
       });
-      // console.log("this is our currencies", currenciesSelect);
-
       setAllCurrencies(currenciesSelect);
     } catch (err) {
       console.log(err);
@@ -175,7 +169,8 @@ const UpdateCompanyPost = () => {
         }
       );
 
-      console.log("the single job is", response);
+      console.log("the single job is", response.data.message);
+      setSuccessMessage(response.data.message);
     } catch (err) {
       console.log(err);
       //we add this condition to check if the user login or not

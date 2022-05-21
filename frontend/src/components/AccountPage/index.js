@@ -1,13 +1,16 @@
 //import packages
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import FadeLoader from "react-spinners/FadeLoader";
 
 import fileDownload from "js-file-download";
 
 import ChangePasswordModal from "./ChangePasswordModal";
+
+//import the image in the component to use it
+import profileImage from "../../assest/profile image.png";
 
 // import the context which we created in the authContext.js using the useContext hook
 import { AuthContext } from "../../contexts/authContext";
@@ -23,7 +26,8 @@ export const AccountPage = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { token, logout, tokenDecoded } = useContext(AuthContext);
+  const { token, logout, tokenDecoded, setUserImgProfile, setUserAccountData } =
+    useContext(AuthContext);
 
   const [userInfo, setUserInfo] = useState("");
 
@@ -31,7 +35,6 @@ export const AccountPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [countries, setCountries] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
 
   //states for the change password models
@@ -42,11 +45,15 @@ export const AccountPage = () => {
   const [passwordErrMessage, setPasswordErrMessage] = useState("");
   const [passwordSuccessMsg, setPasswordSuccessMsg] = useState("");
 
+  //this state is for the image
+  const [image, setImage] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
+  const [cv, setCv] = useState("");
+  const [cvUrl, setCvUrl] = useState("");
+
   const [successMessage, setSuccessMessage] = useState("");
 
   const [errMessage, setErrMessage] = useState("");
-
-  //   const [hide, setHide] = useState(false); //we add this state to either hide the form or show it depending on the case
 
   const [requiredMessage, setRequiredMessage] = useState("");
 
@@ -67,15 +74,15 @@ export const AccountPage = () => {
         }
       );
 
-      console.log("the User Info", userInfo.data.user);
       setUserInfo(userInfo.data.user);
-
       setCompanyName(userInfo.data.user.company_name);
-
       setFirstName(userInfo.data.user.first_name);
       setLastName(userInfo.data.user.last_name);
-      //   setCountries(userInfo.data.user.country);
       setPhoneNum(userInfo.data.user.phone_number);
+
+      setImgUrl(userInfo.data.user.image_profile);
+
+      setCvUrl(userInfo.data.user.user_cv);
 
       const countriesName = await axios.get(
         "https://restcountries.com/v3.1/all"
@@ -120,6 +127,7 @@ export const AccountPage = () => {
 
       setRequiredMessage(""); //the reason for adding this line is that if the user does not have a validation error he might get a server error form the backend so and the problem is the both messages will appear at the same time and that is very confusion
 
+      console.log("the image url is this one", imgUrl);
       const response = await axios.put(
         `http://localhost:5000/users`,
         {
@@ -130,6 +138,8 @@ export const AccountPage = () => {
           company_name: companyName,
           country: countries.myCountry,
           phone_number: phoneNum,
+          image_profile: imgUrl,
+          user_cv: cvUrl,
         },
 
         //this is how to send a token using axios
@@ -140,7 +150,15 @@ export const AccountPage = () => {
         }
       );
 
-      console.log(response);
+      setUserAccountData({
+        first_name: firstName,
+        last_name: lastName,
+        company_name: companyName,
+        country: countries.myCountry,
+        phone_number: phoneNum,
+        image_profile: imgUrl,
+        user_cv: cvUrl,
+      });
 
       if (response.data.success) {
         setSuccessMessage(response.data.message);
@@ -174,22 +192,43 @@ export const AccountPage = () => {
     });
   }
 
-  // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+  //this function is for uploading images on my account on cloudinary server
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "merakie");
+    data.append("cloud_name", "dkqqtkt3b");
+    fetch("https://api.cloudinary.com/v1_1/dkqqtkt3b/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setImgUrl(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
 
-    //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
-    if (token && token !== "there is no token") {
-      getUserInfo();
-    }
-  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
+  //this function is for uploading pdf on my account on cloudinary server
+  const uploadCv = () => {
+    const data = new FormData();
+    data.append("file", cv);
+    data.append("upload_preset", "merakie");
+    data.append("cloud_name", "dkqqtkt3b");
+    fetch("https://api.cloudinary.com/v1_1/dkqqtkt3b/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setCvUrl(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
 
+  //this function is for downloading the cv
   const downloadFile = () => {
-    console.log("enterd");
-    let filePath =
-      "https://res.cloudinary.com/dkqqtkt3b/image/upload/v1652973859/q7zdpdazy9silluse1jb.pdf";
+    let filePath = cvUrl;
     axios
       .get(`${filePath}`, {
         responseType: "blob",
@@ -203,24 +242,17 @@ export const AccountPage = () => {
       });
   };
 
-  const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
+  // and the reason that i used useEffect is that i want the data to be displayed the moment the component is loaded, and if did not apply useEffect and only used axios without the useEffect then it will continue to bring and display the posts without a stop because there is no condition to make it stop, so thats why we apply useEffect and give it an empty array so it only run(render) one time
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
 
-  const uploadImage = () => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "merakie");
-    data.append("cloud_name", "dkqqtkt3b");
-    fetch("https://api.cloudinary.com/v1_1/dkqqtkt3b/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setUrl(data.url);
-      })
-      .catch((err) => console.log(err));
-  };
+    //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
+    if (token && token !== "there is no token") {
+      getUserInfo();
+    }
+  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   return (
     <>
@@ -228,35 +260,56 @@ export const AccountPage = () => {
         <div>
           <h3>Account Info:</h3>
           <br />
-          <button onClick={downloadFile}>download</button>
-          <br></br>
 
-          {/* ////////////////////////////////////////// */}
-
+          {/* this input file is for uploading images to cloudinary server */}
           <div>
-            <div>
-              <input
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-              ></input>
-              <button onClick={uploadImage}>Upload</button>
-            </div>
-            <div>
-              <h1>Uploaded image will be displayed here</h1>
-              <img src={url} />
-            </div>
+            <h1>Uploaded image will be displayed here</h1>
+            {imgUrl ? (
+              <img
+                src={imgUrl}
+                alt="profile image"
+                style={{ width: "350px", height: "350px", borderRadius: "50%" }}
+              />
+            ) : (
+              <img
+                src={profileImage}
+                alt="profile image"
+                style={{ width: "350px", height: "350px", borderRadius: "50%" }}
+              />
+            )}
           </div>
 
-          <a
-            href={
-              "https://res.cloudinary.com/dkqqtkt3b/image/upload/v1652973859/q7zdpdazy9silluse1jb.pdf"
-            }
-            target="_blank"
-          >
-            LinkedIn handle
-          </a>
+          <div>
+            <input
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+            ></input>
+            <button onClick={uploadImage}>Upload Image</button>
+          </div>
 
-          {/* //////////////////////////////////////////////// */}
+          {/* this input file is for uploading cv to cloudinary server */}
+
+          <div>
+            <h1>Uploaded cv will be displayed here</h1>
+            {cvUrl ? (
+              <>
+                <a href={cvUrl} target="cv">
+                  View Your Cv
+                </a>
+                <button onClick={downloadFile}>download Your cv</button>
+              </>
+            ) : (
+              <p>you dont have a saved cv</p>
+            )}
+          </div>
+
+          <div>
+            <input
+              type="file"
+              onChange={(e) => setCv(e.target.files[0])}
+            ></input>
+            <button onClick={uploadCv}>Upload Cv</button>
+          </div>
 
           {/* the model component */}
           {/* we make a condition if the state is false then dont show the model else show it */}
@@ -280,6 +333,7 @@ export const AccountPage = () => {
 
           {/* the reason that we set the state to true is to show the model */}
           <button onClick={() => setIsOpen(true)}>change password</button>
+          <br></br>
 
           <input
             type={"text"}

@@ -2,6 +2,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import FadeLoader from "react-spinners/FadeLoader";
 
 // import the context which we created in the authContext.js using the useContext hook
 import { AuthContext } from "../../contexts/authContext";
@@ -16,12 +17,16 @@ const SendApplicationForm = () => {
 
   //or we can use destructuring to get the state from the context hook
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
-  const { token, logout, tokenDecoded } = useContext(AuthContext);
+  const { token, logout, userAccountData } = useContext(AuthContext);
 
   const [preferredEmail, setPreferredEmail] = useState("");
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
   const [bodyDescription, setBodyDescription] = useState("");
+
+  //this state is for the cv
+  const [cv, setCv] = useState("");
+  const [cvUrl, setCvUrl] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -31,17 +36,32 @@ const SendApplicationForm = () => {
 
   const [requiredMessage, setRequiredMessage] = useState("");
 
+  const [requiredCv, setRequiredCv] = useState("");
+
+  const [savedCvChosen, setSavedCvChosen] = useState(false); //we add this state in order to hide  the upload new cv buttons if the user clicked on upload my saved cv for a better user experience
+
   // use the `useNavigate` hook in the component to gain access to the instance that is used to navigate
   const navigate = useNavigate();
 
   // `useParams` returns an object that contains the URL parameters
   const { id } = useParams();
-  console.log("the decoded token is", tokenDecoded.email);
-  console.log(tokenDecoded.userId);
+  // console.log("the decoded token is", tokenDecoded.email);
+  console.log("the cv of user is", userAccountData.user_cv);
 
   const sendFormApplication = async () => {
     try {
-      if (!(preferredEmail && name && subject && bodyDescription)) {
+      setSuccessMessage("");
+
+      if (
+        !(
+          preferredEmail &&
+          name &&
+          subject &&
+          bodyDescription &&
+          cv &&
+          requiredCv
+        )
+      ) {
         setRequiredMessage("you have to fill all the input field");
         return;
       }
@@ -57,6 +77,7 @@ const SendApplicationForm = () => {
           name,
           subject, //this is the same as subject: subject
           body_description: bodyDescription,
+          candidate_cv: cvUrl,
         },
 
         //this is how to send a token using axios
@@ -91,6 +112,26 @@ const SendApplicationForm = () => {
     }
   };
 
+  //this function is for uploading pdf on my account on cloudinary server
+  const uploadCv = () => {
+    const data = new FormData();
+    data.append("file", cv);
+    data.append("upload_preset", "merakie");
+    data.append("cloud_name", "dkqqtkt3b");
+    fetch("https://api.cloudinary.com/v1_1/dkqqtkt3b/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setCvUrl(data.url);
+        console.log("the data url for the cv", data.url);
+        setRequiredCv("has been uploaded");
+        setSuccessMessage("");
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
@@ -98,13 +139,14 @@ const SendApplicationForm = () => {
 
     //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
-      setPreferredEmail(tokenDecoded.email);
+      setPreferredEmail(userAccountData.email);
+      setName(userAccountData.first_name + " " + userAccountData.last_name);
     }
-  }, [token]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
+  }, [token, userAccountData.email]); //the reason that we put the token state inside the array dependency because in the beginning the value of the token state will be the default value and then it will change to the token value that why we add it in the dependency array so when it get change and take the decoded from of the token, then it make the real request
 
   return (
     <>
-      {!hide && (
+      {!hide ? (
         <div>
           <h3>Job Application Form:</h3>
           <br />
@@ -112,7 +154,7 @@ const SendApplicationForm = () => {
           <input
             type={"email"}
             placeholder="Email"
-            value={preferredEmail}
+            value={preferredEmail || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
             onChange={(e) => setPreferredEmail(e.target.value)}
           />
           <br />
@@ -120,6 +162,7 @@ const SendApplicationForm = () => {
           <input
             type={"text"}
             placeholder="Name"
+            value={name || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
             onChange={(e) => setName(e.target.value)}
           />
           <br />
@@ -140,6 +183,53 @@ const SendApplicationForm = () => {
           />
           <br />
 
+          {/* this input file is for uploading cv to cloudinary server */}
+
+          <div>
+            <h1>choose the way that you want to upload your cv</h1>
+            {cvUrl ? (
+              <>
+                <a href={cvUrl} target="cv">
+                  View Your Chosen Cv
+                </a>
+              </>
+            ) : (
+              <p>Please Upload A Cv</p>
+            )}
+          </div>
+
+          {!savedCvChosen && (
+            <>
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    setCv(e.target.files[0]);
+                    setRequiredCv("");
+                  }}
+                ></input>
+                <button onClick={uploadCv}>Upload Cv</button>
+              </div>
+            </>
+          )}
+
+          {/* this part to upload my saved cv */}
+          <div>
+            <button
+              onClick={() => {
+                setCvUrl(userAccountData.user_cv);
+                // console.log("the data url for the cv");
+                setCv(userAccountData.user_cv);
+                setRequiredCv("has been uploaded");
+                setSuccessMessage(""); //we add this so if we want to send another application form while staying on the page it will remove the success message to give the user a better understanding of his condition
+                setSavedCvChosen(true); //we add this part in order if the user click on upload my saved cv the choose a cv buttons will disappear for better user experience
+              }}
+            >
+              Upload My Saved Cv
+            </button>
+          </div>
+          {console.log("the name of the cv is", cv)}
+
           <button onClick={sendFormApplication}>Send Form</button>
 
           {/* this part is for showing showing the user a success message for the user from the backend if his form was sent successfully */}
@@ -148,6 +238,15 @@ const SendApplicationForm = () => {
           {/* this part is for showing an error message for the validation */}
           {requiredMessage && <p>{requiredMessage}</p>}
         </div>
+      ) : (
+        <FadeLoader
+          color={"blue"}
+          height={45}
+          width={5}
+          radius={2}
+          margin={25}
+          css={"display: block; margin: 0 auto; margin-top: 200px;"}
+        />
       )}
 
       {/* this part is for showing an error message from the backend */}

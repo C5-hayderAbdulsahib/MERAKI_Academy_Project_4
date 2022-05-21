@@ -92,6 +92,8 @@ const login = async (req, res) => {
             companyName: user.company_name,
             email: user.email,
             permissions: user.role_id.permissions,
+            imgProfile: user.image_profile,
+            cv: user.user_cv,
           });
 
           res.status(200).json({
@@ -128,8 +130,18 @@ const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
 // generating a new token
 const generateToken = (objectTokenData) => {
   // the payload that will be sent to the client-side
-  const { userId, role, country, name, companyName, email, permissions } =
-    objectTokenData;
+  const {
+    userId,
+    role,
+    country,
+    name,
+    companyName,
+    email,
+    permissions,
+    imgProfile,
+    cv,
+  } = objectTokenData;
+
   const payload = {
     userId, //this is the same as userId: userId
     role,
@@ -138,6 +150,8 @@ const generateToken = (objectTokenData) => {
     name,
     email,
     permissions,
+    imgProfile,
+    cv,
     expireAt: Date.now() + Number(TOKEN_EXP_Time),
   };
 
@@ -161,11 +175,14 @@ const getUserInfo = async (req, res) => {
       success: true,
       message: "The User Exists",
       user: {
+        email: userById.email,
         first_name: userById.first_name,
         last_name: userById.last_name,
         company_name: userById.company_name,
         country: userById.country,
         phone_number: userById.phone_number,
+        image_profile: userById.image_profile,
+        user_cv: userById.user_cv,
       },
     });
   } catch (err) {
@@ -197,6 +214,8 @@ const updateUserInfo = async (req, res) => {
         company_name: req.body.company_name,
         country: req.body.country,
         phone_number: req.body.phone_number,
+        image_profile: req.body.image_profile,
+        user_cv: req.body.user_cv,
       },
       { new: true } //the reason that we are using this is because without it, it will return the object before updating it and that is not what we want
     );
@@ -210,6 +229,8 @@ const updateUserInfo = async (req, res) => {
         company_name: updatedUser.company_name,
         country: updatedUser.country,
         phone_number: updatedUser.phone_number,
+        image_profile: updatedUser.image_profile,
+        user_cv: updatedUser.user_cv,
       },
     });
   } catch (err) {

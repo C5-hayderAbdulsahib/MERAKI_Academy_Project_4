@@ -1,6 +1,7 @@
 //importing packages
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 //creating a new context using createContext hook
 export const AuthContext = React.createContext();
@@ -12,6 +13,7 @@ const AuthProvider = (props) => {
 
   const [token, setToken] = useState("there is no token");
   const [tokenDecoded, setTokenDecoded] = useState("");
+  const [userAccountData, setUserAccountData] = useState({});
 
   // =================================================================
 
@@ -38,6 +40,25 @@ const AuthProvider = (props) => {
       const tokenDecoded = jwt_decode(savedTokenInLocalStorage);
 
       setTokenDecoded(tokenDecoded);
+
+      //we add this part to bring the user image and cv because we need them outside
+      axios
+        .get(
+          "http://localhost:5000/users",
+          //this is how to send a token using axios
+          {
+            headers: {
+              Authorization: `Bearer ${savedTokenInLocalStorage}`, //if we write Authorization or authorization(with small a) both will work fine
+            },
+          }
+        )
+        .then((result) => {
+          console.log("the user data from axois", result.data.user);
+          setUserAccountData(result.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setToken("");
     }
@@ -69,6 +90,8 @@ const AuthProvider = (props) => {
     tokenDecoded,
     setTokenDecoded,
     checkToken,
+    userAccountData,
+    setUserAccountData,
   };
   // =================================================================
 

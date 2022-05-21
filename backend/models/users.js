@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   last_name: { type: String, required: true },
   company_name: String, // it is possible to type the field type directly if there are no other options needed
   phone_number: String, // it is possible to type the field type directly if there are no other options needed
+  image_profile: String,
+  user_cv: String,
 
   role_id: { type: mongoose.Schema.Types.ObjectId, ref: "Role" }, //the ref refer to the other model and not this model it refer to the model that we want to make a relation with
 });
