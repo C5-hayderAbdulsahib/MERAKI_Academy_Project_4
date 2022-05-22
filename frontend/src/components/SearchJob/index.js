@@ -11,6 +11,9 @@ import { AuthContext } from "../../contexts/authContext";
 //importing components
 import SingleJob from "./SingleJob";
 
+//import styling
+import "./style.css";
+
 const HomePage = () => {
   //   we can use the states that are send using the useContext by either calling it property from the object or by using destructuring
   //   const setIsLoggedIn = useContext(TokenContext).setIsLoggedIn;
@@ -231,49 +234,60 @@ const HomePage = () => {
     <>
       {allCountries.length ? (
         <>
-          <input
-            type={"text"}
-            placeholder={"Search Based On Job Title Or Country Or Category"}
-            onChange={(e) => {
-              setSearchTitle(e.target.value);
-              setCountrySearch("");
-              setCategorySearch("");
-            }}
-          />
-          <br />
+          <div className="search-inputs-main-page">
+            <div className="search-text">
+              <label htmlFor="search-bar">Search By Text:</label>
+              <input
+                type={"text"}
+                id="search - bar"
+                placeholder={"Search Based On Job Title Or Country Or Category"}
+                onChange={(e) => {
+                  setSearchTitle(e.target.value);
+                  setCountrySearch("");
+                  setCategorySearch("");
+                }}
+              />
+            </div>
 
-          <Select
-            name="country"
-            id="country"
-            options={allCountries}
-            defaultValue={{ value: "", label: "Select A Country" }}
-            onChange={(e) => {
-              setCountrySearch(e.label);
-              setCategorySearch("");
-              setSearchTitle("");
-            }}
-            className="react-select"
-          />
-          <br />
+            <div className="search-country">
+              <label htmlFor="country">Search By Country:</label>
+              <Select
+                name="country"
+                id="country"
+                options={allCountries}
+                defaultValue={{ value: "", label: "Select A Country" }}
+                onChange={(e) => {
+                  setCountrySearch(e.label);
+                  setCategorySearch("");
+                  setSearchTitle("");
+                }}
+                className="react-select"
+              />
+            </div>
 
-          <Select
-            name="category"
-            id="category"
-            options={allCategories}
-            defaultValue={{ value: "", label: "Select A Country" }}
-            onChange={(e) => {
-              setCategorySearch(e.label);
-              setCountrySearch("");
-              setSearchTitle("");
-            }}
-            className="react-select"
-          />
-          <br />
+            <div className="search-category">
+              <label htmlFor="category">Search By Category:</label>
+              <Select
+                name="category"
+                id="category"
+                options={allCategories}
+                defaultValue={{ value: "", label: "Select A Country" }}
+                onChange={(e) => {
+                  setCategorySearch(e.label);
+                  setCountrySearch("");
+                  setSearchTitle("");
+                }}
+                className="react-select"
+              />
+            </div>
+          </div>
 
           {jobList.length !== 0 ? (
             jobList
           ) : (
-            <div>The Job That You Searched For Is Not Found</div>
+            <div className="job Not Found">
+              The Job That You Searched For Is Not Found
+            </div>
           )}
 
           {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}

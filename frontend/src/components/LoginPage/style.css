@@ -1,5 +1,203 @@
-.login .login-err {
-  background-color: red;
+.login-page .card-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.login-page .grid-card {
+  display: grid;
+  grid-template-rows: 100px 70px 70px 70px 70px 50px;
+  border: 1px solid #959191;
+  transition: 0.3s;
+  padding: 80px;
+  max-width: 500px;
+}
+
+.login-page .grid-card:hover {
+  box-shadow: 0 1px 6px 0 var(--primary-blue-color);
+}
+
+.login-page .title {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.login-page .paragraph {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.login-page .email-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.login-page .email-field label {
+  color: var(--primary-gray-color);
+  padding-right: 40px;
+}
+
+.login-page .email-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.login-page .email-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.login-page .email-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.login-page .password-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.login-page .password-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.login-page .password-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.login-page .password-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.login-page .password-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.login-page .login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page .login-btn button {
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.login-page .login-btn button:hover {
+  background-color: var(--primary-black-color);
+}
+
+.login-page .login-err {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
   width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
-  padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+@media all and (max-width: 700px) {
+  .login-page .grid-card {
+    max-width: 300px;
+  }
+
+  .login-page .email-field {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .login-page .password-field {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .login-page .login-btn {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .login-page .login-btn button {
+    font-size: 0.6rem;
+    padding: 8px 130px; /* the first value is for the hight of the button and the second is for the width */
+  }
+
+  .login-page .login-err {
+    font-size: 10px;
+    padding: 8px 110px 8px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  }
+}
+
+@media all and (max-width: 500px) {
+  .login-page .grid-card {
+    padding: 10px;
+    max-width: 300px;
+  }
+
+  .login-page .login-btn button {
+    font-size: 0.6rem;
+    padding: 5px 130px; /* the first value is for the hight of the button and the second is for the width */
+  }
 }

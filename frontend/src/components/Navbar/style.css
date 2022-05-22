@@ -1,4 +1,229 @@
 .navbar {
   display: flex;
-  gap: 20px;
+  /* justify-content: space-between; */
+  align-items: center;
+  background-color: #263bd6;
+
+  /* this is to make it fixed on the top of the screen */
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  font-family: OpenSans;
+  text-transform: uppercase;
+}
+
+.navbar .logo {
+  /* font-size: 1.6rem; */
+  display: flex; /* we only add this because without it it will not be centered perfectly */
+  align-items: center; /* we only need the align because we are going to use the display flex agian for the links in the code under */
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* we add this only if the logo is a picture but if it was a text then there is no need for it  */
+.navbar .logo img {
+  width: 95px;
+  height: 30px;
+}
+
+.navbar .img-profile {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* we want the home link on the left to disappear while the screen is big but after it reaches mobile mode it appear again  */
+.navbar .home-link-left {
+  display: none;
+}
+
+.navbar .active {
+  background-color: #444444;
+}
+
+/* this is for the toggle bar and it will only appear in mobile mode */
+.navbar .bars-icon {
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+/* this is for the style of the links while in mobile mode */
+.navbar .right-content {
+  position: fixed;
+  width: 100%;
+  /* this is the space between the links and the main navbar when they are under each other in the mobile mode  */
+  top: 55px;
+  background-color: #263bd6;
+}
+
+/* this is for the style of the links while in mobile mode */
+.navbar .right-content a {
+  color: white;
+  display: block;
+  text-align: left;
+  padding: 25px 0; /* this is to put a space from top and bottom for the links in mobile mode */
+}
+
+/* without this part when the user put his mouse over the logout btn it will not change to pointer */
+.navbar .logout-btn {
+  cursor: pointer;
+}
+
+/* we add this part so when we hover on the profile picture it does'nt change the background color */
+.navbar .right-content a:hover:not(.active):not(.link-logout-btn) {
+  background-color: #666;
+}
+
+/* this class is for hiding the toggle button when the screen in desktop mode */
+.hide {
+  display: none;
+}
+
+.navbar .left-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: auto; /* this is to put the toggle button on the right side of the navbar when it is shown in the mobile mode */
+}
+
+/* this is to center the item on the left side while in mobile mode and to give the right background size when hovering over them */
+.navbar .left-content a:not(.home-link-left) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* we have to give a height and width or the background will change color only on the back of the word and not the whole div */
+  height: 57px;
+  width: 80px;
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////// */
+/* the styling for desktop mode start from under */
+
+/* this styling is for both mobile mode and desktop mode */
+/* we have to give it this condition or each time we hove over the word and it is active it will change it background color */
+.navbar .left-content a:hover:not(.active):not(.link-img-profile) {
+  background-color: #666;
+}
+
+/* this is the styling for desktop mode (big screen mode) */
+@media all and (min-width: 1050px) {
+  /* we add this part in order to make a space between the links on the left and to center and to not make them on top of each others */
+  .navbar .left-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navbar .left-content a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* we have to give a height and width or the background will change color only on the back of the word and not the whole div */
+    height: 57px;
+    width: 80px;
+  }
+
+  .navbar .right-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: static;
+    width: auto; /* in order to push the links on the right to a space from the the links on the left  */
+    margin-right: 2px; /* this is to put a space between the end of the screen and the items from the right navbar */
+    background: none; /* this is to remove the background color of the responsive mode and if we did not it will appear behind the worlds */
+  }
+
+  .navbar .right-content a {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px; /* the padding is for the space between the words from all direction and we need to play with it in order to get the background color to cover all the words  */
+
+    height: 20px; /* this is to put the hight into the amount needed */
+  }
+
+  .navbar .bars-icon {
+    display: none;
+  }
+
+  /* we want the home link on the right to appear only when it reaches mobile mode but if the screen is big we want to make it disappear */
+  .navbar .right-content .home-link-right {
+    display: none;
+  }
+}
+
+/* this is for the logout button */
+
+.navbar .logout-btn {
+  background-color: transparent;
+  color: white;
+  border: 3px solid #444444;
+  padding: 12px 26px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.navbar .logout-btn:hover {
+  background-color: #444444;
+  color: white;
+}
+
+/* ///////////////////////////////////////////////////////////////////// */
+/* this is for the signup part */
+.navbar .login-signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* this is in order to make a space between the item of the navbar and the begging of the screen screen */
+.navbar .login-signup .logo {
+  padding-left: 30px;
+}
+
+.navbar .login-signup a {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* we have to give a height and width or the background will change color only on the back of the word and not the whole div */
+  height: 57px;
+  width: 80px;
+}
+
+.navbar .login-signup a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #263bd6;
+}
+
+.navbar a.active {
+  background-color: #444444;
+}
+
+.navbar .login-signup a:hover:not(.logo):not(.active) {
+  background-color: #666;
+}
+
+/* this is to push data under the navbar because it has a posotion of fixed */
+.nav .push-down {
+  margin-bottom: 100px;
 }

@@ -257,158 +257,208 @@ export const AccountPage = () => {
   return (
     <>
       {countries.myCountry ? (
-        <div>
-          <h3>Account Info:</h3>
-          <br />
+        <div className="update-account">
+          <div className="grid-center">
+            <div className="title">
+              <h1>Account Info:</h1>
+            </div>
 
-          {/* this input file is for uploading images to cloudinary server */}
-          <div>
-            <h1>Uploaded image will be displayed here</h1>
-            {imgUrl ? (
-              <img
-                src={imgUrl}
-                alt="profile image"
-                style={{ width: "350px", height: "350px", borderRadius: "50%" }}
-              />
-            ) : (
-              <img
-                src={profileImage}
-                alt="profile image"
-                style={{ width: "350px", height: "350px", borderRadius: "50%" }}
+            {/* this input file is for uploading images to cloudinary server */}
+            <div className="image-section">
+              <h3>Uploaded Image Will Be Displayed Here</h3>
+              <div className="account-image">
+                {imgUrl ? (
+                  <img
+                    src={imgUrl}
+                    alt="profile image"
+                    style={{
+                      width: "350px",
+                      height: "350px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={profileImage}
+                    alt="profile image"
+                    style={{
+                      width: "350px",
+                      height: "350px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="upload-image-inputs">
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                ></input>
+              </div>
+              <div>
+                <button onClick={uploadImage}>Upload Image</button>
+              </div>
+            </div>
+
+            {/* this input file is for uploading cv to cloudinary server */}
+
+            <div className="download-cv-inputs">
+              <div>
+                <h1>Uploaded Cv Will Be Displayed Here</h1>
+              </div>
+              {cvUrl ? (
+                <>
+                  <div>
+                    <a href={cvUrl} target="cv">
+                      View Your Cv
+                    </a>
+                  </div>
+                  <div>
+                    <button onClick={downloadFile}>download Your cv</button>
+                  </div>
+                </>
+              ) : (
+                <p>you dont have a saved cv</p>
+              )}
+            </div>
+
+            <div className="upload-cv-inputs">
+              <div>
+                <input
+                  type="file"
+                  onChange={(e) => setCv(e.target.files[0])}
+                ></input>
+              </div>
+              <div>
+                <button onClick={uploadCv}>Upload Cv</button>
+              </div>
+            </div>
+
+            {/* the model component */}
+            {/* we make a condition if the state is false then dont show the model else show it */}
+            {isOpen && (
+              <ChangePasswordModal
+                oldPassword={oldPassword}
+                setOldPassword={setOldPassword}
+                newPassword={newPassword}
+                setNewPassword={setNewPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                passwordErrMessage={passwordErrMessage}
+                setPasswordErrMessage={setPasswordErrMessage}
+                passwordSuccessMsg={passwordSuccessMsg}
+                setPasswordSuccessMsg={setPasswordSuccessMsg}
+                logout={logout}
+                setIsOpen={setIsOpen} //the reason that we send this state is to be able to close the model in the model component
+                token={token}
               />
             )}
+
+            {/* the reason that we set the state to true is to show the model */}
+            <div className="change-password">
+              <button onClick={() => setIsOpen(true)}>change password</button>
+            </div>
+
+            <div className="user-form">
+              <div className="fname-field">
+                <label htmlFor="fname">Change Your First Name:</label>
+                <input
+                  type={"text"}
+                  id="fname"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    setSuccessMessage("");
+                    setRequiredMessage("");
+                  }}
+                />
+              </div>
+
+              <div className="lname-field">
+                <label htmlFor="lname">Change Your Last Name:</label>
+                <input
+                  type={"text"}
+                  id="lname"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    setSuccessMessage("");
+                    setRequiredMessage("");
+                  }}
+                />
+              </div>
+
+              {tokenDecoded.role === "COMPANY" && (
+                <>
+                  <div className="company-field">
+                    <label htmlFor="lname">Change Your Company Name:</label>
+                    <input
+                      type={"text"}
+                      id="lname"
+                      placeholder="Company Name"
+                      value={companyName}
+                      onChange={(e) => {
+                        setCompanyName(e.target.value);
+                        setSuccessMessage("");
+                        setRequiredMessage("");
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+              <div className="country-field">
+                <label htmlFor="country">Update Country:</label>
+                <Select
+                  name="country"
+                  id="country"
+                  className="react-select"
+                  options={countriesSelect}
+                  defaultValue={{
+                    value: countries.myCountry,
+                    label: countries.myCountry,
+                  }}
+                  onChange={(e) => {
+                    setCountries({
+                      myCountry: e.value,
+                      allCountries: countries.allCountries,
+                    });
+                    setSuccessMessage("");
+                    setRequiredMessage("");
+                  }}
+                />
+              </div>
+
+              <div className="phone-filed">
+                <input
+                  type={"text"}
+                  placeholder="Phone Number"
+                  value={phoneNum}
+                  onChange={(e) => {
+                    setPhoneNum(e.target.value);
+                    setSuccessMessage("");
+                    setRequiredMessage("");
+                  }}
+                />
+              </div>
+
+              <div className="update-btn">
+                <button onClick={updateAccount}>Update Account</button>
+              </div>
+              {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
+              {successMessage ? (
+                <p className="login-err">{successMessage}</p>
+              ) : (
+                ""
+              )}
+              {/* this part is for showing an error message for the validation */}
+              {requiredMessage && <p>{requiredMessage}</p>}
+            </div>
           </div>
-
-          <div>
-            <input
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-            ></input>
-            <button onClick={uploadImage}>Upload Image</button>
-          </div>
-
-          {/* this input file is for uploading cv to cloudinary server */}
-
-          <div>
-            <h1>Uploaded cv will be displayed here</h1>
-            {cvUrl ? (
-              <>
-                <a href={cvUrl} target="cv">
-                  View Your Cv
-                </a>
-                <button onClick={downloadFile}>download Your cv</button>
-              </>
-            ) : (
-              <p>you dont have a saved cv</p>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="file"
-              onChange={(e) => setCv(e.target.files[0])}
-            ></input>
-            <button onClick={uploadCv}>Upload Cv</button>
-          </div>
-
-          {/* the model component */}
-          {/* we make a condition if the state is false then dont show the model else show it */}
-          {isOpen && (
-            <ChangePasswordModal
-              oldPassword={oldPassword}
-              setOldPassword={setOldPassword}
-              newPassword={newPassword}
-              setNewPassword={setNewPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-              passwordErrMessage={passwordErrMessage}
-              setPasswordErrMessage={setPasswordErrMessage}
-              passwordSuccessMsg={passwordSuccessMsg}
-              setPasswordSuccessMsg={setPasswordSuccessMsg}
-              logout={logout}
-              setIsOpen={setIsOpen} //the reason that we send this state is to be able to close the model in the model component
-              token={token}
-            />
-          )}
-
-          {/* the reason that we set the state to true is to show the model */}
-          <button onClick={() => setIsOpen(true)}>change password</button>
-          <br></br>
-
-          <input
-            type={"text"}
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
-          <input
-            type={"text"}
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
-          {tokenDecoded.role === "COMPANY" && (
-            <>
-              <input
-                type={"text"}
-                placeholder="Company Name"
-                value={companyName}
-                onChange={(e) => {
-                  setCompanyName(e.target.value);
-                  setSuccessMessage("");
-                  setRequiredMessage("");
-                }}
-              />
-              <br />
-            </>
-          )}
-          <label htmlFor="country">Choose an Country:</label>
-          <Select
-            name="country"
-            id="country"
-            className="react-select"
-            options={countriesSelect}
-            defaultValue={{
-              value: countries.myCountry,
-              label: countries.myCountry,
-            }}
-            onChange={(e) => {
-              setCountries({
-                myCountry: e.value,
-                allCountries: countries.allCountries,
-              });
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
-          <br />
-          <input
-            type={"text"}
-            placeholder="Phone Number"
-            value={phoneNum}
-            onChange={(e) => {
-              setPhoneNum(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
-          <button onClick={updateAccount}>Update Account</button>
-          {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
-          {successMessage ? <p className="login-err">{successMessage}</p> : ""}
-          {/* this part is for showing an error message for the validation */}
-          {requiredMessage && <p>{requiredMessage}</p>}
         </div>
       ) : (
         <FadeLoader

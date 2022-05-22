@@ -123,116 +123,129 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="signup">
-      <h3>Signup Form:</h3>
-      <br />
+    <div className="signup-page">
+      <div className="card-center">
+        <div className="grid-card">
+          <div className="title">
+            <h3>Signup Form:</h3>
+          </div>
 
-      <label htmlFor="email">Choose a Email:</label>
-      <input
-        type={"email"}
-        name="email"
-        id="email"
-        placeholder="Email"
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-      />
-      <br />
+          <div className="paragraph">
+            <h3>Please Enter Your Information Here:</h3>
+          </div>
 
-      <label htmlFor="password">Choose a Password:</label>
-      <input
-        type={"password"}
-        name="password"
-        id="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
+          <div className="email-field">
+            <label htmlFor="email">Choose a Email:</label>
+            <input
+              type={"email"}
+              id="email"
+              placeholder="Email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
 
-      <label htmlFor="fname">Choose a First Name:</label>
-      <input
-        type={"text"}
-        name="fname"
-        id="fname"
-        placeholder="First Name"
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-      <br />
+          <div className="password-field">
+            <label htmlFor="password">Choose a Password:</label>
+            <input
+              type={"password"}
+              id="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      <label htmlFor="lname">Choose a Last Name:</label>
-      <input
-        type={"text"}
-        name="lname"
-        id="lname"
-        placeholder="Last Name"
-        onChange={(e) => setLastName(e.target.value)}
-      />
-      <br />
+          <div className="fname-field">
+            <label htmlFor="fname">Choose a First Name:</label>
+            <input
+              type={"text"}
+              id="fname"
+              placeholder="First Name"
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
 
-      <label htmlFor="country">Choose an Country:</label>
+          <div className="lname-field">
+            <label htmlFor="lname">Choose a Last Name:</label>
+            <input
+              type={"text"}
+              id="lname"
+              placeholder="Last Name"
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
 
-      <Select
-        name="country"
-        id="country"
-        options={countriesSelect}
-        defaultValue={{ value: "", label: "Select A Country" }}
-        onChange={(e) => setSelectedCountry(e.value)}
-        className="react-select"
-      />
+          <div className="country-field">
+            <label htmlFor="country">Choose an Country:</label>
+            <Select
+              id="country"
+              options={countriesSelect}
+              defaultValue={{ value: "", label: "Select A Country" }}
+              onChange={(e) => setSelectedCountry(e.value)}
+              className="react-select"
+            />
+          </div>
 
-      <label htmlFor="roles">Choose an Account Type:</label>
-      <select
-        name="roles"
-        id="roles"
-        onChange={(e) => chooseRole(e.target.value)}
-      >
-        <option value="">Choose A Type</option>
+          <div className="type-field">
+            <label htmlFor="roles">Choose an Account Type:</label>
+            <select
+              id="roles"
+              onChange={(e) => chooseRole(e.target.value)}
+              className="the-select"
+            >
+              <option value="">Choose A Type</option>
 
-        <option value="627ccc9c30d3541b35145ed5">Individual Account</option>
-        <option value="627cccac30d3541b35145ed7">Company Account</option>
-      </select>
-      <br />
+              <option value="627ccc9c30d3541b35145ed5">
+                Individual Account
+              </option>
+              <option value="627cccac30d3541b35145ed7">Company Account</option>
+            </select>
+          </div>
 
-      {showCompanyNameField ? (
-        <>
-          <label htmlFor="companyN">Choose a Company Name:</label>
-          <input
-            type={"text"}
-            name="companyN"
-            id="companyN"
-            placeholder="Company Name"
-            onChange={(e) => setCompanyName(e.target.value)}
-          />
-          <br />
-        </>
-      ) : (
-        ""
-      )}
+          {showCompanyNameField ? (
+            <>
+              <div className="company-filed">
+                <label htmlFor="companyN">Choose a Company Name:</label>
+                <input
+                  type={"text"}
+                  id="companyN"
+                  placeholder="Company Name"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+              </div>
+            </>
+          ) : (
+            ""
+          )}
 
-      <button onClick={CreateUser}>Signup</button>
-      <br />
+          <div className="signup-btn">
+            <button onClick={CreateUser}>Signup</button>
+          </div>
 
-      {/* this part is for showing an error message depending on the message from the backend */}
-      {message ? (
-        <p
-          className={
-            errorStyle !== "success" ? "signup__err" : "signup__success"
-          }
-        >
-          {message}
-        </p>
-      ) : (
-        ""
-      )}
+          {/* this part is for showing an error message depending on the message from the backend */}
+          {message ? (
+            <p
+              className={
+                errorStyle !== "success" ? "signup__err" : "signup__success"
+              }
+            >
+              {message}
+            </p>
+          ) : (
+            ""
+          )}
 
-      {/* this part is for showing an error message for the validation */}
-      {requiredMessage ? (
-        <p className={requiredMessage ? "signup__err" : ""}>
-          {requiredMessage}
-        </p>
-      ) : (
-        ""
-      )}
+          {/* this part is for showing an error message for the validation */}
+          {requiredMessage ? (
+            <p className={requiredMessage ? "signup__err" : ""}>
+              {requiredMessage}
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
     </div>
   );
 };

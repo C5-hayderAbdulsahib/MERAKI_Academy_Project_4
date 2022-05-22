@@ -83,7 +83,9 @@ const HomePage = () => {
         .substring(4, 10);
 
       return (
-        <SingleJob key={element._id} job={element} jobDate={createdJobDate} />
+        <div key={element._id}>
+          <SingleJob job={element} jobDate={createdJobDate} />
+        </div>
       ); //the key has to be named that way and if we tried to change it and give it a name of id an error will appear on the console, and also it value has to be unique or an error will also occur so that why we usually  give it the value of the id, so if there is an array of element in jsx and they all have the same name for example <p> we have to give each one of them a key attribute or an error will appear
     });
   }

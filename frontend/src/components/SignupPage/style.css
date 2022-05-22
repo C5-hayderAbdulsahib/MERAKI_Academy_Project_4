@@ -10,8 +10,8 @@
   padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
 }
 
-.signup .react-select {
-  width: 600px;
+.signup-page .react-select {
+  width: 350px;
   margin-bottom: 25px;
 }
 
@@ -46,3 +46,376 @@
 /* .css-6j8wv5-Input {
   color: red !important;
 } */
+
+.signup-page .card-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-page .grid-card {
+  display: grid;
+  grid-template-rows: 60px 50px 50px 50px 50px 50px 70px 50px 65px 90px;
+  border: 1px solid #959191;
+  transition: 0.3s;
+  padding: 15px;
+  max-width: 490px;
+}
+
+.signup-page .grid-card:hover {
+  box-shadow: 0 1px 6px 0 var(--primary-blue-color);
+}
+
+.signup-page .title {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.signup-page .paragraph {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.signup-page .email-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-page .email-field label {
+  color: var(--primary-gray-color);
+  padding-right: 40px;
+}
+
+.signup-page .email-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .email-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .email-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.signup-page .password-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-page .password-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .password-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .password-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .password-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.signup-page .fname-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-page .fname-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .fname-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .fname-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .fname-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.signup-page .lname-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-page .lname-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .lname-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .lname-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .lname-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.signup-page .country-field {
+  display: grid;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.signup-page .country-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .react-select {
+  width: 300px;
+}
+
+.signup-page .type-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.signup-page .type-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .type-field select {
+  color: var(--primary-gray-color);
+  padding-right: 165px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 4px;
+}
+
+.signup-page .type-field select:focus {
+  box-shadow: 0 0 0 1px #2684ff !important;
+  border-radius: 4px;
+}
+
+.signup-page .type-field .the-select * {
+  color: #444444;
+}
+
+.signup-page .company-filed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-page .company-filed label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.signup-page .company-filed input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .company-filed input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .company-filed input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.signup-page .signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-page .signup-btn button {
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.signup-page .signup-btn button:hover {
+  background-color: var(--primary-black-color);
+}
+
+.signup-page .signup__err {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+@media all and (max-width: 700px) {
+  .signup-page .grid-card {
+    max-width: 300px;
+  }
+
+  .signup-page .email-field {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .signup-page .password-field {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .signup-page .signup-btn {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .signup-page .signup-btn button {
+    font-size: 0.6rem;
+    padding: 8px 130px; /* the first value is for the hight of the button and the second is for the width */
+  }
+
+  .signup-page .signup__err {
+    font-size: 10px;
+    padding: 8px 110px 8px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  }
+}
+
+@media all and (max-width: 500px) {
+  .signup-page .grid-card {
+    padding: 10px;
+    max-width: 300px;
+  }
+
+  .signup-page .login-btn button {
+    font-size: 0.6rem;
+    padding: 5px 130px; /* the first value is for the hight of the button and the second is for the width */
+  }
+}

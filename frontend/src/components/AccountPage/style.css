@@ -136,3 +136,53 @@
   transform: none;
   background: whitesmoke;
 }
+
+/* the above code was for the model, but the under code is for all the ipdate account page */
+
+.update-account .grid-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.update-account .title {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .image-section {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .account-image {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .upload-image-inputs {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .download-cv-inputs {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .upload-cv-inputs {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}
+
+.update-account .change-password {
+  /* display: grid;
+  justify-content: center;
+  align-items: center; */
+}

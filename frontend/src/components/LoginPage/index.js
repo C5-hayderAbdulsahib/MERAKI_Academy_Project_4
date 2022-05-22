@@ -62,25 +62,44 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="login">
-      <h3>Login Form:</h3>
-      <br />
+    <div className="login-page">
+      <div className="card-center">
+        <div className="grid-card">
+          <div className="title">
+            <h1>Login Form:</h1>
+          </div>
 
-      <input
-        type={"email"}
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+          <div className="paragraph">
+            <h3>Please Enter Your Username And Password:</h3>
+          </div>
 
-      <input
-        type={"password"}
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+          <div className="email-field">
+            <label htmlFor="email">Enter Your Email:</label>
+            <input
+              type={"email"}
+              id="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-      <button onClick={loginFun}>Log in</button>
+          <div className="password-field">
+            <label htmlFor="password">Enter Your Password:</label>
+            <input
+              type={"password"}
+              id="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      {message ? <p className="login-err">{message}</p> : ""}
+          <div className="login-btn">
+            <button onClick={loginFun}>Log in</button>
+          </div>
+
+          <div>{message ? <div className="login-err">{message}</div> : ""}</div>
+        </div>
+      </div>
     </div>
   );
 };

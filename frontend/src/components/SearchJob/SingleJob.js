@@ -10,18 +10,48 @@ const SingleJob = (props) => {
 
   return (
     <>
-      <h1>title {job.title}</h1>
-      <p>{job.category_id.name}</p>
-      <h3>{job.company_name}</h3>
-      <h3>{job.country}</h3>
-      <h3>{job.type}</h3>
-      <h3>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h3>
-      <h3>{job.company_name}</h3>
-      <h3>published At {jobDate}</h3>
+      <div className="search-page">
+        <div className="card-center">
+          <div className="grid-card">
+            <div className="first-row">
+              <div className="job-title">
+                <h2>Job Title: {job.title}</h2>
+              </div>
+              <div className="published-at">
+                <h2>Published At: {jobDate}</h2>
+              </div>
+            </div>
 
-      <Link to={`/job/${job._id}`}>
-        <button>view job</button>
-      </Link>
+            <div className="second-row">
+              <div className="company-name">
+                <h2>{job.company_name}</h2>
+              </div>
+              <div className="job-category">
+                <h2>{job.category_id.name}</h2>
+              </div>
+            </div>
+
+            <div className="third-row">
+              <div className="job-country">
+                <h2>{job.country}</h2>
+              </div>
+
+              <div className="job-type">
+                <h2>{job.type}</h2>
+              </div>
+              <div className="job-salary">
+                <h2>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h2>
+              </div>
+            </div>
+
+            <div className="view-btn">
+              <Link to={`/job/${job._id}`}>
+                <button>view job</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

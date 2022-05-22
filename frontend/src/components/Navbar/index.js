@@ -1,12 +1,14 @@
 //importing packages
-import { Link } from "react-router-dom";
-import React, { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 // import the context which we created in the authContext.js using the Context hook
 import { AuthContext } from "../../contexts/authContext";
 
 //import the image in the component to use it
 import profileImage from "../../assest/profile image.png";
+import logo from "../../assest/logo.png";
 
 //import styling
 import "./style.css";
@@ -20,58 +22,119 @@ const Navbar = () => {
   // assign the context value to a variable so it can be used (we get this context value from the useContext hook)
   const { logout, token, tokenDecoded, userAccountData } =
     useContext(AuthContext);
-  if (token) {
-    console.log("the token is", token);
-  }
+
+  const [toggle, setToggle] = useState(true);
+
+  const hideToggle = toggle ? "hide" : "";
 
   return (
-    <div className="navbar">
-      {token && token !== "there is no token" ? (
-        <>
-          <Link to="/">Home </Link>
+    <div className="nav">
+      <nav className="navbar">
+        {token && token !== "there is no token" ? (
+          <>
+            <div>
+              <Link to="/" className="logo">
+                <img src={logo} alt="profile image" />
+              </Link>
+            </div>
 
-          <Link to="/user/account">
-            {userAccountData.first_name ? userAccountData.first_name : ""}
-          </Link>
+            {/* ////////////////////////////////////////////////////////////////////////////////// */}
+            {/* this is the left side of the navbar */}
+            <div className="left-content">
+              <div>
+                <Link to="/user/account" className="link-img-profile">
+                  {userAccountData.image_profile ? (
+                    <img
+                      src={userAccountData.image_profile}
+                      alt="profile image"
+                      className="img-profile"
+                    />
+                  ) : (
+                    <img
+                      src={profileImage}
+                      alt="profile image"
+                      className="img-profile"
+                    />
+                  )}
+                </Link>
+              </div>
 
-          <Link to="/user/account">
-            {userAccountData.image_profile ? (
-              <img
-                src={userAccountData.image_profile}
-                alt="profile image"
-                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-              />
-            ) : (
-              <img
-                src={profileImage}
-                alt="profile image"
-                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-              />
-            )}
-          </Link>
+              {/* we added NavLink because it will automatically add an active attributes to the link if it matches its path  */}
+              <div>
+                <NavLink to="/user/account">
+                  {userAccountData.first_name ? userAccountData.first_name : ""}
+                </NavLink>
+              </div>
 
-          <Link to="job/saved_jobs">Saved Job Posts</Link>
+              {/* <!-- we created this link to make show near the logo but after reaching the decided width it will be disappeared and thats the way to make it work in responsive mode --> */}
+              <div>
+                <NavLink to="/" className="home-link-left">
+                  Home
+                </NavLink>
+              </div>
+            </div>
 
-          <Link to="job/search">Search</Link>
+            {/* ////////////////////////////////////////////////////////////////////////// */}
+            {/* this is the toggle button and in order for it to work i need to keep it alone like this not inside the right content div nor the left */}
+            <div className="bars-icon">
+              <FaBars onClick={() => setToggle(!toggle)} />
+            </div>
 
-          {tokenDecoded.role === "COMPANY" && (
-            <>
-              <Link to="/job/new_job_post">Create New Job Post</Link>
+            {/* ////////////////////////////////////////////////////////////////////////////////// */}
+            {/* this is the right side of the navbar */}
+            {/* <!-- we add a condition to this home link to make it disappear while in the desktop mode and to make it appear while on the mobile mode --> */}
+            <div className={`right-content ${hideToggle}`}>
+              <NavLink to="/" className="home-link-right">
+                Home
+              </NavLink>
 
-              <Link to="job/company_jobs">Your Job Posts</Link>
-            </>
-          )}
+              <NavLink to="job/saved_jobs">Saved Job Posts</NavLink>
 
-          <Link to="/login">
-            <button onClick={logout}>Logout</button>
-          </Link>
-        </>
-      ) : (
-        <>
-          <Link to="/signup">Signup</Link>
-          <Link to="/login">Login</Link>
-        </>
-      )}
+              <NavLink to="job/search">Search</NavLink>
+
+              {tokenDecoded.role === "COMPANY" && (
+                <>
+                  <NavLink to="/job/new_job_post">Create New Job Post</NavLink>
+
+                  <NavLink to="job/company_jobs">Your Job Posts</NavLink>
+                </>
+              )}
+
+              <Link to="/login" className="link-logout-btn" onClick={logout}>
+                <button className="logout-btn">Logout</button>
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* ////////////////////////////////////////////////////////////////////////////////// */}
+            {/* this part is when the user is logged out */}
+            <div className="login-signup">
+              <div>
+                <Link to="/" className="logo">
+                  <img
+                    src={logo}
+                    alt="profile image"
+                    style={{
+                      width: "95px",
+                      height: "30px",
+                    }}
+                  />
+                </Link>
+              </div>
+
+              <div>
+                <NavLink to="/signup">Signup</NavLink>
+              </div>
+              <div>
+                <NavLink to="/login">Login</NavLink>
+              </div>
+            </div>
+          </>
+        )}
+      </nav>
+
+      <div className="push-down"></div>
     </div>
   );
 };
