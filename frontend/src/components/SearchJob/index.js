@@ -240,7 +240,7 @@ const HomePage = () => {
               <input
                 type={"text"}
                 id="search - bar"
-                placeholder={"Search Based On Job Title Or Country Or Category"}
+                placeholder={"Search By Title Or Country Or Category"}
                 onChange={(e) => {
                   setSearchTitle(e.target.value);
                   setCountrySearch("");
@@ -282,16 +282,18 @@ const HomePage = () => {
             </div>
           </div>
 
-          {jobList.length !== 0 ? (
-            jobList
-          ) : (
-            <div className="job Not Found">
-              The Job That You Searched For Is Not Found
-            </div>
-          )}
+          <div className="search-problems">
+            {jobList.length !== 0 ? (
+              jobList
+            ) : (
+              <div className="job-Not-Found">
+                <p>The Job That You Searched For Is Not Found</p>
+              </div>
+            )}
 
-          {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
-          {emptyMessage ? emptyMessage : ""}
+            {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
+            {emptyMessage ? emptyMessage : ""}
+          </div>
         </>
       ) : (
         <FadeLoader

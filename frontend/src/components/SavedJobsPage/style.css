@@ -1,0 +1,237 @@
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.errMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.search-page .card-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  /* margin-bottom: 100px; */
+  /* padding: 50px; */
+}
+
+.search-page .grid-card {
+  display: grid;
+  grid-template-columns: 1500px;
+  grid-template-rows: 100px 70px 200px 70px 70px 70px;
+  border: 1px solid #959191;
+  transition: 0.3s;
+}
+
+.search-page .grid-card:hover {
+  box-shadow: 0 1px 6px 0 var(--primary-blue-color);
+}
+
+.search-page .first-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.search-page .job-title {
+  color: var(--primary-blue-color);
+  font-family: OpenSans;
+}
+
+.search-page .published-at {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.search-page .second-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.search-page .job-category {
+  color: var(--primary-blue-color);
+  font-family: OpenSans;
+}
+
+.search-page .company-name {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.search-page .third-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* width: 2000; */
+}
+
+.search-page .job-country {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.search-page .job-type {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.search-page .job-salary {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.search-page .view-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-page .view-btn button {
+  background-color: white;
+  color: var(--primary-blue-color);
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: 1px solid var(--primary-blue-color);
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-page .view-btn button:hover {
+  background-color: var(--primary-blue-color);
+  color: white;
+}
+
+.search-inputs-main-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.search-inputs-main-page .search-text label {
+  color: var(--primary-gray-color);
+}
+
+.search-inputs-main-page .search-text input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 120px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.search-inputs-main-page .search-text input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.search-inputs-main-page .search-text input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.search-inputs-main-page .search-country label {
+  color: var(--primary-gray-color);
+  padding-right: 40px;
+}
+
+.search-inputs-main-page .search-category label {
+  color: var(--primary-gray-color);
+  padding-right: 40px;
+}
+
+.search-country .react-select {
+  width: 350px;
+}
+
+.search-category .react-select {
+  width: 350px;
+}
+
+.search-page .un-saved-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-page .un-saved-btn button {
+  background-color: var(--primary-black-color);
+  color: white;
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+@media all and (max-width: 1000px) {
+  .search-page .grid-card {
+    grid-template-columns: 500px;
+  }
+}
+
+@media all and (max-width: 550px) {
+  .search-page .grid-card {
+    grid-template-columns: 350px;
+  }
+
+  .search-page .view-btn button {
+    padding: 12px 80px; /* the first value is for the hight of the button and the second is for the width */
+  }
+}

@@ -53,29 +53,68 @@ const SingleJob = (props) => {
 
   return (
     <>
-      <h1>title {job.title}</h1>
-      <p>{job.category_id.name}</p>
-      <h3>{job.company_name}</h3>
-      <h3>{job.country}</h3>
-      <h3>{job.type}</h3>
-      <h3>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h3>
-      <h3>published At {jobDate}</h3>
+      <div className="company-jobs-page">
+        <div className="card-center">
+          <div className="grid-card">
+            <div className="first-row">
+              <div className="job-title">
+                <h2>Job Title: {job.title}</h2>
+              </div>
+              <div className="published-at">
+                <h2>published At: {jobDate}</h2>
+              </div>
+            </div>
 
-      <Link to={`/job/company_jobs/${job._id}/applicants`}>
-        <button>View Applicants</button>
-      </Link>
+            <div className="second-row">
+              <div className="company-name">
+                <h3>Company Name: {job.company_name}</h3>
+              </div>
 
-      <Link to={`/job/${job._id}/update`}>
-        <button>Update Job</button>
-      </Link>
+              <div className="job-category">
+                <h3>Job Category: {job.category_id.name}</h3>
+              </div>
+            </div>
 
-      <button
-        onClick={() => {
-          deleteJob();
-        }}
-      >
-        Delete Job
-      </button>
+            <div className="third-row">
+              <div className="job-country">
+                <h3>Company Country: {job.country}</h3>
+              </div>
+              <div className="job-type">
+                <h3>Job Type: {job.type}</h3>
+              </div>
+              <div className="job-salary">
+                <h3>
+                  Expected Salary:{" "}
+                  {`${job.salary_min}-${job.salary_max} ${job.currency}`}
+                </h3>
+              </div>
+            </div>
+
+            <div className="view-btn">
+              <Link to={`/job/company_jobs/${job._id}/applicants`}>
+                <button>View Applicants</button>
+              </Link>
+            </div>
+
+            <div className="view-btn">
+              <Link to={`/job/${job._id}/update`}>
+                <button>Update Job</button>
+              </Link>
+            </div>
+            <br></br>
+
+            <div className="view-btn">
+              <button
+                onClick={() => {
+                  deleteJob();
+                }}
+              >
+                Delete Job
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

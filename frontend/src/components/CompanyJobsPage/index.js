@@ -126,9 +126,9 @@ export const CompanyJobsPage = () => {
       )}
 
       {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
-      {successMessage && successMessage}
+      {successMessage && <p>successMessage</p>}
 
-      {errMessage && <div>{errMessage}</div>}
+      {errMessage && <p className="empty-company-jobs">{errMessage}</p>}
     </>
   );
 };

@@ -80,22 +80,23 @@ const ChangePasswordModal = (props) => {
           <div className="modalContent">
             {/* ///////////////////////////////the body f the model */}
             Are you sure you want to change your password?
+            <div className="push-down"></div>
             <input
-              type={"text"}
+              type={"password"}
               placeholder="Old Password"
               onChange={(e) => setOldPassword(e.target.value)}
             />
             <input
-              type={"text"}
+              type={"password"}
               placeholder="New Password"
               onChange={(e) => setNewPassword(e.target.value)}
             />
             <input
-              type={"text"}
+              type={"password"}
               placeholder="Confirm Password"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <br />
+            <div className="push-down"></div>
             {/* the update button */}
             <button
               onClick={() => {
@@ -110,9 +111,13 @@ const ChangePasswordModal = (props) => {
               Cancel
             </button>
             {/* this part is for showing an error message from the backend */}
-            {passwordSuccessMsg && <p>{passwordSuccessMsg}</p>}
+            {passwordSuccessMsg && (
+              <p className="change-password-succeeded">{passwordSuccessMsg}</p>
+            )}
             {/* this part is for showing an error message from the backend */}
-            {passwordErrMessage && <p>{passwordErrMessage}</p>}
+            {passwordErrMessage && (
+              <p className="change-password-failed">{passwordErrMessage}</p>
+            )}
           </div>
           {/* // ... */}
         </div>

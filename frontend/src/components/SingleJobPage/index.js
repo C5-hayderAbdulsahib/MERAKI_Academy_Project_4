@@ -6,7 +6,8 @@ import axios from "axios";
 // import the context which we created in the authContext.js using the Context hook
 import { AuthContext } from "../../contexts/authContext";
 
-//importing components
+//import styling
+import "./style.css";
 
 //since we used export directly then when we import we have to add the {} or an error will occur
 export const SingleJobPage = () => {
@@ -29,7 +30,7 @@ export const SingleJobPage = () => {
   // `useParams` returns an object that contains the URL parameters
   const { id } = useParams();
   console.log("the id from the params is", id);
-  console.log(tokenDecoded.userId);
+  console.log(tokenDecoded.role);
 
   const getSingleJob = async () => {
     try {
@@ -150,26 +151,70 @@ export const SingleJobPage = () => {
     <>
       {singleJob.title && (
         <>
-          <h1>title {singleJob.title}</h1>
-          <p>{singleJob.category_id.name}</p>
-          <h3>{singleJob.company_name}</h3>
-          <h3>{singleJob.country}</h3>
-          <h3>published at {jobDate}</h3>
-          <h3>{singleJob.type}</h3>
-          <h3>
-            {`${singleJob.salary_min}-${singleJob.salary_max} ${singleJob.currency}`}
-          </h3>
-          <p>{singleJob.description}</p>
+          <div className="search-page">
+            <div className="card-center">
+              <div className="grid-card-single-page">
+                <div className="first-row">
+                  <div className="job-title">
+                    <h2>Job Title: {singleJob.title}</h2>
+                  </div>
+                  <div className="published-at">
+                    <h2>Published At: {jobDate}</h2>
+                  </div>
+                </div>
 
-          {singleJob.inFavorites.includes(tokenDecoded.userId) ? (
-            <button onClick={unSaveJob}>Unsave Job</button>
-          ) : (
-            <button onClick={saveJob}>Save Job</button>
-          )}
+                <div className="second-row">
+                  <div className="company-name">
+                    <h3>Company Name: {singleJob.company_name}</h3>
+                  </div>
+                  <div className="job-category">
+                    <h3>Category: {singleJob.category_id.name}</h3>
+                  </div>
+                </div>
 
-          <Link to={`/job/${id}/application_Form`}>
-            <button>Apply For Job</button>
-          </Link>
+                <div className="third-row">
+                  <div className="job-country">
+                    <h3>Country: {singleJob.country}</h3>
+                  </div>
+                  <div className="job-type">
+                    <h3>Job Type: {singleJob.type}</h3>
+                  </div>
+                  <div className="job-salary">
+                    <h3>
+                      Salary:{" "}
+                      {` ${singleJob.salary_min}-${singleJob.salary_max} ${singleJob.currency}`}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="description">
+                  <p>Job Description: {singleJob.description}</p>
+                </div>
+
+                {singleJob.inFavorites.includes(tokenDecoded.userId) ? (
+                  <div className="un-saved-btn">
+                    <button onClick={unSaveJob}>Unsave Job</button>
+                  </div>
+                ) : (
+                  <div className="saved-btn">
+                    <button onClick={saveJob}>Save Job</button>
+                  </div>
+                )}
+
+                <br></br>
+                {tokenDecoded.role === "INDIVIDUAL" && (
+                  <div className="view-btn">
+                    <Link to={`/job/${id}/application_Form`}>
+                      <button>Apply For Job</button>
+                    </Link>
+                  </div>
+                )}
+
+                <br></br>
+                <br></br>
+              </div>
+            </div>
+          </div>
         </>
       )}
       {errMessage ? errMessage : ""}

@@ -1,0 +1,154 @@
+.update-account .custom-file-input {
+  color: transparent;
+}
+
+.update-account .custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.update-account .custom-file-input::before {
+  content: "Choose Another Cv";
+  color: white;
+  display: inline-block;
+  background: var(--primary-blue-color);
+  /* border: 1px solid #999; */
+  border-radius: 5px;
+  padding: 6px 33px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+
+  text-transform: uppercase;
+
+  font-size: 10pt;
+  font-family: OpenSans;
+}
+.update-account .custom-file-input:hover::before {
+  border-color: black;
+}
+.update-account .custom-file-input:active {
+  outline: 0;
+}
+.update-account .custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.update-account .upload-cv-application-form {
+  margin-top: 5px;
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 8px 25px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+
+  margin-bottom: 50px;
+}
+
+/* upload-cv-application-form-btn */
+
+.warping-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.update-account .upload-saved-cv-application-form-btn {
+  margin-top: 5px;
+  background-color: var(--primary-gray-color);
+  color: white;
+  padding: 8px 10px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+
+  margin-bottom: 50px;
+}
+
+.update-account .upload-cv-application-form-btn {
+  margin-top: 5px;
+  background-color: white;
+  color: var(--primary-blue-color);
+  padding: 8px 35px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border-color: var(--primary-blue-color);
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+
+  margin-bottom: 50px;
+}
+
+.send_cv_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.send_cv_success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.linktest {
+  text-decoration: none;
+  color: #444;
+}
+
+.linktest:visited {
+  text-decoration: none;
+  color: #444;
+}

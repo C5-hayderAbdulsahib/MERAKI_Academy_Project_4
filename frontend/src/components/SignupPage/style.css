@@ -1,15 +1,3 @@
-.signup .signup__success {
-  background-color: green;
-  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
-  padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
-}
-
-.signup .signup__err {
-  background-color: red;
-  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
-  padding: 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
-}
-
 .signup-page .react-select {
   width: 350px;
   margin-bottom: 25px;
@@ -372,6 +360,22 @@
   border-color: #ebccd1;
   width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
   padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.signup-page .signup__success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 131px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
   border-radius: 5px;
 }
 

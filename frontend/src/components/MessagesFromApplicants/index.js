@@ -121,7 +121,7 @@ export const MessagesFromApplicants = () => {
           <div>{applicantsList}</div>
 
           {/* we add this condition because there might be no job post that have been created yet so thats why instead of an array a string message will appear */}
-          {successMessage && successMessage}
+          {successMessage && <p className="no-candidates">{successMessage}</p>}
         </>
       ) : (
         <FadeLoader

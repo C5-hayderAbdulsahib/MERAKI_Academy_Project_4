@@ -108,14 +108,14 @@
   font-size: 0.8rem;
   border: none;
   color: #fff;
-  background: #ff3e4e;
+  background: var(--primary-blue-color);
   transition: all 0.25s ease;
 }
 
 .deleteBtn:hover {
-  box-shadow: 0 10px 20px -10px rgba(255, 62, 78, 0.6);
+  box-shadow: 0 10px 20px -10px #9fc5e8;
   transform: translateY(-5px);
-  background: #ff3e4e;
+  /* background: #ff3e4e; */
 }
 
 .cancelBtn {
@@ -126,8 +126,8 @@
   border-radius: 12px;
   font-size: 0.8rem;
   border: none;
-  color: #2c3e50;
-  background: #fcfcfc;
+  color: white;
+  background: var(--primary-black-color);
   transition: all 0.25s ease;
 }
 
@@ -135,6 +135,25 @@
   box-shadow: none;
   transform: none;
   background: whitesmoke;
+  color: var(--primary-black-color);
+}
+
+.push-down {
+  margin-bottom: 20px;
+}
+
+.change-password-succeeded {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  padding: 5px 0px;
+}
+
+.change-password-failed {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 5px 0px;
 }
 
 /* the above code was for the model, but the under code is for all the ipdate account page */
@@ -146,43 +165,496 @@
 }
 
 .update-account .title {
-  /* display: grid;
-  justify-content: center;
-  align-items: center; */
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
 }
 
-.update-account .image-section {
-  /* display: grid;
-  justify-content: center;
-  align-items: center; */
+.update-account .image-section h3 {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
 }
 
-.update-account .account-image {
-  /* display: grid;
-  justify-content: center;
-  align-items: center; */
+.update-account .account-image img {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
-.update-account .upload-image-inputs {
-  /* display: grid;
-  justify-content: center;
-  align-items: center; */
+/* this part is for customizing the input file for the image -------------------------------------------- */
+.update-account .upload-image-inputs .custom-file-input-image {
+  color: transparent;
 }
 
-.update-account .download-cv-inputs {
-  /* display: grid;
+.update-account
+  .upload-image-inputs
+  .custom-file-input-image::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.update-account .upload-image-inputs .custom-file-input-image::before {
+  content: "Choose An Image To Upload";
+  color: white;
+  display: inline-block;
+  background: var(--primary-blue-color);
+  /* border: 1px solid #999; */
+  border-radius: 5px;
+  padding: 8px 13px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+
+  font-size: 10pt;
+  font-family: OpenSans;
+}
+.update-account .upload-image-inputs .custom-file-input-image:hover::before {
+  border-color: black;
+}
+.update-account .upload-image-inputs .custom-file-input-image:active {
+  outline: 0;
+}
+.update-account .upload-image-inputs .custom-file-input-image:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+/* /////////////////////////////////////////////////////// */
+
+.update-account .upload-image-inputs button {
+  margin-top: 5px;
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 8px 50px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.update-account .download-cv-inputs h3 {
+  margin-top: 80px;
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.update-account .download-cv-inputs a {
+  outline: none;
+  text-decoration: none;
+  color: var(--primary-gray-color);
+}
+
+.update-account .download-cv-inputs a:visited {
+  color: var(--primary-gray-color);
+}
+
+.update-account .combine-buttons-for-cv-after-uploading {
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.update-account .combiend-cv-btn-before-uploading {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 200px 200px;
+}
+
+.update-account .download-cv-inputs button {
+  margin-top: 5px;
+  background-color: var(--primary-gray-color);
+  color: white;
+  padding: 8px 25px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .update-account .upload-cv-inputs {
-  /* display: grid;
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
 }
 
-.update-account .change-password {
-  /* display: grid;
+.update-account .upload-cv-inputs {
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
+}
+
+/* this part is for customizing the input file for the cv ----------------- */
+.update-account .upload-cv-inputs .custom-file-input-cv {
+  color: transparent;
+}
+
+.update-account
+  .upload-cv-inputs
+  .custom-file-input-cv::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.update-account .upload-cv-inputs .custom-file-input-cv::before {
+  content: "Choose A Cv To Upload";
+  color: white;
+  display: inline-block;
+  background: var(--primary-blue-color);
+  /* border: 1px solid #999; */
+  border-radius: 5px;
+  padding: 8px 13px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+
+  font-size: 10pt;
+  font-family: OpenSans;
+}
+.update-account .upload-cv-inputs .custom-file-input-cv:hover::before {
+  border-color: black;
+}
+.update-account .upload-cv-inputs .custom-file-input-cv:active {
+  outline: 0;
+}
+.update-account .upload-cv-inputs .custom-file-input-cv:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+/* .update-account .upload-cv-inputs button {
+  margin-top: 5px;
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 8px 25px; the first value is for the hight of the button and the second is for the width
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+
+  margin-bottom: 50px;
+} */
+
+.update-account .upload-cv-inputs .upload-cv-btn {
+  background-color: white;
+  color: var(--primary-blue-color);
+  padding: 8px 25px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  border-color: var(--primary-blue-color);
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.update-account .change-password button {
+  margin-top: 5px;
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 8px 25px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+
+  margin-bottom: 50px;
+}
+
+.update-account .fname-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.update-account .fname-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.update-account .company-filed input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.update-account .company-filed input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .lname-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+.signup-page .lname-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .lname-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .lname-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.signup-page .lname-field input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signup-page .lname-field input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .company-field {
+  width: 500px;
+}
+.update-account .company-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.update-account .company-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.update-account .company-filed input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.update-account.company-filed input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .country-field label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.update-account .country-field input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  /* padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px; */
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.update-account .company-filed input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.update-account .company-filed input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .phone-filed label {
+  color: var(--primary-gray-color);
+  padding-right: 20px;
+}
+
+.update-account .phone-filed input {
+  background: #fff;
+  color: #525865;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
+  font-family: OpenSans;
+  font-size: 1em;
+  line-height: 1.45;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 90px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  -webkit-transition: 0.18s ease-out;
+  -moz-transition: 0.18s ease-out;
+  -o-transition: 0.18s ease-out;
+  transition: 0.18s ease-out;
+}
+
+.update-account .company-filed input:hover {
+  box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
+}
+.update-account .company-filed input:focus {
+  color: #4b515d;
+  border: 1px solid #b8b6b6;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.01), 0px 0px 8px #52acef;
+}
+
+.update-account .update-btn button {
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: 1px solid var(--primary-blue-color);
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.account-updated-success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 205px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.errMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  width: fit-content; /* this means that the width will be equal to the content and not bigger and if we removed this line the width will be equal to the whole screen because p in a block element */
+  padding: 10px 150px 10px; /* we add the padding because we don't want the background to be exactly as the text but a little bigger */
+  border-radius: 5px;
+}
+
+.style-button {
+  background-color: var(--primary-blue-color);
+  color: white;
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: none;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.style-button button:hover {
+  background-color: var(--primary-black-color);
 }

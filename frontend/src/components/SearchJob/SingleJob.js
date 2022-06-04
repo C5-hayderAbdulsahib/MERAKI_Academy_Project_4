@@ -24,23 +24,26 @@ const SingleJob = (props) => {
 
             <div className="second-row">
               <div className="company-name">
-                <h2>{job.company_name}</h2>
+                <h2>Company Name: {job.company_name}</h2>
               </div>
               <div className="job-category">
-                <h2>{job.category_id.name}</h2>
+                <h2>Category: {job.category_id.name}</h2>
               </div>
             </div>
 
             <div className="third-row">
               <div className="job-country">
-                <h2>{job.country}</h2>
+                <h2>Country: {job.country}</h2>
               </div>
 
               <div className="job-type">
-                <h2>{job.type}</h2>
+                <h2>Type: {job.type}</h2>
               </div>
               <div className="job-salary">
-                <h2>{`${job.salary_min}-${job.salary_max} ${job.currency}`}</h2>
+                <h2>
+                  Expected Salary:{" "}
+                  {`${job.salary_min}-${job.salary_max} ${job.currency}`}
+                </h2>
               </div>
             </div>
 

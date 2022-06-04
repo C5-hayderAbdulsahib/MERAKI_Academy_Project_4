@@ -35,17 +35,17 @@ const SingleJob = (props) => {
 
             <div className="third-row">
               <div className="job-country">
-                <h2>Company Country: {job.country}</h2>
+                <h3>Company Country: {job.country}</h3>
               </div>
 
               <div className="job-type">
-                <h2>Job Type: {job.type}</h2>
+                <h3>Job Type: {job.type}</h3>
               </div>
 
               <div className="job-salary">
                 <h3>
                   Expected Salary:
-                  {`${job.salary_min}-${job.salary_max} ${job.currency}`}
+                  {` ${job.salary_min}-${job.salary_max} ${job.currency}`}
                 </h3>
               </div>
             </div>

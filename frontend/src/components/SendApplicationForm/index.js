@@ -137,6 +137,7 @@ const SendApplicationForm = () => {
       navigate("/login");
     }
 
+    console.log("the user email is: " + userAccountData.email);
     //the reason that we add this condition is because when the page is refreshed it will take sometime in order to take the token from the context hook and until then it will take the default value first then it will take the token value so thats why we first add the condition and make sure that the token exist
     if (token && token !== "there is no token") {
       setPreferredEmail(userAccountData.email);
@@ -146,97 +147,130 @@ const SendApplicationForm = () => {
 
   return (
     <>
-      {!hide ? (
-        <div>
-          <h3>Job Application Form:</h3>
-          <br />
+      {!hide && userAccountData.email ? (
+        <div className="update-account">
+          <div className="grid-center">
+            <h1>Job Application Form:</h1>
 
-          <input
-            type={"email"}
-            placeholder="Email"
-            value={preferredEmail || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
-            onChange={(e) => setPreferredEmail(e.target.value)}
-          />
-          <br />
+            <label htmlFor="lname">Change Your Email If Needed:</label>
+            <input
+              type={"email"}
+              placeholder="Email"
+              value={preferredEmail || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
+              onChange={(e) => setPreferredEmail(e.target.value)}
+            />
+            <br />
 
-          <input
-            type={"text"}
-            placeholder="Name"
-            value={name || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
-            onChange={(e) => setName(e.target.value)}
-          />
-          <br />
+            <label htmlFor="lname">Change Your Name If Needed:</label>
+            <input
+              type={"text"}
+              placeholder="Name"
+              value={name || ""} //the reason that we add this condition is because without it an error will appear saying that you can not change a controlled input to be uncontrolled
+              onChange={(e) => setName(e.target.value)}
+            />
+            <br />
 
-          <input
-            type={"text"}
-            placeholder="Subject"
-            onChange={(e) => setSubject(e.target.value)}
-          />
-          <br />
+            <label htmlFor="lname">Add A Subject:</label>
+            <input
+              type={"text"}
+              placeholder="Subject"
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <br />
 
-          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
-          <textarea
-            rows="4"
-            cols="50"
-            placeholder="Description"
-            onChange={(e) => setBodyDescription(e.target.value)}
-          />
-          <br />
+            <label htmlFor="lname">Add A Description:</label>
+            {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
+            <textarea
+              rows="4"
+              cols="50"
+              placeholder="Description"
+              onChange={(e) => setBodyDescription(e.target.value)}
+            />
+            <br />
+            <br />
+            <br />
 
-          {/* this input file is for uploading cv to cloudinary server */}
+            {/* this input file is for uploading cv to cloudinary server */}
 
-          <div>
-            <h1>choose the way that you want to upload your cv</h1>
-            {cvUrl ? (
+            <div>
+              <h3>choose the way that you want to upload your cv</h3>
+              {cvUrl ? (
+                <>
+                  <a href={cvUrl} target="cv" className="linktest">
+                    View Your Chosen Cv
+                  </a>
+                </>
+              ) : (
+                <p>You Still Did Not Upload A CV</p>
+              )}
+            </div>
+
+            {!savedCvChosen && (
               <>
-                <a href={cvUrl} target="cv">
-                  View Your Chosen Cv
-                </a>
+                <div>
+                  <input
+                    type="file"
+                    className="custom-file-input"
+                    onChange={(e) => {
+                      setCv(e.target.files[0]);
+                      setRequiredCv("");
+                    }}
+                  ></input>
+                  <button
+                    className="upload-cv-application-form"
+                    onClick={uploadCv}
+                  >
+                    Upload The New Chosen Cv
+                  </button>
+                </div>
               </>
-            ) : (
-              <p>Please Upload A Cv</p>
             )}
-          </div>
 
-          {!savedCvChosen && (
-            <>
+            {/* this part to upload my saved cv */}
+            <div className="warping-element">
+              {userAccountData.user_cv && (
+                <div>
+                  <button
+                    className="upload-saved-cv-application-form-btn"
+                    onClick={() => {
+                      setCvUrl(userAccountData.user_cv);
+                      // console.log("the data url for the cv");
+                      setCv(userAccountData.user_cv);
+                      setRequiredCv("has been uploaded");
+                      setSuccessMessage(""); //we add this so if we want to send another application form while staying on the page it will remove the success message to give the user a better understanding of his condition
+                      setSavedCvChosen(true); //we add this part in order if the user click on upload my saved cv the choose a cv buttons will disappear for better user experience
+                    }}
+                  >
+                    Upload My Saved Cv
+                  </button>
+                </div>
+              )}
+
               <div>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    setCv(e.target.files[0]);
-                    setRequiredCv("");
-                  }}
-                ></input>
-                <button onClick={uploadCv}>Upload Cv</button>
+                <button
+                  className="upload-cv-application-form-btn"
+                  onClick={sendFormApplication}
+                >
+                  Send Form
+                </button>
               </div>
-            </>
+            </div>
+          </div>
+          {/* this part is for showing showing the user a success message for the user from the backend if his form was sent successfully */}
+          {successMessage ? (
+            <div className="center">
+              <p className="send_cv_success">{successMessage}</p>
+            </div>
+          ) : (
+            ""
           )}
 
-          {/* this part to upload my saved cv */}
-          <div>
-            <button
-              onClick={() => {
-                setCvUrl(userAccountData.user_cv);
-                // console.log("the data url for the cv");
-                setCv(userAccountData.user_cv);
-                setRequiredCv("has been uploaded");
-                setSuccessMessage(""); //we add this so if we want to send another application form while staying on the page it will remove the success message to give the user a better understanding of his condition
-                setSavedCvChosen(true); //we add this part in order if the user click on upload my saved cv the choose a cv buttons will disappear for better user experience
-              }}
-            >
-              Upload My Saved Cv
-            </button>
-          </div>
-          {console.log("the name of the cv is", cv)}
-
-          <button onClick={sendFormApplication}>Send Form</button>
-
-          {/* this part is for showing showing the user a success message for the user from the backend if his form was sent successfully */}
-          {successMessage ? <p className="login-err">{successMessage}</p> : ""}
-
           {/* this part is for showing an error message for the validation */}
-          {requiredMessage && <p>{requiredMessage}</p>}
+          {requiredMessage && (
+            <div className="center">
+              <p className="send_cv_error">{requiredMessage}</p>
+            </div>
+          )}
         </div>
       ) : (
         <FadeLoader

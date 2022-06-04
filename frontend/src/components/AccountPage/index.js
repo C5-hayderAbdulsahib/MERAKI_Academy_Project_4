@@ -268,25 +268,9 @@ export const AccountPage = () => {
               <h3>Uploaded Image Will Be Displayed Here</h3>
               <div className="account-image">
                 {imgUrl ? (
-                  <img
-                    src={imgUrl}
-                    alt="profile image"
-                    style={{
-                      width: "350px",
-                      height: "350px",
-                      borderRadius: "50%",
-                    }}
-                  />
+                  <img src={imgUrl} alt="profile image" />
                 ) : (
-                  <img
-                    src={profileImage}
-                    alt="profile image"
-                    style={{
-                      width: "350px",
-                      height: "350px",
-                      borderRadius: "50%",
-                    }}
-                  />
+                  <img src={profileImage} alt="profile image" />
                 )}
               </div>
             </div>
@@ -296,6 +280,7 @@ export const AccountPage = () => {
                 <input
                   type="file"
                   onChange={(e) => setImage(e.target.files[0])}
+                  className="custom-file-input-image"
                 ></input>
               </div>
               <div>
@@ -307,17 +292,21 @@ export const AccountPage = () => {
 
             <div className="download-cv-inputs">
               <div>
-                <h1>Uploaded Cv Will Be Displayed Here</h1>
+                <h3>Uploaded Cv Will Be Displayed Here</h3>
               </div>
               {cvUrl ? (
                 <>
-                  <div>
-                    <a href={cvUrl} target="cv">
-                      View Your Cv
-                    </a>
-                  </div>
-                  <div>
-                    <button onClick={downloadFile}>download Your cv</button>
+                  <div className="combine-buttons-for-cv-after-uploading">
+                    <div>
+                      <a href={cvUrl} target="cv">
+                        Click Here To View Your Cv
+                      </a>
+                    </div>
+                    <div>
+                      <button onClick={downloadFile}>
+                        download Your Saved Cv
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (
@@ -326,16 +315,24 @@ export const AccountPage = () => {
             </div>
 
             <div className="upload-cv-inputs">
-              <div>
-                <input
-                  type="file"
-                  onChange={(e) => setCv(e.target.files[0])}
-                ></input>
-              </div>
-              <div>
-                <button onClick={uploadCv}>Upload Cv</button>
+              <div className="combiend-cv-btn-before-uploading">
+                <div>
+                  <input
+                    type="file"
+                    onChange={(e) => setCv(e.target.files[0])}
+                    className="custom-file-input-cv"
+                  ></input>
+                </div>
+                <div>
+                  <button onClick={uploadCv} className="upload-cv-btn">
+                    Upload A New Cv
+                  </button>
+                </div>
               </div>
             </div>
+            <br></br>
+            <br></br>
+            <br></br>
 
             {/* the model component */}
             {/* we make a condition if the state is false then dont show the model else show it */}
@@ -358,6 +355,7 @@ export const AccountPage = () => {
             )}
 
             {/* the reason that we set the state to true is to show the model */}
+            <p>Click Here to Change Your Password</p>
             <div className="change-password">
               <button onClick={() => setIsOpen(true)}>change password</button>
             </div>
@@ -411,6 +409,7 @@ export const AccountPage = () => {
                   </div>
                 </>
               )}
+              <br></br>
               <div className="country-field">
                 <label htmlFor="country">Update Country:</label>
                 <Select
@@ -422,6 +421,7 @@ export const AccountPage = () => {
                     value: countries.myCountry,
                     label: countries.myCountry,
                   }}
+                  styles={{ width: "2000px" }}
                   onChange={(e) => {
                     setCountries({
                       myCountry: e.value,
@@ -434,9 +434,11 @@ export const AccountPage = () => {
               </div>
 
               <div className="phone-filed">
+                <label htmlFor="phone number">Update Phone Number:</label>
                 <input
                   type={"text"}
                   placeholder="Phone Number"
+                  id="phone number"
                   value={phoneNum}
                   onChange={(e) => {
                     setPhoneNum(e.target.value);
@@ -445,18 +447,23 @@ export const AccountPage = () => {
                   }}
                 />
               </div>
+              <br></br>
 
               <div className="update-btn">
-                <button onClick={updateAccount}>Update Account</button>
+                <button onClick={updateAccount} className="style-button">
+                  Update Account
+                </button>
               </div>
               {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
               {successMessage ? (
-                <p className="login-err">{successMessage}</p>
+                <p className="account-updated-success">{successMessage}</p>
               ) : (
                 ""
               )}
               {/* this part is for showing an error message for the validation */}
-              {requiredMessage && <p>{requiredMessage}</p>}
+              {requiredMessage && (
+                <p className="errMessage">{requiredMessage}</p>
+              )}
             </div>
           </div>
         </div>

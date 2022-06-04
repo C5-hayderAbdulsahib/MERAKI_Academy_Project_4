@@ -1,0 +1,130 @@
+.no-candidates {
+  text-align: center;
+  font-size: 30px;
+  color: var(--primary-gray-color);
+}
+
+.messages-from-applicants-page .card-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.messages-from-applicants-page .grid-card {
+  display: grid;
+  grid-template-columns: 1000px;
+  /* grid-template-rows: 50px 50px 50px auto 50px 50px 20px 10px 100px 10px; */
+  border: 1px solid #959191;
+  transition: 0.3s;
+}
+
+.messages-from-applicants-page .grid-card:hover {
+  box-shadow: 0 1px 6px 0 var(--primary-blue-color);
+}
+
+.messages-from-applicants-page .first-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.messages-from-applicants-page .email {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .c-name {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .second-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.messages-from-applicants-page .subject {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .application-description p {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+  text-align: left;
+}
+
+.messages-from-applicants-page .country {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .send-date {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .candidate-cv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.messages-from-applicants-page .candidate-cv a {
+  color: var(--primary-gray-color);
+  text-decoration: none;
+}
+
+.messages-from-applicants-page .candidate-cv a:visited {
+  color: var(--primary-gray-color);
+}
+
+.messages-from-applicants-page .delete-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.messages-from-applicants-page .delete-btn button {
+  background-color: white;
+  color: var(--primary-blue-color);
+  padding: 12px 208px;
+  text-align: center;
+  border: 1px solid var(--primary-blue-color);
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+
+.messages-from-applicants-page .delete-btn button:hover {
+  background-color: var(--primary-blue-color);
+  color: white;
+}
+
+@media all and (max-width: 1000px) {
+  .messages-from-applicants-page .grid-card {
+    grid-template-columns: 500px;
+  }
+}
+
+@media all and (max-width: 550px) {
+  .messages-from-applicants-page .grid-card {
+    grid-template-columns: 350px;
+  }
+
+  .messages-from-applicants-page .view-btn button {
+    padding: 12px 80px; /* the first value is for the hight of the button and the second is for the width */
+  }
+}

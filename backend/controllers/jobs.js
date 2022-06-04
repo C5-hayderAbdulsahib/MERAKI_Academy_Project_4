@@ -147,6 +147,7 @@ const getAllJobsForCompany = async (req, res) => {
 
     const jobsByCreator = await jobsModel
       .find({ user_id: userId })
+      .populate("category_id")
       .sort({ createdAt: "desc" }); //this how to sort in mongoose
 
     //if the user company having

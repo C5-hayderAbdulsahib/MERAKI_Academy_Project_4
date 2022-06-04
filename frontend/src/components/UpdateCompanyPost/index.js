@@ -8,6 +8,9 @@ import FadeLoader from "react-spinners/FadeLoader";
 // import the context which we created in the authContext.js using the Context hook
 import { AuthContext } from "../../contexts/authContext";
 
+//import styling
+import "./style.css";
+
 const UpdateCompanyPost = () => {
   //   we can use the states that are send using the useContext by either calling it property from the object or by using destructuring
   //   const setIsLoggedIn = useContext(TokenContext).setIsLoggedIn;
@@ -205,124 +208,166 @@ const UpdateCompanyPost = () => {
     <>
       {currency ? (
         <div>
-          <h3>Update Job Form:</h3>
-          <br />
+          <div className="account-page">
+            <div className="title">
+              <h3>Update Job Form:</h3>
+            </div>
+            <br />
+            <div className="grid-center"></div>
 
-          <Select
-            name="categories"
-            id="categories"
-            options={allCategories}
-            defaultValue={{
-              value: categories.value,
-              label: categories.label,
-            }}
-            onChange={(e) => {
-              console.log("the value of the id category", e.value);
-              setCategories({ value: e.value });
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
+            <div className="categories-field">
+              <label htmlFor="categories">Change Your Cayegory Name:</label>
+              <Select
+                className="category-bar"
+                name="categories"
+                id="categories"
+                options={allCategories}
+                defaultValue={{
+                  value: categories.value,
+                  label: categories.label,
+                }}
+                onChange={(e) => {
+                  console.log("the value of the id category", e.value);
+                  setCategories({ value: e.value });
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <input
-            type={"text"}
-            placeholder="Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="lname-field">
+              <label htmlFor="Title">Change Your Job Title:</label>
 
-          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
-          <textarea
-            rows="4"
-            cols="50"
-            placeholder="Description Of The Job"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+              <input
+                type={"text"}
+                placeholder="Title"
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
+            <br />
+            <br />
 
-          <label htmlFor="type">Choose A Job Type:</label>
-          <select
-            name="type"
-            id="type"
-            onChange={(e) => {
-              setType(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          >
-            <option value={type}>{type}</option>
+            <br />
 
-            <option value="On-Site">On-Site</option>
-            <option value="Remote">Remote</option>
-            <option value="Hybrid">Hybrid</option>
-          </select>
-          <br />
+            {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
 
-          <input
-            type={"number"}
-            placeholder="Minimum Salary Expected"
-            value={salaryMin}
-            onChange={(e) => {
-              setSalaryMin(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="wrapping">
+              <div>
+                <label htmlFor="lname">Change Your Description Job:</label>
+              </div>
+              <div>
+                <textarea
+                  rows="4"
+                  cols="50"
+                  placeholder="Description Of The Job"
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                    setSuccessMessage("");
+                    setRequiredMessage("");
+                  }}
+                />
+              </div>
+            </div>
+            <br />
 
-          <input
-            type={"number"}
-            placeholder="Maximum Salary Expected"
-            value={salaryMax}
-            onChange={(e) => {
-              setSalaryMax(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="company-field">
+              <label htmlFor="type">Choose A Job Type:</label>
+              <select
+                name="type"
+                id="type"
+                onChange={(e) => {
+                  setType(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              >
+                <option value={type}>{type}</option>
 
-          <label htmlFor="currency">Choose A Currency:</label>
+                <option value="On-Site">On-Site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+            <br />
 
-          <Select
-            name="currency"
-            id="currency"
-            options={allCurrencies}
-            defaultValue={{
-              value: currencyDefault.value,
-              label: currencyDefault.label,
-            }}
-            onChange={(e) => {
-              console.log(e.value);
-              setCurrency(e.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
+            <div className="company-field">
+              <label htmlFor="lname">Choose A Minimum Salary Expected:</label>
+              <input
+                type={"number"}
+                placeholder="Minimum Salary Expected"
+                value={salaryMin}
+                onChange={(e) => {
+                  setSalaryMin(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
+            <br />
 
-          <br />
-          <br />
+            <div className="company-field">
+              <label htmlFor="currency">Choose A Currency:</label>
 
-          <button onClick={updateJob}>Update Job Post</button>
+              <input
+                type={"number"}
+                placeholder="Maximum Salary Expected"
+                value={salaryMax}
+                onChange={(e) => {
+                  setSalaryMax(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
+            <br />
 
+            <div className="company-field">
+              <label htmlFor="currency">Choose A Currency:</label>
+              <Select
+                name="currency"
+                id="currency"
+                options={allCurrencies}
+                defaultValue={{
+                  value: currencyDefault.value,
+                  label: currencyDefault.label,
+                }}
+                className="category-bar"
+                onChange={(e) => {
+                  console.log(e.value);
+                  setCurrency(e.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
+
+            <br />
+            <br />
+
+            <div className="update-job-btn">
+              <button onClick={updateJob}>Update Job Post</button>
+            </div>
+          </div>
           {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
-          {successMessage ? <p className="login-err">{successMessage}</p> : ""}
+          {successMessage ? (
+            <p className="update-success">{successMessage}</p>
+          ) : (
+            ""
+          )}
 
           {/* this part is for showing an error message for the validation */}
-          {requiredMessage && <p>{requiredMessage}</p>}
+          {requiredMessage && (
+            <p className="required-error-for-update">{requiredMessage}</p>
+          )}
         </div>
       ) : (
         <FadeLoader
@@ -336,7 +381,7 @@ const UpdateCompanyPost = () => {
       )}
 
       {/* this part is for showing an error message from the backend */}
-      {errMessage && <p>{errMessage}</p>}
+      {errMessage && <p className="errMessage">{errMessage}</p>}
     </>
   );
 };

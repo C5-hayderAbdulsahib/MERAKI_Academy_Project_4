@@ -57,25 +57,61 @@ const SingleJob = (props) => {
 
   return (
     <>
-      <h1>title {FavJob.title}</h1>
-      <p>{FavJob.category_id.name}</p>
-      <h3>{FavJob.company_name}</h3>
-      <h3>{FavJob.country}</h3>
-      <h3>{`${FavJob.salary_min}-${FavJob.salary_max} ${FavJob.currency}`}</h3>
-      <h3>published At {jobDate}</h3>
-      <h3>{FavJob.type}</h3>
+      <div className="search-page">
+        <div className="card-center">
+          <div className="grid-card">
+            <div className="first-row">
+              <div className="job-title">
+                <h2>Job Title: {FavJob.title}</h2>
+              </div>
+              <div className="published-at">
+                <h2>published At: {jobDate}</h2>
+              </div>
+            </div>
 
-      <Link to={`/job/${FavJob._id}`}>
-        <button>View Job</button>
-      </Link>
+            <div className="second-row">
+              <div className="company-name">
+                <h3>Company Name: {FavJob.company_name}</h3>
+              </div>
+              <div className="job-category">
+                <h3>Category: {FavJob.category_id.name}</h3>
+              </div>
+            </div>
 
-      <button
-        onClick={() => {
-          UnsaveJob();
-        }}
-      >
-        UnSave Job
-      </button>
+            <div className="third-row">
+              <div className="job-country">
+                <h3>Country: {FavJob.country}</h3>
+              </div>
+              <div className="job-type">
+                <h3>Job Type: {FavJob.type}</h3>
+              </div>
+              <div className="job-salary">
+                <h3>
+                  Salary:
+                  {`  ${FavJob.salary_min}-${FavJob.salary_max} ${FavJob.currency}`}
+                </h3>
+              </div>
+            </div>
+
+            <div className="un-saved-btn">
+              <button
+                onClick={() => {
+                  UnsaveJob();
+                }}
+              >
+                UnSave Job
+              </button>
+            </div>
+
+            <div className="view-btn">
+              <Link to={`/job/${FavJob._id}`}>
+                <button>View Job</button>
+              </Link>
+            </div>
+            <br></br>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

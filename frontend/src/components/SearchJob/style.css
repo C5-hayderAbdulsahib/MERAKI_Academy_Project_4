@@ -159,6 +159,24 @@
   width: 350px;
 }
 
+.description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .search-inputs-main-page .job-Not-Found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.job-Not-Found p {
+  color: var(--primary-gray-color);
+  text-align: center;
+  font-size: 30px;
+}
+
 @media all and (max-width: 1000px) {
   .search-page .grid-card {
     grid-template-columns: 500px;

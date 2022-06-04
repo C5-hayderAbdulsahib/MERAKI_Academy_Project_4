@@ -1,0 +1,123 @@
+.empty-company-jobs {
+  color: var(--primary-gray-color);
+  font-size: 30px;
+  text-align: center;
+}
+
+.company-jobs-page .card-center {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.company-jobs-page .grid-card {
+  display: grid;
+  grid-template-columns: 1000px;
+  grid-template-rows: 100px 70px 200px 70px 70px 10px 10px 40px;
+  border: 1px solid #959191;
+  transition: 0.3s;
+}
+
+.company-jobs-page .grid-card:hover {
+  box-shadow: 0 1px 6px 0 var(--primary-blue-color);
+}
+
+.company-jobs-page .first-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.company-jobs-page .job-title {
+  color: var(--primary-blue-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .published-at {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .second-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.company-jobs-page .job-category {
+  color: var(--primary-blue-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .company-name {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .third-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* width: 2000; */
+}
+
+.company-jobs-page .job-country {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .job-type {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .job-salary {
+  color: var(--primary-gray-color);
+  font-family: OpenSans;
+}
+
+.company-jobs-page .view-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.company-jobs-page .view-btn button {
+  background-color: white;
+  color: var(--primary-blue-color);
+  padding: 12px 208px; /* the first value is for the hight of the button and the second is for the width */
+  text-align: center;
+  border: 1px solid var(--primary-blue-color);
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: OpenSans;
+
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.company-jobs-page .view-btn button:hover {
+  background-color: var(--primary-blue-color);
+  color: white;
+}
+
+@media all and (max-width: 1000px) {
+  .company-jobs-page .grid-card {
+    grid-template-columns: 500px;
+  }
+}
+
+@media all and (max-width: 550px) {
+  .company-jobs-page .grid-card {
+    grid-template-columns: 350px;
+  }
+
+  .company-jobs-page .view-btn button {
+    padding: 12px 80px; /* the first value is for the hight of the button and the second is for the width */
+  }
+}

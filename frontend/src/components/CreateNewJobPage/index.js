@@ -189,131 +189,156 @@ const CreateNewJobPage = () => {
     <>
       {companyName ? (
         <div className="account-page">
-          <h3>Create Job Form:</h3>
-          <br />
+          <div className="grid-center">
+            <div className="title">
+              <h1>Create Job Form:</h1>
+            </div>
 
-          <input
-            type={"text"}
-            disabled
-            placeholder="Company Name"
-            value={companyName}
-            onChange={(e) => {
-              setCompanyName(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="company-field">
+              <label htmlFor="CompanyName">View Your Company Name:</label>
+              <input
+                type={"text"}
+                id="CompanyName"
+                disabled
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => {
+                  setCompanyName(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
 
-          <Select
-            name="categories"
-            id="categories"
-            options={allCategories}
-            defaultValue={{
-              value: "",
-              label: "Select A Category",
-            }}
-            onChange={(e) => {
-              setCategories(e.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
+            <div className="categories-field">
+              <label htmlFor="categories">Choose A Category:</label>
+              <Select
+                name="categories"
+                id="categories"
+                options={allCategories}
+                defaultValue={{
+                  value: "",
+                  label: "Select A Category",
+                }}
+                onChange={(e) => {
+                  setCategories(e.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
 
-          <br />
-          <br />
+            <div className="lname-field">
+              <label htmlFor="Title">Choose A Title:</label>
+              <input
+                type={"text"}
+                placeholder="Title"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
 
-          <input
-            type={"text"}
-            placeholder="Title"
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
+            <label htmlFor="lname">Choose A Description Job:</label>
+            <textarea
+              rows="4"
+              cols="50"
+              placeholder="Description Of The Job"
+              onChange={(e) => {
+                setDescription(e.target.value);
+                setSuccessMessage("");
+                setRequiredMessage("");
+              }}
+              style={{ marginBottom: "20px" }}
+            />
 
-          {/* normally a textarea would not be a self closing tag but it still work perfectly fine   */}
-          <textarea
-            rows="4"
-            cols="50"
-            placeholder="Description Of The Job"
-            onChange={(e) => {
-              setDescription(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="company-field">
+              <label htmlFor="type">Choose A Job Type:</label>
+              <select
+                name="type"
+                id="type"
+                onChange={(e) => {
+                  setType(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+                style={{ marginBottom: "20px" }}
+              >
+                <option value="">Choose A Type</option>
 
-          <label htmlFor="type">Choose A Job Type:</label>
-          <select
-            name="type"
-            id="type"
-            onChange={(e) => {
-              setType(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          >
-            <option value="">Choose A Type</option>
+                <option value="On-Site">On-Site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
 
-            <option value="On-Site">On-Site</option>
-            <option value="Remote">Remote</option>
-            <option value="Hybrid">Hybrid</option>
-          </select>
-          <br />
+            <div className="company-field">
+              <label htmlFor="lname">Enter A Minimum Salary Expected:</label>
+              <input
+                type={"number"}
+                placeholder="Minimum Salary Expected"
+                onChange={(e) => {
+                  setSalaryMin(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
 
-          <input
-            type={"number"}
-            placeholder="Minimum Salary Expected"
-            onChange={(e) => {
-              setSalaryMin(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="company-field">
+              <label htmlFor="lname">Enter a Maximum Salary Expected:</label>
+              <input
+                type={"number"}
+                placeholder="Maximum Salary Expected"
+                onChange={(e) => {
+                  setSalaryMax(e.target.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
 
-          <input
-            type={"number"}
-            placeholder="Maximum Salary Expected"
-            onChange={(e) => {
-              setSalaryMax(e.target.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-          <br />
+            <div className="company-field">
+              <label htmlFor="currency">Choose A Currency:</label>
+              <Select
+                name="currency"
+                id="currency"
+                options={allCurrencies}
+                defaultValue={{
+                  value: "",
+                  label: "Select A Currency",
+                }}
+                onChange={(e) => {
+                  setCurrency(e.value);
+                  setSuccessMessage("");
+                  setRequiredMessage("");
+                }}
+              />
+            </div>
+            <br></br>
 
-          <label htmlFor="currency">Choose A Currency:</label>
+            <div className="create-job-btn">
+              <button onClick={createJobPost}>Create A New Job Post</button>
+            </div>
+            {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
+            {successMessage ? (
+              <p className="create-new-job-success">{successMessage}</p>
+            ) : (
+              ""
+            )}
 
-          <Select
-            name="currency"
-            id="currency"
-            options={allCurrencies}
-            defaultValue={{
-              value: "",
-              label: "Select A Currency",
-            }}
-            onChange={(e) => {
-              setCurrency(e.value);
-              setSuccessMessage("");
-              setRequiredMessage("");
-            }}
-          />
-
-          <br />
-          <br />
-
-          <button onClick={createJobPost}>Create A New Job Post</button>
-
-          {/* this part is for showing the user a success message for the user from the backend if his form was sent successfully */}
-          {successMessage ? <p className="login-err">{successMessage}</p> : ""}
-
-          {/* this part is for showing an error message for the validation */}
-          {requiredMessage && <p>{requiredMessage}</p>}
+            {/* this part is for showing an error message for the validation */}
+            {requiredMessage && (
+              <p className="create-new-job-error">{requiredMessage}</p>
+            )}
+          </div>
         </div>
       ) : (
         <FadeLoader
@@ -327,7 +352,7 @@ const CreateNewJobPage = () => {
       )}
 
       {/* this part is for showing an error message from the backend */}
-      {errMessage && <p>{errMessage}</p>}
+      {errMessage && <p className="errMessage">{errMessage}</p>}
     </>
   );
 };
